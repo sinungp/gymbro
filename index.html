@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GymBro — Sinung · Awal · Rudi</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:       #0a0a0f;
+  --bg2:      #111118;
+  --bg3:      #1a1a25;
+  --card:     #16161f;
+  --border:   #2a2a3a;
+  --red:      #ff2d55;
+  --orange:   #ff6b00;
+  --gold:     #f5c842;
+  --green:    #00e676;
+  --blue:     #4fc3f7;
+  --purple:   #b388ff;
+  --text:     #f0f0f0;
+  --muted:    #888;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-cond:    'Barlow Condensed', sans-serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: sticky; top:0; z-index:100;
+  background: rgba(10,10,15,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap:16px;
+  padding: 0 24px; height:56px;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 28px; letter-spacing:2px;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
+.nav-tabs { display:flex; gap:4px; margin-left:auto; }
+.nav-tab {
+  font-family: var(--font-cond); font-size:14px; font-weight:700; letter-spacing:1px;
+  padding: 6px 14px; border-radius:6px; border:none;
+  background:transparent; color:var(--muted); cursor:pointer;
+  text-transform:uppercase; transition: all .2s;
+}
+.nav-tab:hover { color:var(--text); background:var(--bg3); }
+.nav-tab.active { color:#fff; background:var(--red); }
+
+/* ─── PAGES ─── */
+.page { display:none; }
+.page.active { display:block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+/* ─── HOME ─── */
+.home-hero {
+  padding: 80px 24px 48px;
+  text-align: center;
+  position: relative;
+}
+.home-hero::after {
+  content:'';
+  position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+  width:600px; height:1px;
+  background: linear-gradient(90deg, transparent, var(--red), var(--orange), transparent);
+}
+.hero-eyebrow {
+  font-family: var(--font-cond); font-size:13px; font-weight:700; letter-spacing:4px;
+  color:var(--red); text-transform:uppercase; margin-bottom:16px;
+}
+.hero-title {
+  font-family: var(--font-display); font-size: clamp(64px,10vw,120px);
+  line-height:0.9; letter-spacing:4px; margin-bottom:24px;
+  background: linear-gradient(135deg, #fff 40%, var(--orange));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size:16px; color:var(--muted); max-width:480px; margin:0 auto 48px;
+  line-height:1.7;
+}
+.hero-badges { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:64px; }
+.badge {
+  font-family:var(--font-cond); font-size:13px; font-weight:700; letter-spacing:1px;
+  padding:6px 16px; border-radius:20px; border:1px solid;
+  text-transform:uppercase;
+}
+.badge-red   { border-color:var(--red);   color:var(--red);   background:rgba(255,45,85,.08); }
+.badge-gold  { border-color:var(--gold);  color:var(--gold);  background:rgba(245,200,66,.08); }
+.badge-green { border-color:var(--green); color:var(--green); background:rgba(0,230,118,.08); }
+
+/* ─── USER CARDS ─── */
+.user-grid {
+  display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap:20px; max-width:960px; margin:0 auto; padding:0 24px 80px;
+}
+.user-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  cursor: pointer;
+  transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.user-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: var(--accent);
+}
+.user-card:hover { transform:translateY(-4px); border-color:var(--accent); }
+.user-card:hover .user-avatar { transform:scale(1.05); }
+.user-avatar {
+  width:72px; height:72px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:32px; margin-bottom:20px;
+  background: var(--avatar-bg);
+  transition: transform .25s;
+  border: 2px solid var(--accent);
+}
+.user-name {
+  font-family:var(--font-display); font-size:36px; letter-spacing:2px;
+  color:#fff; margin-bottom:4px;
+}
+.user-role { font-size:13px; color:var(--muted); margin-bottom:24px; }
+.user-stats { display:flex; gap:20px; }
+.user-stat { text-align:center; }
+.user-stat-val {
+  font-family:var(--font-cond); font-size:22px; font-weight:800;
+  color:var(--accent); display:block;
+}
+.user-stat-lbl { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+.user-cta {
+  margin-top:24px; width:100%; padding:10px;
+  background: var(--accent); border:none; border-radius:8px;
+  font-family:var(--font-cond); font-size:15px; font-weight:700; letter-spacing:1px;
+  color:#000; text-transform:uppercase; cursor:pointer;
+  transition: opacity .2s;
+}
+.user-cta:hover { opacity:.85; }
+
+/* ─── PROGRAM PAGE ─── */
+.program-wrap { max-width:1000px; margin:0 auto; padding:40px 24px; }
+.section-title {
+  font-family:var(--font-display); font-size:48px; letter-spacing:3px;
+  margin-bottom:8px;
+}
+.section-sub { color:var(--muted); font-size:14px; margin-bottom:32px; }
+
+.day-tabs { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
+.day-tab {
+  font-family:var(--font-cond); font-size:14px; font-weight:700; letter-spacing:1px;
+  padding:8px 20px; border-radius:8px; border:1px solid var(--border);
+  background:var(--card); color:var(--muted); cursor:pointer;
+  text-transform:uppercase; transition:all .2s;
+}
+.day-tab:hover { color:var(--text); }
+.day-tab.active { border-color:var(--red); color:#fff; background:rgba(255,45,85,.15); }
+
+.day-panel { display:none; }
+.day-panel.active { display:block; animation:fadeIn .25s; }
+
+.day-header {
+  display:flex; align-items:center; gap:16px;
+  padding:20px 24px; border-radius:12px;
+  background:var(--card); border:1px solid var(--border);
+  margin-bottom:16px;
+}
+.day-number {
+  font-family:var(--font-display); font-size:56px; line-height:1;
+  background:linear-gradient(135deg,var(--red),var(--orange));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.day-info h3 { font-family:var(--font-cond); font-size:22px; font-weight:800; letter-spacing:1px; }
+.day-info p  { color:var(--muted); font-size:13px; margin-top:4px; }
+
+.exercise-table { width:100%; border-collapse:separate; border-spacing:0 6px; }
+.exercise-table th {
+  font-family:var(--font-cond); font-size:12px; font-weight:700; letter-spacing:2px;
+  color:var(--muted); text-transform:uppercase; padding:8px 14px;
+  text-align:left;
+}
+.exercise-row {
+  background:var(--card); border-radius:10px;
+  transition: background .2s;
+}
+.exercise-row:hover { background:var(--bg3); }
+.exercise-row td {
+  padding:14px 14px; font-size:14px;
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+}
+.exercise-row td:first-child { border-left:1px solid var(--border); border-radius:10px 0 0 10px; }
+.exercise-row td:last-child  { border-right:1px solid var(--border); border-radius:0 10px 10px 0; }
+.ex-num {
+  font-family:var(--font-cond); font-size:18px; font-weight:800;
+  color:var(--border); width:36px;
+}
+.ex-name { font-weight:600; color:#fff; }
+.ex-desc { font-size:12px; color:var(--muted); margin-top:3px; }
+.ex-sets, .ex-reps {
+  font-family:var(--font-cond); font-size:16px; font-weight:700;
+  text-align:center;
+}
+.ex-muscle {
+  font-size:12px; padding:3px 10px; border-radius:12px;
+  background:rgba(255,255,255,.05); color:var(--muted);
+  text-align:center; white-space:nowrap;
+}
+.pill-red    { background:rgba(255,45,85,.15); color:var(--red); }
+.pill-orange { background:rgba(255,107,0,.15); color:var(--orange); }
+.pill-gold   { background:rgba(245,200,66,.15); color:var(--gold); }
+.pill-blue   { background:rgba(79,195,247,.15); color:var(--blue); }
+
+/* ─── SCHEDULE GRID ─── */
+.schedule-grid {
+  display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:40px;
+}
+.sched-day {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:10px; padding:14px 10px; text-align:center;
+}
+.sched-day.active-day { border-color:var(--red); background:rgba(255,45,85,.08); }
+.sched-day.rest-day   { opacity:.5; }
+.sched-name { font-family:var(--font-cond); font-size:13px; font-weight:700; letter-spacing:1px; color:var(--muted); margin-bottom:6px; }
+.sched-label { font-size:12px; color:var(--text); font-weight:600; }
+.sched-rest  { font-size:11px; color:var(--muted); }
+
+/* ─── TRACKER PAGE ─── */
+.tracker-wrap { max-width:1200px; margin:0 auto; padding:32px 24px; }
+.tracker-header {
+  display:flex; align-items:center; gap:20px; margin-bottom:32px;
+  padding-bottom:24px; border-bottom:1px solid var(--border);
+}
+.tracker-avatar {
+  width:64px; height:64px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px; border:2px solid var(--accent);
+  background:var(--avatar-bg); flex-shrink:0;
+}
+.tracker-name-big {
+  font-family:var(--font-display); font-size:48px; letter-spacing:3px; line-height:1;
+  color:var(--accent);
+}
+.tracker-subtitle { color:var(--muted); font-size:14px; margin-top:4px; }
+.back-btn {
+  margin-left:auto; padding:8px 20px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:8px; color:var(--muted); font-family:var(--font-cond);
+  font-size:14px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  cursor:pointer; transition:all .2s;
+}
+.back-btn:hover { color:var(--text); border-color:var(--muted); }
+
+/* Week selector */
+.week-nav {
+  display:flex; align-items:center; gap:12px; margin-bottom:24px;
+}
+.week-nav label { font-family:var(--font-cond); font-size:15px; font-weight:700; color:var(--muted); }
+.week-nav select {
+  background:var(--card); border:1px solid var(--border); color:var(--text);
+  font-family:var(--font-body); font-size:14px; padding:6px 12px;
+  border-radius:8px; cursor:pointer;
+}
+.save-btn {
+  margin-left:auto; padding:10px 28px;
+  background:linear-gradient(135deg,var(--red),var(--orange));
+  border:none; border-radius:8px;
+  font-family:var(--font-cond); font-size:16px; font-weight:700; letter-spacing:1px;
+  color:#fff; text-transform:uppercase; cursor:pointer;
+  transition:opacity .2s; position:relative;
+}
+.save-btn:hover { opacity:.85; }
+.save-btn.saved::after {
+  content:'✓ Tersimpan!'; position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--green); border-radius:8px; color:#000; font-size:14px;
+  animation: flash 1.5s forwards;
+}
+@keyframes flash {
+  0%{opacity:1} 80%{opacity:1} 100%{opacity:0}
+}
+
+/* Tracker day section */
+.tracker-day-section { margin-bottom:24px; }
+.tracker-day-head {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px; border-radius:10px 10px 0 0;
+  background:var(--bg3); border:1px solid var(--border); border-bottom:none;
+}
+.tracker-day-num {
+  font-family:var(--font-display); font-size:32px;
+  background:linear-gradient(135deg,var(--red),var(--orange));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.tracker-day-title { font-family:var(--font-cond); font-size:16px; font-weight:700; letter-spacing:1px; }
+.tracker-day-sub { font-size:12px; color:var(--muted); }
+
+.tracker-table { width:100%; border-collapse:separate; border-spacing:0; }
+.tracker-table th {
+  background:var(--bg3); border:1px solid var(--border); border-top:none;
+  font-family:var(--font-cond); font-size:12px; font-weight:700; letter-spacing:2px;
+  color:var(--muted); text-transform:uppercase; padding:10px 14px; text-align:left;
+}
+.tracker-table td {
+  background:var(--card); border:1px solid var(--border); border-top:none;
+  padding:10px 14px; font-size:13px;
+}
+.tracker-table tr:last-child td:first-child { border-radius:0 0 0 10px; }
+.tracker-table tr:last-child td:last-child  { border-radius:0 0 10px 0; }
+
+.input-num {
+  width:72px; padding:6px 8px;
+  background:var(--bg); border:1px solid var(--border); border-radius:6px;
+  color:var(--text); font-family:var(--font-body); font-size:14px;
+  text-align:center; transition:border-color .2s;
+}
+.input-num:focus { outline:none; border-color:var(--red); }
+.input-num.has-val { border-color:var(--green); color:var(--green); }
+.pr-badge {
+  font-family:var(--font-cond); font-size:11px; font-weight:700;
+  padding:2px 7px; border-radius:4px; margin-left:6px;
+  background:rgba(245,200,66,.2); color:var(--gold);
+  vertical-align:middle; display:none;
+}
+.pr-badge.show { display:inline; }
+
+/* Progress diff */
+.diff-pos { color:var(--green); font-size:12px; }
+.diff-neg { color:var(--red);   font-size:12px; }
+.diff-neu { color:var(--muted); font-size:12px; }
+
+/* ─── BODY STATS ─── */
+.stats-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px;
+}
+.stat-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:12px; padding:20px 24px;
+}
+.stat-card h4 { font-family:var(--font-cond); font-size:12px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:12px; }
+.stat-input-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.stat-week-lbl { font-size:13px; color:var(--muted); min-width:70px; }
+.input-stat {
+  flex:1; padding:6px 10px;
+  background:var(--bg); border:1px solid var(--border); border-radius:6px;
+  color:var(--text); font-family:var(--font-body); font-size:14px;
+  transition:border-color .2s;
+}
+.input-stat:focus { outline:none; border-color:var(--red); }
+.stat-unit { color:var(--muted); font-size:13px; min-width:24px; }
+
+/* Chart */
+.chart-section {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:12px; padding:24px; margin-bottom:32px;
+}
+.chart-section h4 { font-family:var(--font-cond); font-size:14px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:20px; }
+.chart-tabs { display:flex; gap:8px; margin-bottom:20px; }
+.chart-tab {
+  font-family:var(--font-cond); font-size:12px; font-weight:700; letter-spacing:1px;
+  padding:5px 14px; border-radius:6px; border:1px solid var(--border);
+  background:transparent; color:var(--muted); cursor:pointer;
+  text-transform:uppercase; transition:all .2s;
+}
+.chart-tab.active { border-color:var(--red); color:var(--red); background:rgba(255,45,85,.1); }
+
+/* ─── NUTRITION REMINDER ─── */
+.nutrition-banner {
+  background: linear-gradient(135deg, rgba(255,107,0,.12), rgba(255,45,85,.08));
+  border:1px solid rgba(255,107,0,.25); border-radius:12px;
+  padding:20px 24px; margin-bottom:32px;
+  display:flex; gap:16px; align-items:flex-start;
+}
+.nutrition-icon { font-size:28px; flex-shrink:0; }
+.nutrition-content h4 {
+  font-family:var(--font-cond); font-size:14px; font-weight:700; letter-spacing:1px;
+  color:var(--orange); text-transform:uppercase; margin-bottom:6px;
+}
+.nutrition-tips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.nutrition-tip {
+  font-size:12px; padding:4px 12px; border-radius:20px;
+  background:rgba(255,255,255,.06); color:var(--muted);
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:640px) {
+  nav { padding:0 16px; }
+  .hero-title { font-size:56px; }
+  .tracker-table { display:block; overflow-x:auto; }
+  .stats-grid { grid-template-columns:1fr; }
+  .schedule-grid { grid-template-columns:repeat(4,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">GYMBRO</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('home')">Home</button>
+    <button class="nav-tab" onclick="showPage('program')">Program</button>
+  </div>
+</nav>
+
+<!-- ══════ PAGE: HOME ══════ -->
+<div id="page-home" class="page active">
+  <div class="home-hero">
+    <p class="hero-eyebrow">4 Days · 12 Weeks · Zero Excuses</p>
+    <h1 class="hero-title">GYMBRO</h1>
+    <p class="hero-sub">Program Fat Loss + Muscle Building khusus untuk Sinung, Awal, dan Rudi. Track progress angkatan setiap minggu.</p>
+    <div class="hero-badges">
+      <span class="badge badge-red">🔥 4x / Minggu</span>
+      <span class="badge badge-gold">⚡ Upper-Lower Split</span>
+      <span class="badge badge-green">📈 12 Minggu</span>
+    </div>
+  </div>
+
+  <div class="user-grid">
+    <div class="user-card" style="--accent:var(--red);--avatar-bg:rgba(255,45,85,.15)" onclick="openTracker('Sinung','🦁','var(--red)','rgba(255,45,85,.15)')">
+      <div style="--accent:var(--red)"></div>
+      <div class="user-avatar">🦁</div>
+      <div class="user-name">SINUNG</div>
+      <div class="user-role">Fat Loss + Muscle Builder</div>
+      <div class="user-stats">
+        <div class="user-stat"><span class="user-stat-val" id="stat-Sinung-weeks" style="color:var(--red)">0</span><span class="user-stat-lbl">Minggu</span></div>
+        <div class="user-stat"><span class="user-stat-val" id="stat-Sinung-sessions" style="color:var(--red)">0</span><span class="user-stat-lbl">Sesi</span></div>
+        <div class="user-stat"><span class="user-stat-val" id="stat-Sinung-wb" style="color:var(--red)">—</span><span class="user-stat-lbl">BB (kg)</span></div>
+      </div>
+      <button class="user-cta" style="background:var(--red)">BUKA TRACKER →</button>
+    </div>
+
+    <div class="user-card" style="--accent:var(--blue);--avatar-bg:rgba(79,195,247,.15)" onclick="openTracker('Awal','🐺','var(--blue)','rgba(79,195,247,.15)')">
+      <div class="user-avatar">🐺</div>
+      <div class="user-name">AWAL</div>
+      <div class="user-role">Fat Loss + Muscle Builder</div>
+      <div class="user-stats">
+        <div class="user-stat"><span class="user-stat-val" id="stat-Awal-weeks" style="color:var(--blue)">0</span><span class="user-stat-lbl">Minggu</span></div>
+        <div class="user-stat"><span class="user-stat-val" id="stat-Awal-sessions" style="color:var(--blue)">0</span><span class="user-stat-lbl">Sesi</span></div>
+        <div class="user-stat"><span class="user-stat-val" id="stat-Awal-wb" style="color:var(--blue)">—</span><span class="user-stat-lbl">BB (kg)</span></div>
+      </div>
+      <button class="user-cta" style="background:var(--blue);color:#000">BUKA TRACKER →</button>
+    </div>
+
+    <div class="user-card" style="--accent:var(--green);--avatar-bg:rgba(0,230,118,.15)" onclick="openTracker('Rudi','🐉','var(--green)','rgba(0,230,118,.15)')">
+      <div class="user-avatar">🐉</div>
+      <div class="user-name">RUDI</div>
+      <div class="user-role">Fat Loss + Muscle Builder</div>
+      <div class="user-stats">
+        <div class="user-stat"><span class="user-stat-val" id="stat-Rudi-weeks" style="color:var(--green)">0</span><span class="user-stat-lbl">Minggu</span></div>
+        <div class="user-stat"><span class="user-stat-val" id="stat-Rudi-sessions" style="color:var(--green)">0</span><span class="user-stat-lbl">Sesi</span></div>
+        <div class="user-stat"><span class="user-stat-val" id="stat-Rudi-wb" style="color:var(--green)">—</span><span class="user-stat-lbl">BB (kg)</span></div>
+      </div>
+      <button class="user-cta" style="background:var(--green);color:#000">BUKA TRACKER →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PAGE: PROGRAM ══════ -->
+<div id="page-program" class="page">
+  <div class="program-wrap">
+    <div class="section-title">PROGRAM</div>
+    <p class="section-sub">Upper-Lower Split · 4x/Minggu · Fat Loss + Muscle Building</p>
+
+    <div class="schedule-grid">
+      <div class="sched-day active-day"><div class="sched-name">SEN</div><div class="sched-label">Day 1</div><div style="font-size:11px;color:var(--red)">Upper A</div></div>
+      <div class="sched-day active-day"><div class="sched-name">SEL</div><div class="sched-label">Day 2</div><div style="font-size:11px;color:var(--orange)">Lower A</div></div>
+      <div class="sched-day rest-day"><div class="sched-name">RAB</div><div class="sched-rest">REST</div></div>
+      <div class="sched-day active-day"><div class="sched-name">KAM</div><div class="sched-label">Day 3</div><div style="font-size:11px;color:var(--blue)">Upper B</div></div>
+      <div class="sched-day active-day"><div class="sched-name">JUM</div><div class="sched-label">Day 4</div><div style="font-size:11px;color:var(--purple)">Lower B</div></div>
+      <div class="sched-day rest-day"><div class="sched-name">SAB</div><div class="sched-rest">Kardio</div></div>
+      <div class="sched-day rest-day"><div class="sched-name">MIN</div><div class="sched-rest">REST</div></div>
+    </div>
+
+    <div class="day-tabs">
+      <button class="day-tab active" onclick="switchDay(0,this)">Day 1 — Upper A</button>
+      <button class="day-tab"        onclick="switchDay(1,this)">Day 2 — Lower A</button>
+      <button class="day-tab"        onclick="switchDay(2,this)">Day 3 — Upper B</button>
+      <button class="day-tab"        onclick="switchDay(3,this)">Day 4 — Lower B</button>
+    </div>
+
+    <div id="day-panels"></div>
+  </div>
+</div>
+
+<!-- ══════ PAGE: TRACKER ══════ -->
+<div id="page-tracker" class="page">
+  <div class="tracker-wrap">
+    <div class="tracker-header">
+      <div class="tracker-avatar" id="tr-avatar">🦁</div>
+      <div>
+        <div class="tracker-name-big" id="tr-name">SINUNG</div>
+        <div class="tracker-subtitle">Progress Tracker · 12 Minggu</div>
+      </div>
+      <button class="back-btn" onclick="showPage('home')">← Kembali</button>
+    </div>
+
+    <div class="nutrition-banner">
+      <div class="nutrition-icon">🍽️</div>
+      <div class="nutrition-content">
+        <h4>Reminder Nutrisi Harian</h4>
+        <p style="font-size:13px;color:var(--muted)">Latihan keras percuma tanpa nutrisi yang benar. Protein adalah kunci!</p>
+        <div class="nutrition-tips">
+          <span class="nutrition-tip">🥩 Protein 1.8-2.2g/kg BB</span>
+          <span class="nutrition-tip">💧 Air 3L/hari</span>
+          <span class="nutrition-tip">😴 Tidur 7-9 jam</span>
+          <span class="nutrition-tip">⚡ Defisit 300-500 kcal</span>
+          <span class="nutrition-tip">🔬 Creatine 5g/hari</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-nav">
+      <label>MINGGU KE:</label>
+      <select id="week-select" onchange="loadWeekData()">
+        <option value="1">Minggu 1</option><option value="2">Minggu 2</option>
+        <option value="3">Minggu 3</option><option value="4">Minggu 4</option>
+        <option value="5">Minggu 5</option><option value="6">Minggu 6</option>
+        <option value="7">Minggu 7</option><option value="8">Minggu 8</option>
+        <option value="9">Minggu 9</option><option value="10">Minggu 10</option>
+        <option value="11">Minggu 11</option><option value="12">Minggu 12</option>
+      </select>
+      <button class="save-btn" onclick="saveWeekData(this)">💾 SIMPAN</button>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-section">
+      <h4>📈 Progress Chart</h4>
+      <div class="chart-tabs">
+        <button class="chart-tab active" onclick="switchChart('bb',this)">Berat Badan</button>
+        <button class="chart-tab" onclick="switchChart('waist',this)">Lingkar Pinggang</button>
+        <button class="chart-tab" onclick="switchChart('lift',this)">Angkatan Utama</button>
+      </div>
+      <canvas id="progress-chart" height="90"></canvas>
+    </div>
+
+    <!-- Body stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h4>⚖️ Berat Badan</h4>
+        <div id="bb-inputs"></div>
+      </div>
+      <div class="stat-card">
+        <h4>📏 Lingkar Pinggang</h4>
+        <div id="waist-inputs"></div>
+      </div>
+    </div>
+
+    <div id="tracker-days"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// CONFIG — Ganti dengan URL Apps Script kamu setelah deploy!
+// ══════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+
+// ══════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════
+const DAYS = [
+  {
+    num:1, title:"UPPER A", sub:"Dada · Bahu · Triceps", color:"var(--red)",
+    exercises:[
+      {name:"Barbell Bench Press",      sets:"4", reps:"8-10",  muscle:"Dada",         desc:"Tidur di bench, turunkan bar ke dada, dorong lurus ke atas"},
+      {name:"Incline Dumbbell Press",   sets:"3", reps:"10-12", muscle:"Dada Atas",    desc:"Kursi 30-45°, dorong DB ke atas, jangan kunci siku"},
+      {name:"Cable Fly / Pec Deck",     sets:"3", reps:"12-15", muscle:"Dada",         desc:"Lengan sedikit bengkok, squeeze dada di tengah"},
+      {name:"Overhead Press",           sets:"4", reps:"8-10",  muscle:"Bahu",         desc:"Berdiri/duduk, dorong beban lurus ke atas kepala"},
+      {name:"Lateral Raise",            sets:"3", reps:"12-15", muscle:"Bahu Samping", desc:"Angkat lengan ke samping sampai sejajar bahu, kontrol turunnya"},
+      {name:"Tricep Pushdown",          sets:"3", reps:"12-15", muscle:"Tricep",       desc:"Siku tetap di sisi tubuh, dorong ke bawah sampai lurus"},
+      {name:"Overhead Tricep Extension",sets:"3", reps:"10-12", muscle:"Tricep",       desc:"Angkat DB di belakang kepala, luruskan siku"},
+    ]
+  },
+  {
+    num:2, title:"LOWER A", sub:"Quad · Paha · Betis", color:"var(--orange)",
+    exercises:[
+      {name:"Barbell Back Squat",  sets:"4", reps:"8-10",  muscle:"Quad · Glute",    desc:"Kaki selebar bahu, turun sampai paha sejajar lantai, punggung lurus"},
+      {name:"Leg Press",           sets:"4", reps:"10-12", muscle:"Quad",            desc:"Kaki sejajar, turunkan sampai 90°, jangan kunci lutut di atas"},
+      {name:"Dumbbell Lunges",     sets:"3", reps:"12/kaki",muscle:"Quad · Glute",   desc:"Langkah maju, lutut belakang hampir menyentuh lantai"},
+      {name:"Leg Extension",       sets:"3", reps:"15",    muscle:"Quad",            desc:"Duduk tegak, luruskan kaki ke depan, squeeze quad di atas"},
+      {name:"Leg Curl",            sets:"3", reps:"12-15", muscle:"Hamstring",       desc:"Tekuk lutut ke arah bokong, kontrol saat turun"},
+      {name:"Standing Calf Raise", sets:"4", reps:"15-20", muscle:"Betis",           desc:"Naik tinggi di ujung jari kaki, tahan 1 detik di atas"},
+      {name:"Plank",               sets:"3", reps:"45 dtk",muscle:"Core",            desc:"Tubuh lurus seperti papan, jangan angkat bokong"},
+    ]
+  },
+  {
+    num:3, title:"UPPER B", sub:"Punggung · Biceps · Core", color:"var(--blue)",
+    exercises:[
+      {name:"Barbell / DB Row",       sets:"4", reps:"8-10",  muscle:"Punggung",       desc:"Badan sedikit condong ke depan, tarik beban ke pinggang"},
+      {name:"Lat Pulldown",           sets:"4", reps:"10-12", muscle:"Lat",            desc:"Tarik bar ke dada bawah, squeeze lat, kontrol saat naik"},
+      {name:"Seated Cable Row",       sets:"3", reps:"10-12", muscle:"Punggung Tengah",desc:"Duduk tegak, tarik ke perut, siku dekat tubuh"},
+      {name:"Face Pull",              sets:"3", reps:"15",    muscle:"Bahu Belakang",  desc:"Tarik ke muka, siku tinggi, rotate bahu keluar"},
+      {name:"Barbell / DB Curl",      sets:"3", reps:"10-12", muscle:"Bicep",          desc:"Jangan ayunkan badan, squeeze bicep di atas"},
+      {name:"Hammer Curl",            sets:"3", reps:"12",    muscle:"Bicep",          desc:"Grip netral (telapak menghadap dalam), curl ke atas"},
+      {name:"Ab Crunch / Cable Crunch",sets:"3",reps:"15-20", muscle:"Core",           desc:"Fokus squeeze abs, jangan tarik leher"},
+    ]
+  },
+  {
+    num:4, title:"LOWER B", sub:"Hamstring · Glutes · Core", color:"var(--purple)",
+    exercises:[
+      {name:"Romanian Deadlift (RDL)", sets:"4", reps:"8-10",   muscle:"Hamstring · Glute",desc:"Punggung lurus, turunkan bar sepanjang kaki, hip hinge"},
+      {name:"Bulgarian Split Squat",   sets:"3", reps:"10/kaki",muscle:"Glute · Quad",     desc:"Kaki belakang di bench, turun dalam, lutut depan jangan melewati jari"},
+      {name:"Hip Thrust",              sets:"4", reps:"10-12",  muscle:"Glute",            desc:"Punggung di bench, dorong pinggul ke atas, squeeze glute di atas"},
+      {name:"Sumo Deadlift",           sets:"3", reps:"8-10",   muscle:"Hamstring · Back",  desc:"Kaki lebar, jari kaki keluar, bar dekat tubuh, punggung lurus"},
+      {name:"Seated Leg Curl",         sets:"3", reps:"12-15",  muscle:"Hamstring",        desc:"Tekuk lutut penuh, kontrol saat meluruskan"},
+      {name:"Seated Calf Raise",       sets:"3", reps:"15-20",  muscle:"Betis",            desc:"Fokus kontraksi penuh di atas"},
+      {name:"Hanging Leg Raise",       sets:"3", reps:"12-15",  muscle:"Core Bawah",       desc:"Gantung di pull-up bar, angkat kaki lurus ke depan"},
+    ]
+  }
+];
+
+const MUSCLE_COLOR = {
+  "Dada":"pill-red","Dada Atas":"pill-red","Bahu":"pill-orange","Bahu Samping":"pill-orange",
+  "Bahu Belakang":"pill-orange","Tricep":"pill-gold","Quad":"pill-blue","Quad · Glute":"pill-blue",
+  "Hamstring":"pill-orange","Hamstring · Glute":"pill-orange","Hamstring · Back":"pill-orange",
+  "Betis":"pill-gold","Core":"pill-red","Core Bawah":"pill-red","Glute":"pill-gold",
+  "Glute · Quad":"pill-gold","Bicep":"pill-blue","Lat":"pill-blue","Punggung":"pill-blue",
+  "Punggung Tengah":"pill-blue","Punggung · Bicep":"pill-blue","Hamstring · Glute":"pill-orange",
+};
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let currentUser = null;
+let currentAccent = 'var(--red)';
+let progressChart = null;
+let currentChartType = 'bb';
+let allWeeksCache = {}; // cache data semua minggu dari Sheets
+
+// ── Sync helpers ──────────────────────────────────────
+const useSheets = () => APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+
+function showSyncStatus(msg, type='info') {
+  let el = document.getElementById('sync-status');
+  if(!el) {
+    el = document.createElement('div');
+    el.id = 'sync-status';
+    Object.assign(el.style, {
+      position:'fixed', bottom:'20px', right:'20px', zIndex:'9999',
+      padding:'10px 20px', borderRadius:'8px', fontSize:'13px',
+      fontFamily:'var(--font-cond)', fontWeight:'700', letterSpacing:'1px',
+      transition:'opacity .4s', pointerEvents:'none'
+    });
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.opacity = '1';
+  el.style.background = type==='ok'?'#00e676':type==='err'?'#ff2d55':'#4fc3f7';
+  el.style.color = type==='ok'||type==='err'?'#000':'#000';
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>el.style.opacity='0', 3000);
+}
+
+async function fetchWeekFromSheets(user, week) {
+  if(!useSheets()) return null;
+  try {
+    showSyncStatus('⏳ Memuat data dari Sheets...');
+    const url = `${APPS_SCRIPT_URL}?user=${user}&week=${week}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if(data.error) throw new Error(data.error);
+    showSyncStatus('✅ Data dimuat!','ok');
+    return data;
+  } catch(e) {
+    showSyncStatus('⚠️ Gagal load Sheets, pakai lokal','err');
+    return null;
+  }
+}
+
+async function fetchAllWeeksFromSheets(user) {
+  if(!useSheets()) return null;
+  try {
+    const url = `${APPS_SCRIPT_URL}?user=${user}&action=readAll`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if(data.error) throw new Error(data.error);
+    allWeeksCache = data.allWeeks || {};
+    return data.allWeeks;
+  } catch(e) {
+    return null;
+  }
+}
+
+async function postWeekToSheets(user, week, lifts, bb, waist) {
+  if(!useSheets()) return false;
+  try {
+    showSyncStatus('⏳ Menyimpan ke Google Sheets...');
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method:'POST',
+      body: JSON.stringify({ user, week, lifts, bb, waist })
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error);
+    showSyncStatus('✅ Tersimpan di Google Sheets!','ok');
+    return true;
+  } catch(e) {
+    showSyncStatus('⚠️ Gagal sync Sheets, tersimpan lokal','err');
+    return false;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// PAGE NAVIGATION
+// ══════════════════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    t.classList.toggle('active', t.textContent.toLowerCase().includes(id));
+  });
+  if(id==='home') updateHomeStats();
+}
+
+// ══════════════════════════════════════════════════════
+// PROGRAM PAGE
+// ══════════════════════════════════════════════════════
+function buildProgram() {
+  const container = document.getElementById('day-panels');
+  container.innerHTML = '';
+  DAYS.forEach((day, di) => {
+    const panel = document.createElement('div');
+    panel.className = 'day-panel' + (di===0?' active':'');
+    panel.id = 'dpanel-'+di;
+
+    let rows = day.exercises.map((ex,ei) => `
+      <tr class="exercise-row">
+        <td><span class="ex-num">${String(ei+1).padStart(2,'0')}</span></td>
+        <td><div class="ex-name">${ex.name}</div><div class="ex-desc">${ex.desc}</div></td>
+        <td><div class="ex-sets">${ex.sets}</div></td>
+        <td><div class="ex-reps">${ex.reps}</div></td>
+        <td><span class="ex-muscle ${MUSCLE_COLOR[ex.muscle]||''}">${ex.muscle}</span></td>
+      </tr>`).join('');
+
+    panel.innerHTML = `
+      <div class="day-header">
+        <div class="day-number">${day.num}</div>
+        <div class="day-info"><h3>${day.title}</h3><p>${day.sub}</p></div>
+        <div style="margin-left:auto;font-size:24px">${['💪','🦵','🔋','⚡'][di]}</div>
+      </div>
+      <table class="exercise-table">
+        <thead><tr>
+          <th style="width:44px">#</th>
+          <th>Gerakan</th>
+          <th style="width:60px;text-align:center">Set</th>
+          <th style="width:90px;text-align:center">Rep</th>
+          <th style="width:140px;text-align:center">Otot</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    container.appendChild(panel);
+  });
+}
+
+function switchDay(idx, btn) {
+  document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.day-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('dpanel-'+idx).classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════
+// TRACKER
+// ══════════════════════════════════════════════════════
+async function openTracker(name, avatar, accent, avatarBg) {
+  currentUser = name;
+  currentAccent = accent;
+  allWeeksCache = {};
+  document.getElementById('tr-avatar').textContent = avatar;
+  document.getElementById('tr-avatar').style.background = avatarBg;
+  document.getElementById('tr-avatar').style.borderColor = accent.replace('var(','').replace(')','');
+  document.getElementById('tr-name').textContent = name.toUpperCase();
+  document.getElementById('tr-name').style.color = accent;
+  document.querySelectorAll('.save-btn').forEach(b => b.style.background = `linear-gradient(135deg, ${accent}, var(--orange))`);
+  buildTrackerDays();
+  showPage('tracker');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  // Fetch semua minggu sekaligus untuk chart
+  await fetchAllWeeksFromSheets(name);
+  buildBodyStatInputs();
+  loadWeekData();
+  buildChart();
+}
+
+function buildTrackerDays() {
+  const container = document.getElementById('tracker-days');
+  container.innerHTML = '';
+  DAYS.forEach((day, di) => {
+    const section = document.createElement('div');
+    section.className = 'tracker-day-section';
+    let rows = day.exercises.map((ex, ei) => `
+      <tr>
+        <td style="width:28px;font-family:var(--font-cond);font-size:15px;font-weight:700;color:var(--border)">${String(ei+1).padStart(2,'0')}</td>
+        <td>
+          <div style="font-weight:600;font-size:13px">${ex.name}</div>
+          <div style="font-size:11px;color:var(--muted)">${ex.sets} set × ${ex.reps}</div>
+        </td>
+        <td style="text-align:center">
+          <input class="input-num" type="number" min="0" step="0.5"
+            id="kg-${di}-${ei}" placeholder="—"
+            oninput="onInputChange(this,'${di}-${ei}')"/>
+          <span style="font-size:11px;color:var(--muted)">kg</span>
+        </td>
+        <td style="text-align:center">
+          <input class="input-num" type="number" min="0" step="1"
+            id="rep-${di}-${ei}" placeholder="—"
+            oninput="onInputChange(this,'${di}-${ei}')"/>
+          <span style="font-size:11px;color:var(--muted)">rep</span>
+        </td>
+        <td style="text-align:center;min-width:80px">
+          <span id="diff-${di}-${ei}" class="diff-neu">—</span>
+          <span id="pr-${di}-${ei}" class="pr-badge">🏆 PR!</span>
+        </td>
+      </tr>`).join('');
+
+    section.innerHTML = `
+      <div class="tracker-day-head">
+        <div class="tracker-day-num">${day.num}</div>
+        <div>
+          <div class="tracker-day-title">${day.title}</div>
+          <div class="tracker-day-sub">${day.sub}</div>
+        </div>
+      </div>
+      <table class="tracker-table">
+        <thead><tr>
+          <th style="width:28px">#</th>
+          <th>Gerakan</th>
+          <th style="width:120px;text-align:center">Berat (KG)</th>
+          <th style="width:110px;text-align:center">Reps</th>
+          <th style="width:100px;text-align:center">vs Minggu Lalu</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    container.appendChild(section);
+  });
+}
+
+function buildBodyStatInputs() {
+  ['bb','waist'].forEach(type => {
+    const container = document.getElementById(type+'-inputs');
+    container.innerHTML = '';
+    const w = parseInt(document.getElementById('week-select').value)||1;
+    const unit = type==='bb'?'kg':'cm';
+    const val = getUserData(`${type}-w${w}`) || '';
+    container.innerHTML = `
+      <div class="stat-input-row">
+        <span class="stat-week-lbl">Minggu ${w}</span>
+        <input class="input-stat" type="number" step="0.1" min="0"
+          id="input-${type}" value="${val}" placeholder="0.0"/>
+        <span class="stat-unit">${unit}</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">
+        Ukur setiap hari ${type==='bb'?'Senin':'Senin'} pagi sebelum makan
+      </div>`;
+  });
+}
+
+function onInputChange(el, key) {
+  el.classList.toggle('has-val', el.value !== '');
+  updateDiff(key);
+}
+
+function updateDiff(key) {
+  const w = parseInt(document.getElementById('week-select').value)||1;
+  const kgEl  = document.getElementById('kg-'+key);
+  const diffEl = document.getElementById('diff-'+key);
+  const prEl   = document.getElementById('pr-'+key);
+  if(!kgEl||!diffEl) return;
+
+  const cur = parseFloat(kgEl.value)||0;
+  if(!cur||w<=1){ diffEl.textContent='—'; diffEl.className='diff-neu'; prEl.classList.remove('show'); return; }
+
+  const [di,ei] = key.split('-').map(Number);
+  const prevKey = `${currentUser}-lift-w${w-1}-${di}-${ei}-kg`;
+  const prev = parseFloat(localStorage.getItem(prevKey))||0;
+  // check PR = max ever
+  let maxEver = 0;
+  for(let pw=1;pw<w;pw++){
+    const v = parseFloat(localStorage.getItem(`${currentUser}-lift-w${pw}-${di}-${ei}-kg`))||0;
+    if(v>maxEver) maxEver=v;
+  }
+
+  if(!prev){ diffEl.textContent='—'; diffEl.className='diff-neu'; }
+  else {
+    const d = cur - prev;
+    diffEl.textContent = (d>0?'↑+':d<0?'↓':'→') + Math.abs(d).toFixed(1) + 'kg';
+    diffEl.className = d>0?'diff-pos':d<0?'diff-neg':'diff-neu';
+  }
+  prEl.classList.toggle('show', cur>0 && cur>maxEver && maxEver>0);
+}
+
+async function loadWeekData() {
+  const w = parseInt(document.getElementById('week-select').value)||1;
+
+  // Coba ambil dari Sheets dulu, fallback ke localStorage
+  const sheetsData = await fetchWeekFromSheets(currentUser, w);
+
+  DAYS.forEach((day,di) => {
+    day.exercises.forEach((_,ei) => {
+      const flatIdx = di*7 + ei;
+      let kg='', rep='';
+      if(sheetsData && sheetsData.lifts && sheetsData.lifts[flatIdx]) {
+        kg  = sheetsData.lifts[flatIdx].kg  ?? '';
+        rep = sheetsData.lifts[flatIdx].rep ?? '';
+        // Update localStorage juga sebagai cache
+        if(kg)  localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`,  kg);
+        if(rep) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`, rep);
+      } else {
+        kg  = localStorage.getItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`)  || '';
+        rep = localStorage.getItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`) || '';
+      }
+      const kgEl  = document.getElementById('kg-'+di+'-'+ei);
+      const repEl = document.getElementById('rep-'+di+'-'+ei);
+      if(kgEl){  kgEl.value=kg;   kgEl.classList.toggle('has-val',kg!==''); }
+      if(repEl){ repEl.value=rep; repEl.classList.toggle('has-val',rep!==''); }
+      updateDiff(`${di}-${ei}`);
+    });
+  });
+
+  // Body stats
+  let bb='', waist='';
+  if(sheetsData) {
+    bb    = sheetsData.bb    ?? '';
+    waist = sheetsData.waist ?? '';
+    if(bb)    localStorage.setItem(`${currentUser}-bb-w${w}`,    bb);
+    if(waist) localStorage.setItem(`${currentUser}-waist-w${w}`, waist);
+  } else {
+    bb    = localStorage.getItem(`${currentUser}-bb-w${w}`)    || '';
+    waist = localStorage.getItem(`${currentUser}-waist-w${w}`) || '';
+  }
+  const bbEl    = document.getElementById('input-bb');
+  const waistEl = document.getElementById('input-waist');
+  if(bbEl)    bbEl.value = bb;
+  if(waistEl) waistEl.value = waist;
+
+  buildChart();
+}
+
+async function saveWeekData(btn) {
+  const w = parseInt(document.getElementById('week-select').value)||1;
+
+  // Kumpulkan semua lift data
+  const lifts = [];
+  DAYS.forEach((day,di) => {
+    day.exercises.forEach((_,ei) => {
+      const kg  = document.getElementById('kg-'+di+'-'+ei)?.value||'';
+      const rep = document.getElementById('rep-'+di+'-'+ei)?.value||'';
+      lifts.push({ kg, rep });
+      // Simpan lokal juga
+      if(kg)  localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`,  kg);
+      if(rep) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`, rep);
+    });
+  });
+
+  const bb    = document.getElementById('input-bb')?.value    || '';
+  const waist = document.getElementById('input-waist')?.value || '';
+  if(bb)    localStorage.setItem(`${currentUser}-bb-w${w}`,    bb);
+  if(waist) localStorage.setItem(`${currentUser}-waist-w${w}`, waist);
+
+  // Sync ke Google Sheets
+  btn.disabled = true;
+  await postWeekToSheets(currentUser, w, lifts, bb, waist);
+  btn.disabled = false;
+
+  // Update cache allWeeks untuk chart
+  if(!allWeeksCache[w]) allWeeksCache[w] = {};
+  allWeeksCache[w] = { lifts, bb, waist };
+
+  updateHomeStats();
+  buildChart();
+  btn.classList.add('saved');
+  setTimeout(()=>btn.classList.remove('saved'), 2000);
+}
+
+function getUserData(key){ return localStorage.getItem(`${currentUser}-${key}`)||''; }
+
+// ══════════════════════════════════════════════════════
+// HOME STATS
+// ══════════════════════════════════════════════════════
+function updateHomeStats() {
+  ['Sinung','Awal','Rudi'].forEach(name => {
+    let sessions=0, maxWeek=0;
+    for(let w=1;w<=12;w++){
+      let hasData=false;
+      DAYS.forEach((d,di)=>{
+        d.exercises.forEach((_,ei)=>{
+          if(localStorage.getItem(`${name}-lift-w${w}-${di}-${ei}-kg`)) hasData=true;
+        });
+      });
+      if(hasData){sessions+=4; maxWeek=w;}
+    }
+    const bb = localStorage.getItem(`${name}-bb-w${maxWeek}`)||'—';
+    document.getElementById(`stat-${name}-weeks`).textContent = maxWeek;
+    document.getElementById(`stat-${name}-sessions`).textContent = sessions;
+    document.getElementById(`stat-${name}-wb`).textContent = bb!=='—'?parseFloat(bb).toFixed(1):'—';
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// CHARTS
+// ══════════════════════════════════════════════════════
+function buildChart() {
+  const ctx = document.getElementById('progress-chart');
+  if(progressChart) progressChart.destroy();
+  const labels = Array.from({length:12},(_,i)=>`W${i+1}`);
+  const accentHex = {'var(--red)':'#ff2d55','var(--blue)':'#4fc3f7','var(--green)':'#00e676'}[currentAccent]||'#ff2d55';
+
+  // Helper: ambil dari cache Sheets atau localStorage
+  function getVal(type, week, di, ei) {
+    const cached = allWeeksCache[week];
+    if(cached) {
+      if(type==='bb')    return parseFloat(cached.bb)    || null;
+      if(type==='waist') return parseFloat(cached.waist) || null;
+      if(type==='kg' && cached.lifts) return parseFloat(cached.lifts[di*7+ei]?.kg) || null;
+    }
+    // fallback localStorage
+    if(type==='bb')    return parseFloat(localStorage.getItem(`${currentUser}-bb-w${week}`))    || null;
+    if(type==='waist') return parseFloat(localStorage.getItem(`${currentUser}-waist-w${week}`)) || null;
+    if(type==='kg')    return parseFloat(localStorage.getItem(`${currentUser}-lift-w${week}-${di}-${ei}-kg`)) || null;
+    return null;
+  }
+
+  let datasets=[];
+  if(currentChartType==='bb'){
+    const data = labels.map((_,i) => getVal('bb', i+1));
+    datasets=[{label:'Berat Badan (kg)',data,borderColor:accentHex,backgroundColor:'transparent',tension:.4,pointRadius:5,pointBackgroundColor:accentHex,spanGaps:true}];
+  } else if(currentChartType==='waist'){
+    const data = labels.map((_,i) => getVal('waist', i+1));
+    datasets=[{label:'Lingkar Pinggang (cm)',data,borderColor:'#f5c842',backgroundColor:'transparent',tension:.4,pointRadius:5,pointBackgroundColor:'#f5c842',spanGaps:true}];
+  } else {
+    const mainLifts = [{di:0,ei:0,lbl:'Bench Press'},{di:1,ei:0,lbl:'Squat'},{di:3,ei:0,lbl:'RDL'}];
+    const colors = [accentHex,'#f5c842','#00e676'];
+    datasets = mainLifts.map((lift,li) => ({
+      label: lift.lbl,
+      data: labels.map((_,wi) => getVal('kg', wi+1, lift.di, lift.ei)),
+      borderColor: colors[li], backgroundColor:'transparent',
+      tension:.4, pointRadius:5, pointBackgroundColor:colors[li], spanGaps:true
+    }));
+  }
+
+  progressChart = new Chart(ctx, {
+    type:'line',
+    data:{labels, datasets},
+    options:{
+      responsive:true, interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{color:'#888',font:{family:'Barlow',size:12}}},tooltip:{backgroundColor:'#16161f',borderColor:'#2a2a3a',borderWidth:1,titleColor:'#fff',bodyColor:'#888'}},
+      scales:{
+        x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#666',font:{family:'Barlow',size:11}}},
+        y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#666',font:{family:'Barlow',size:11}}}
+      }
+    }
+  });
+}
+
+function switchChart(type, btn) {
+  currentChartType = type;
+  document.querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  buildChart();
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+buildProgram();
+updateHomeStats();
+</script>
+</body>
+</html>
