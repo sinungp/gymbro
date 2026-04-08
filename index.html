@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GymBro — Sinung · Awal · Rudi</title>
+<title>GymBro — Sinung · Awall · Rudi</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -451,14 +451,14 @@ nav {
       <button class="user-cta" style="background:var(--red)">BUKA TRACKER →</button>
     </div>
 
-    <div class="user-card" style="--accent:var(--blue);--avatar-bg:rgba(79,195,247,.15)" onclick="openTracker('Awal','🐺','var(--blue)','rgba(79,195,247,.15)')">
+    <div class="user-card" style="--accent:var(--blue);--avatar-bg:rgba(79,195,247,.15)" onclick="openTracker('Awall','🐺','var(--blue)','rgba(79,195,247,.15)')">
       <div class="user-avatar">🐺</div>
-      <div class="user-name">AWAL</div>
+      <div class="user-name">Awall</div>
       <div class="user-role">Fat Loss + Muscle Builder</div>
       <div class="user-stats">
-        <div class="user-stat"><span class="user-stat-val" id="stat-Awal-weeks" style="color:var(--blue)">0</span><span class="user-stat-lbl">Minggu</span></div>
-        <div class="user-stat"><span class="user-stat-val" id="stat-Awal-sessions" style="color:var(--blue)">0</span><span class="user-stat-lbl">Sesi</span></div>
-        <div class="user-stat"><span class="user-stat-val" id="stat-Awal-wb" style="color:var(--blue)">—</span><span class="user-stat-lbl">BB (kg)</span></div>
+        <div class="user-stat"><span class="user-stat-val" id="stat-Awall-weeks" style="color:var(--blue)">0</span><span class="user-stat-lbl">Minggu</span></div>
+        <div class="user-stat"><span class="user-stat-val" id="stat-Awall-sessions" style="color:var(--blue)">0</span><span class="user-stat-lbl">Sesi</span></div>
+        <div class="user-stat"><span class="user-stat-val" id="stat-Awall-wb" style="color:var(--blue)">—</span><span class="user-stat-lbl">BB (kg)</span></div>
       </div>
       <button class="user-cta" style="background:var(--blue);color:#000">BUKA TRACKER →</button>
     </div>
@@ -575,7 +575,7 @@ nav {
 // ══════════════════════════════════════════════════════
 // CONFIG — Ganti dengan URL Apps Script kamu setelah deploy!
 // ══════════════════════════════════════════════════════
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwEUd4YxN5BW0eDSCS1ejK250Hvu0Qdtx4CWB16EJCsVJrK71YxYus31-5cnDZeibU/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwziz3ZQ3k5P5YiQw48Fcg3RF-TriUIeXIgXZzp8uNaZUG3Hr1iTPmg945VCiI5yREggA/exec";
 
 // ══════════════════════════════════════════════════════
 // DATA
@@ -999,7 +999,7 @@ function getUserData(key){ return localStorage.getItem(`${currentUser}-${key}`)|
 // HOME STATS
 // ══════════════════════════════════════════════════════
 function updateHomeStats() {
-  ['Sinung','Awal','Rudi'].forEach(name => {
+  ['Sinung','Awall','Rudi'].forEach(name => {
     let sessions=0, maxWeek=0;
     for(let w=1;w<=12;w++){
       let hasData=false;
