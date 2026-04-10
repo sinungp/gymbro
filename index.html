@@ -10,6 +10,7 @@
     rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
+    /* ========== SEMUA CSS SAMA SEPERTI SEBELUMNYA ========== */
     :root {
       --bg: #0a0a0f;
       --bg2: #111118;
@@ -244,10 +245,6 @@
     .user-card:hover {
       transform: translateY(-4px);
       border-color: var(--accent);
-    }
-
-    .user-card:hover .user-avatar {
-      transform: scale(1.05);
     }
 
     .user-avatar {
@@ -970,50 +967,51 @@
       color: var(--muted);
     }
 
-    /* FULL PAGE LOADING OVERLAY */
-    .loading-full {
+    .skeleton-loader {
+      background: linear-gradient(90deg, var(--bg3) 25%, var(--bg2) 50%, var(--bg3) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+      border-radius: 12px;
+      min-height: 400px;
+    }
+
+    @keyframes skeleton-loading {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .toast {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(8px);
-      z-index: 10000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      gap: 20px;
+      bottom: 20px;
+      right: 20px;
+      background: var(--green);
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 8px;
       font-family: var(--font-cond);
-      font-size: 18px;
-      letter-spacing: 2px;
-      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+      z-index: 1000;
+      animation: fadeOut 2s forwards;
     }
 
-    .loading-full .spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid var(--border);
-      border-top-color: var(--red);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
 
-    .loading-full .loading-text {
-      text-transform: uppercase;
-      color: var(--muted);
-    }
+      70% {
+        opacity: 1;
+      }
 
-    .loading-full .loading-week {
-      color: var(--red);
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
+      100% {
+        opacity: 0;
+        visibility: hidden;
       }
     }
 
@@ -1120,7 +1118,6 @@
     <div class="program-wrap">
       <div class="section-title">PROGRAM</div>
       <p class="section-sub">Upper-Lower Split · 4x/Minggu · Fat Loss + Muscle Building</p>
-
       <div class="schedule-grid">
         <div class="sched-day active-day">
           <div class="sched-name">SEN</div>
@@ -1155,14 +1152,12 @@
           <div class="sched-rest">REST</div>
         </div>
       </div>
-
       <div class="day-tabs">
         <button class="day-tab active" onclick="switchDay(0,this)">Day 1 — Upper A</button>
         <button class="day-tab" onclick="switchDay(1,this)">Day 2 — Lower A</button>
         <button class="day-tab" onclick="switchDay(2,this)">Day 3 — Upper B</button>
         <button class="day-tab" onclick="switchDay(3,this)">Day 4 — Lower B</button>
       </div>
-
       <div id="day-panels"></div>
     </div>
   </div>
@@ -1177,7 +1172,6 @@
         </div>
         <button class="back-btn" onclick="showPage('home')">← Kembali</button>
       </div>
-
       <div class="nutrition-banner">
         <div class="nutrition-icon">🍽️</div>
         <div class="nutrition-content">
@@ -1193,11 +1187,10 @@
           </div>
         </div>
       </div>
-
       <div class="week-nav">
         <label>MINGGU KE:</label>
         <select id="week-select" onchange="onWeekChange()">
-          <option value="1">Minggu 1</option>
+          <option value="1" selected>Minggu 1</option>
           <option value="2">Minggu 2</option>
           <option value="3">Minggu 3</option>
           <option value="4">Minggu 4</option>
@@ -1212,7 +1205,6 @@
         </select>
         <button class="save-btn" onclick="saveWeekData(this)">💾 SIMPAN</button>
       </div>
-
       <div class="chart-section">
         <h4>📈 Progress Chart</h4>
         <div class="chart-tabs">
@@ -1222,7 +1214,6 @@
         </div>
         <canvas id="progress-chart" height="90"></canvas>
       </div>
-
       <div class="stats-grid">
         <div class="stat-card">
           <h4>⚖️ Berat Badan</h4>
@@ -1233,7 +1224,6 @@
           <div id="waist-inputs"></div>
         </div>
       </div>
-
       <div id="tracker-days"></div>
     </div>
   </div>
@@ -1242,10 +1232,10 @@
     // ============================================================
     // KONFIGURASI - GANTI DENGAN URL APPS SCRIPT ANDA!
     // ============================================================
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwziz3ZQ3k5P5YiQw48Fcg3RF-TriUIeXIgXZzp8uNaZUG3Hr1iTPmg945VCiI5yREggA/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx40EPXAeBypotFqAbZywmPbEd7GFmWDHUYnPhDp9NWhLnyYA-2CvJM9z1QzM5cc6KCdQ/exec";
 
     // ============================================================
-    // DATA
+    // DATA PROGRAM
     // ============================================================
     const DAYS = [
       {
@@ -1257,7 +1247,7 @@
           { name: "Overhead Press", sets: "4", reps: "8-10", muscle: "Bahu", desc: "Berdiri/duduk, dorong beban lurus ke atas kepala" },
           { name: "Lateral Raise", sets: "3", reps: "12-15", muscle: "Bahu Samping", desc: "Angkat lengan ke samping sampai sejajar bahu, kontrol turunnya" },
           { name: "Tricep Pushdown", sets: "3", reps: "12-15", muscle: "Tricep", desc: "Siku tetap di sisi tubuh, dorong ke bawah sampai lurus" },
-          { name: "Overhead Tricep Extension", sets: "3", reps: "10-12", muscle: "Tricep", desc: "Angkat DB di belakang kepala, luruskan siku" },
+          { name: "Overhead Tricep Extension", sets: "3", reps: "10-12", muscle: "Tricep", desc: "Angkat DB di belakang kepala, luruskan siku" }
         ]
       },
       {
@@ -1269,7 +1259,7 @@
           { name: "Leg Extension", sets: "3", reps: "15", muscle: "Quad", desc: "Duduk tegak, luruskan kaki ke depan, squeeze quad di atas" },
           { name: "Leg Curl", sets: "3", reps: "12-15", muscle: "Hamstring", desc: "Tekuk lutut ke arah bokong, kontrol saat turun" },
           { name: "Standing Calf Raise", sets: "4", reps: "15-20", muscle: "Betis", desc: "Naik tinggi di ujung jari kaki, tahan 1 detik di atas" },
-          { name: "Plank", sets: "3", reps: "45 dtk", muscle: "Core", desc: "Tubuh lurus seperti papan, jangan angkat bokong" },
+          { name: "Plank", sets: "3", reps: "45 dtk", muscle: "Core", desc: "Tubuh lurus seperti papan, jangan angkat bokong" }
         ]
       },
       {
@@ -1281,7 +1271,7 @@
           { name: "Face Pull", sets: "3", reps: "15", muscle: "Bahu Belakang", desc: "Tarik ke muka, siku tinggi, rotate bahu keluar" },
           { name: "Barbell / DB Curl", sets: "3", reps: "10-12", muscle: "Bicep", desc: "Jangan ayunkan badan, squeeze bicep di atas" },
           { name: "Hammer Curl", sets: "3", reps: "12", muscle: "Bicep", desc: "Grip netral (telapak menghadap dalam), curl ke atas" },
-          { name: "Ab Crunch / Cable Crunch", sets: "3", reps: "15-20", muscle: "Core", desc: "Fokus squeeze abs, jangan tarik leher" },
+          { name: "Ab Crunch / Cable Crunch", sets: "3", reps: "15-20", muscle: "Core", desc: "Fokus squeeze abs, jangan tarik leher" }
         ]
       },
       {
@@ -1293,7 +1283,7 @@
           { name: "Sumo Deadlift", sets: "3", reps: "8-10", muscle: "Hamstring · Back", desc: "Kaki lebar, jari kaki keluar, bar dekat tubuh, punggung lurus" },
           { name: "Seated Leg Curl", sets: "3", reps: "12-15", muscle: "Hamstring", desc: "Tekuk lutut penuh, kontrol saat meluruskan" },
           { name: "Seated Calf Raise", sets: "3", reps: "15-20", muscle: "Betis", desc: "Fokus kontraksi penuh di atas" },
-          { name: "Hanging Leg Raise", sets: "3", reps: "12-15", muscle: "Core Bawah", desc: "Gantung di pull-up bar, angkat kaki lurus ke depan" },
+          { name: "Hanging Leg Raise", sets: "3", reps: "12-15", muscle: "Core Bawah", desc: "Gantung di pull-up bar, angkat kaki lurus ke depan" }
         ]
       }
     ];
@@ -1304,7 +1294,7 @@
       "Hamstring": "pill-orange", "Hamstring · Glute": "pill-orange", "Hamstring · Back": "pill-orange",
       "Betis": "pill-gold", "Core": "pill-red", "Core Bawah": "pill-red", "Glute": "pill-gold",
       "Glute · Quad": "pill-gold", "Bicep": "pill-blue", "Lat": "pill-blue", "Punggung": "pill-blue",
-      "Punggung Tengah": "pill-blue", "Punggung · Bicep": "pill-blue",
+      "Punggung Tengah": "pill-blue"
     };
 
     // ============================================================
@@ -1314,97 +1304,200 @@
     let currentAccent = 'var(--red)';
     let progressChart = null;
     let currentChartType = 'bb';
-    let weekDataCache = {};
+    const weekCache = {};
 
     // ============================================================
-    // FULL PAGE LOADING
+    // FUNGSI BANTUAN
     // ============================================================
-    function showFullLoading(show, week = '') {
-      let overlay = document.getElementById('fullLoadingOverlay');
-
-      if (show) {
-        if (!overlay) {
-          overlay = document.createElement('div');
-          overlay.id = 'fullLoadingOverlay';
-          overlay.className = 'loading-full';
-          overlay.innerHTML = `
-        <div class="spinner"></div>
-        <div class="loading-text">LOADING DATA MINGGU KE-</div>
-        <div class="loading-week" id="loadingWeekNum">${week}</div>
-      `;
-          document.body.appendChild(overlay);
-        } else {
-          const weekEl = document.getElementById('loadingWeekNum');
-          if (weekEl) weekEl.textContent = week;
-          overlay.style.display = 'flex';
-        }
-      } else {
-        if (overlay) {
-          overlay.style.display = 'none';
-        }
-      }
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      toast.style.background = type === 'success' ? 'var(--green)' : 'var(--red)';
+      toast.style.color = '#000';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2000);
     }
 
     // ============================================================
-    // SYNC HELPERS
-    // ============================================================
-    const useSheets = () => APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
-
-    function showSyncStatus(msg, type = 'info') {
-      let el = document.getElementById('sync-status');
-      if (!el) {
-        el = document.createElement('div');
-        el.id = 'sync-status';
-        Object.assign(el.style, {
-          position: 'fixed', bottom: '20px', right: '20px', zIndex: '9999',
-          padding: '10px 20px', borderRadius: '8px', fontSize: '13px',
-          fontFamily: 'var(--font-cond)', fontWeight: '700', letterSpacing: '1px',
-          transition: 'opacity .4s', pointerEvents: 'none'
-        });
-        document.body.appendChild(el);
-      }
-      el.textContent = msg;
-      el.style.opacity = '1';
-      el.style.background = type === 'ok' ? '#00e676' : type === 'err' ? '#ff2d55' : '#4fc3f7';
-      el.style.color = '#000';
-      clearTimeout(el._t);
-      el._t = setTimeout(() => el.style.opacity = '0', 3000);
-    }
-
-    // ============================================================
-    // FETCH DATA DENGAN CACHE (PER MINGGU)
+    // MEMBACA DATA DARI SHEETS
     // ============================================================
     async function fetchWeekFromSheets(user, week) {
-      const cacheKey = `${user}-w${week}`;
-      if (weekDataCache[cacheKey]) {
-        console.log("✅ Menggunakan cache untuk", cacheKey);
-        return weekDataCache[cacheKey];
+      const cacheKey = `${user}_${week}`;
+      if (weekCache[cacheKey]) {
+        console.log(`⚡ Cache hit untuk ${user} week ${week}`);
+        return weekCache[cacheKey];
       }
 
-      if (!useSheets()) return null;
-      try {
-        const url = `${APPS_SCRIPT_URL}?user=${user}&week=${week}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
+      console.log(`🐢 Fetching ${user} week ${week}...`);
+      const startTime = performance.now();
 
-        weekDataCache[cacheKey] = data;
-        return data;
-      } catch (e) {
-        console.error("Fetch error:", e);
-        showSyncStatus('⚠️ Gagal load Sheets, pakai lokal', 'err');
-        return null;
+      const url = `${APPS_SCRIPT_URL}?user=${user}&week=${week}`;
+      const response = await fetch(url);
+      const result = await response.json();
+
+      const endTime = performance.now();
+      console.log(`✅ Fetch selesai dalam ${(endTime - startTime).toFixed(0)} ms`);
+
+      // Normalisasi response
+      let normalizedData = { lifts: [], bb: null, waist: null };
+
+      if (result.success === true) {
+        normalizedData = {
+          lifts: result.lifts || [],
+          bb: result.bb || null,
+          waist: result.waist || null
+        };
+      } else if (result.lifts) {
+        normalizedData = {
+          lifts: result.lifts,
+          bb: result.bb || null,
+          waist: result.waist || null
+        };
       }
-    }
 
-    // TIDAK DIPAKAI - kosongkan
-    async function fetchAllWeeksFromSheets(user) {
-      return null;
+      weekCache[cacheKey] = normalizedData;
+      return normalizedData;
     }
 
     // ============================================================
-    // FUNGSI UTAMA
+    // MENYIMPAN DATA KE SHEETS
     // ============================================================
+    async function saveWeekToSheets(user, week, lifts, bb, waist) {
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ user, week, lifts, bb, waist })
+      });
+      const result = await response.json();
+      if (result.success) {
+        const cacheKey = `${user}_${week}`;
+        weekCache[cacheKey] = { lifts, bb, waist };
+        return true;
+      } else {
+        throw new Error(result.error || 'Gagal menyimpan data');
+      }
+    }
+
+    // ============================================================
+    // RENDER FUNCTIONS
+    // ============================================================
+    function buildProgram() {
+      const container = document.getElementById('day-panels');
+      container.innerHTML = '';
+      DAYS.forEach((day, di) => {
+        const panel = document.createElement('div');
+        panel.className = 'day-panel' + (di === 0 ? ' active' : '');
+        panel.id = 'dpanel-' + di;
+        let rows = day.exercises.map((ex, ei) => `
+      <tr class="exercise-row">
+        <td><span class="ex-num">${String(ei + 1).padStart(2, '0')}</span></td>
+        <td><div class="ex-name">${ex.name}</div><div class="ex-desc">${ex.desc}</div></td>
+        <td><div class="ex-sets">${ex.sets}</div></td>
+        <td><div class="ex-reps">${ex.reps}</div></td>
+        <td><span class="ex-muscle ${MUSCLE_COLOR[ex.muscle] || ''}">${ex.muscle}</span></td>
+      </tr>`).join('');
+        panel.innerHTML = `
+      <div class="day-header">
+        <div class="day-number">${day.num}</div>
+        <div class="day-info"><h3>${day.title}</h3><p>${day.sub}</p></div>
+        <div style="margin-left:auto;font-size:24px">${['💪', '🦵', '🔋', '⚡'][di]}</div>
+      </div>
+      <table class="exercise-table">
+        <thead><tr><th style="width:44px">#</th><th>Gerakan</th><th style="width:60px;text-align:center">Set</th><th style="width:90px;text-align:center">Rep</th><th style="width:140px;text-align:center">Otot</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+        container.appendChild(panel);
+      });
+    }
+
+    function switchDay(idx, btn) {
+      document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('dpanel-' + idx).classList.add('active');
+    }
+
+    function buildTrackerDays() {
+      const container = document.getElementById('tracker-days');
+      if (!container) return;
+
+      let html = '';
+      DAYS.forEach((day, di) => {
+        let rows = '';
+        day.exercises.forEach((ex, ei) => {
+          rows += `
+      <tr>
+        <td style="width:28px;font-family:var(--font-cond);font-size:15px;font-weight:700;color:var(--border)">${String(ei + 1).padStart(2, '0')}</td>
+        <td><div style="font-weight:600;font-size:13px">${ex.name}</div><div style="font-size:11px;color:var(--muted)">${ex.sets} set × ${ex.reps}</div></td>
+        <td style="text-align:center"><input class="input-num" type="number" min="0" step="0.5" id="kg-${di}-${ei}" placeholder="—" oninput="onInputChange(this,'${di}-${ei}')"/><span style="font-size:11px;color:var(--muted)">kg</span></td>
+        <td style="text-align:center"><input class="input-num" type="number" min="0" step="1" id="rep-${di}-${ei}" placeholder="—" oninput="onInputChange(this,'${di}-${ei}')"/><span style="font-size:11px;color:var(--muted)">rep</span></td>
+        <td style="text-align:center;min-width:80px"><span id="diff-${di}-${ei}" class="diff-neu">—</span><span id="pr-${di}-${ei}" class="pr-badge">🏆 PR!</span></td>
+      </tr>`;
+        });
+        html += `
+      <div class="tracker-day-section">
+        <div class="tracker-day-head"><div class="tracker-day-num">${day.num}</div><div><div class="tracker-day-title">${day.title}</div><div class="tracker-day-sub">${day.sub}</div></div></div>
+        <table class="tracker-table"><thead><tr><th style="width:28px">#</th><th>Gerakan</th><th style="width:120px;text-align:center">Berat (KG)</th><th style="width:110px;text-align:center">Reps</th><th style="width:100px;text-align:center">vs Minggu Lalu</th></tr></thead><tbody>${rows}</tbody></table>
+      </div>
+    `;
+      });
+
+      container.innerHTML = html;
+    }
+    // ============================================================
+      // FUNGSI CEK STATUS PREFETCH
+      // ============================================================
+      function getPrefetchStatus() {
+        if (!currentUser) return { cachedCount: 0, totalWeeks: 0, percentage: 0 };
+
+        const totalWeeks = 11; // minggu 2-12
+        let cachedCount = 0;
+
+        for (let week = 2; week <= 12; week++) {
+          const cacheKey = `${currentUser}_${week}`;
+          if (weekCache[cacheKey]) {
+            cachedCount++;
+          }
+        }
+
+        return {
+          cachedCount,
+          totalWeeks,
+          percentage: Math.round((cachedCount / totalWeeks) * 100),
+          isComplete: cachedCount === totalWeeks
+        };
+      }
+
+      // Atau versi sederhana tanpa currentUser
+      function getPrefetchStatusSimple(user) {
+        const totalWeeks = 11;
+        let cachedCount = 0;
+
+        for (let week = 2; week <= 12; week++) {
+          const cacheKey = `${user}_${week}`;
+          if (weekCache[cacheKey]) {
+            cachedCount++;
+          }
+        }
+
+        return { cachedCount, totalWeeks, percentage: Math.round((cachedCount / totalWeeks) * 100) };
+      }
+    function buildBodyStatInputs() {
+      const week = parseInt(document.getElementById('week-select').value) || 1;
+      const bbVal = getUserData(`bb-w${week}`) || '';
+      const waistVal = getUserData(`waist-w${week}`) || '';
+      document.getElementById('bb-inputs').innerHTML = `<div class="stat-input-row"><span class="stat-week-lbl">Minggu ${week}</span><input class="input-stat" type="number" step="0.1" min="0" id="input-bb" value="${bbVal}" placeholder="0.0"/><span class="stat-unit">kg</span></div><div style="font-size:12px;color:var(--muted);margin-top:4px">Ukur setiap Senin pagi sebelum makan</div>`;
+      document.getElementById('waist-inputs').innerHTML = `<div class="stat-input-row"><span class="stat-week-lbl">Minggu ${week}</span><input class="input-stat" type="number" step="0.1" min="0" id="input-waist" value="${waistVal}" placeholder="0.0"/><span class="stat-unit">cm</span></div><div style="font-size:12px;color:var(--muted);margin-top:4px">Ukur setiap Senin pagi</div>`;
+    }
+
+    function getUserData(key) {
+      return localStorage.getItem(`${currentUser}-${key}`) || '';
+    }
+
+    function setUserData(key, value) {
+      if (value && value !== '') localStorage.setItem(`${currentUser}-${key}`, value);
+    }
+
     function onInputChange(el, key) {
       el.classList.toggle('has-val', el.value !== '');
       updateDiff(key);
@@ -1416,22 +1509,16 @@
       const diffEl = document.getElementById('diff-' + key);
       const prEl = document.getElementById('pr-' + key);
       if (!kgEl || !diffEl) return;
-
       const cur = parseFloat(kgEl.value) || 0;
       if (!cur || w <= 1) { diffEl.textContent = '—'; diffEl.className = 'diff-neu'; prEl.classList.remove('show'); return; }
-
       const [di, ei] = key.split('-').map(Number);
-      const cacheKey = `${currentUser}-w${w - 1}`;
-      const prevData = weekDataCache[cacheKey];
-      const prev = prevData?.lifts?.[di * 7 + ei]?.kg || 0;
-
+      const prevKey = `${currentUser}-lift-w${w - 1}-${di}-${ei}-kg`;
+      const prev = parseFloat(localStorage.getItem(prevKey)) || 0;
       let maxEver = 0;
       for (let pw = 1; pw < w; pw++) {
-        const wkData = weekDataCache[`${currentUser}-w${pw}`];
-        const v = wkData?.lifts?.[di * 7 + ei]?.kg || 0;
+        const v = parseFloat(localStorage.getItem(`${currentUser}-lift-w${pw}-${di}-${ei}-kg`)) || 0;
         if (v > maxEver) maxEver = v;
       }
-
       if (!prev) { diffEl.textContent = '—'; diffEl.className = 'diff-neu'; }
       else {
         const d = cur - prev;
@@ -1441,113 +1528,144 @@
       prEl.classList.toggle('show', cur > 0 && cur > maxEver && maxEver > 0);
     }
 
-    async function loadWeekData() {
-      const w = parseInt(document.getElementById('week-select').value) || 1;
-
-      const weekSelect = document.getElementById('week-select');
-      const saveBtn = document.querySelector('.save-btn');
-
-      // Tampilkan full page loading
-      showFullLoading(true, w);
-      if (weekSelect) weekSelect.disabled = true;
-      if (saveBtn) saveBtn.disabled = true;
+    async function loadWeekData(week) {
+      // Tampilkan skeleton loading
+      const container = document.getElementById('tracker-days');
+      if (container) {
+        container.innerHTML = '<div class="skeleton-loader"></div>';
+      }
 
       try {
-        const sheetsData = await fetchWeekFromSheets(currentUser, w);
+        const data = await fetchWeekFromSheets(currentUser, week);
+        console.log('📦 Data dari Apps Script:', data);
 
+        const lifts = data.lifts || [];
+        console.log('📋 Jumlah lifts:', lifts.length);
+
+        // Rebuild tracker days (buat ulang DOM)
+        buildTrackerDays();
+
+        // Isi data ke input fields
         DAYS.forEach((day, di) => {
           day.exercises.forEach((_, ei) => {
-            const flatIdx = di * 7 + ei;
-            let kg = '', rep = '';
-            if (sheetsData && sheetsData.lifts && sheetsData.lifts[flatIdx]) {
-              kg = sheetsData.lifts[flatIdx].kg ?? '';
-              rep = sheetsData.lifts[flatIdx].rep ?? '';
-              if (kg) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`, kg);
-              if (rep) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`, rep);
-            } else {
-              kg = localStorage.getItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`) || '';
-              rep = localStorage.getItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`) || '';
+            const idx = di * 7 + ei;
+            const lift = lifts[idx] || {};
+
+            const kgValue = lift.kg !== undefined && lift.kg !== null && lift.kg !== '' ? lift.kg : '';
+            const repValue = lift.rep !== undefined && lift.rep !== null && lift.rep !== '' ? lift.rep : '';
+
+            const kgEl = document.getElementById(`kg-${di}-${ei}`);
+            const repEl = document.getElementById(`rep-${di}-${ei}`);
+
+            if (kgEl) {
+              kgEl.value = kgValue;
+              kgEl.classList.toggle('has-val', kgValue !== '');
             }
-            const kgEl = document.getElementById('kg-' + di + '-' + ei);
-            const repEl = document.getElementById('rep-' + di + '-' + ei);
-            if (kgEl) { kgEl.value = kg; kgEl.classList.toggle('has-val', kg !== ''); }
-            if (repEl) { repEl.value = rep; repEl.classList.toggle('has-val', rep !== ''); }
+            if (repEl) {
+              repEl.value = repValue;
+              repEl.classList.toggle('has-val', repValue !== '');
+            }
+
             updateDiff(`${di}-${ei}`);
+
+            if (kgValue) setUserData(`lift-w${week}-${di}-${ei}-kg`, kgValue);
+            if (repValue) setUserData(`lift-w${week}-${di}-${ei}-rep`, repValue);
           });
         });
 
-        let bb = '', waist = '';
-        if (sheetsData) {
-          bb = sheetsData.bb ?? '';
-          waist = sheetsData.waist ?? '';
-          if (bb) localStorage.setItem(`${currentUser}-bb-w${w}`, bb);
-          if (waist) localStorage.setItem(`${currentUser}-waist-w${w}`, waist);
-        } else {
-          bb = localStorage.getItem(`${currentUser}-bb-w${w}`) || '';
-          waist = localStorage.getItem(`${currentUser}-waist-w${w}`) || '';
+        // Isi body stats
+        const bb = data.bb ? parseFloat(data.bb) : null;
+        const waist = data.waist ? parseFloat(data.waist) : null;
+
+        if (bb) {
+          setUserData(`bb-w${week}`, bb);
+          const bbInput = document.getElementById('input-bb');
+          if (bbInput) bbInput.value = bb;
         }
-        const bbEl = document.getElementById('input-bb');
-        const waistEl = document.getElementById('input-waist');
-        if (bbEl) bbEl.value = bb;
-        if (waistEl) waistEl.value = waist;
+
+        if (waist) {
+          setUserData(`waist-w${week}`, waist);
+          const waistInput = document.getElementById('input-waist');
+          if (waistInput) waistInput.value = waist;
+        }
 
         buildChart();
-      } finally {
-        showFullLoading(false);
-        if (weekSelect) weekSelect.disabled = false;
-        if (saveBtn) saveBtn.disabled = false;
+        console.log('✅ Load selesai!');
+
+      } catch (e) {
+        console.error('❌ Load failed:', e);
+        showToast('Gagal load data: ' + e.message, 'error');
+        // Rebuild tetap dilakukan agar tampilan tidak kosong
+        buildTrackerDays();
       }
     }
 
     async function saveWeekData(btn) {
       const w = parseInt(document.getElementById('week-select').value) || 1;
-
       const lifts = [];
       DAYS.forEach((day, di) => {
         day.exercises.forEach((_, ei) => {
-          const kg = document.getElementById('kg-' + di + '-' + ei)?.value || '';
-          const rep = document.getElementById('rep-' + di + '-' + ei)?.value || '';
+          const kg = document.getElementById(`kg-${di}-${ei}`)?.value || '';
+          const rep = document.getElementById(`rep-${di}-${ei}`)?.value || '';
           lifts.push({ kg, rep });
-          if (kg) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`, kg);
-          if (rep) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`, rep);
+          if (kg) setUserData(`lift-w${w}-${di}-${ei}-kg`, kg);
+          if (rep) setUserData(`lift-w${w}-${di}-${ei}-rep`, rep);
         });
       });
-
       const bb = document.getElementById('input-bb')?.value || '';
       const waist = document.getElementById('input-waist')?.value || '';
-      if (bb) localStorage.setItem(`${currentUser}-bb-w${w}`, bb);
-      if (waist) localStorage.setItem(`${currentUser}-waist-w${w}`, waist);
+      if (bb) setUserData(`bb-w${w}`, bb);
+      if (waist) setUserData(`waist-w${w}`, waist);
 
       btn.disabled = true;
-      await postWeekToSheets(currentUser, w, lifts, bb, waist);
+      try {
+        await saveWeekToSheets(currentUser, w, lifts, bb, waist);
+        showToast('✅ Data tersimpan!');
+        buildChart();
+      } catch (e) {
+        showToast('⚠️ Gagal simpan ke Sheets, tersimpan lokal', 'error');
+      }
       btn.disabled = false;
-
-      const cacheKey = `${currentUser}-w${w}`;
-      weekDataCache[cacheKey] = { lifts, bb, waist };
-
-      updateHomeStats();
-      buildChart();
       btn.classList.add('saved');
       setTimeout(() => btn.classList.remove('saved'), 2000);
     }
 
-    async function postWeekToSheets(user, week, lifts, bb, waist) {
-      if (!useSheets()) return false;
-      try {
-        showSyncStatus('⏳ Menyimpan ke Google Sheets...');
-        const res = await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({ user, week, lifts, bb, waist })
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        showSyncStatus('✅ Tersimpan di Google Sheets!', 'ok');
-        return true;
-      } catch (e) {
-        showSyncStatus('⚠️ Gagal sync Sheets, tersimpan lokal', 'err');
-        return false;
+    // ============================================================
+      // ON WEEK CHANGE - VERSI YANG PASTI BERFUNGSI
+      // ============================================================
+      async function onWeekChange() {
+        const weekSelect = document.getElementById('week-select');
+        if (!weekSelect) {
+          console.error('Element week-select tidak ditemukan!');
+          return;
+        }
+
+        const week = parseInt(weekSelect.value);
+        console.log(`🔄 Ganti minggu ke: ${week}`);
+
+        // Update body stats inputs sesuai minggu yang dipilih
+        const bbVal = getUserData(`bb-w${week}`) || '';
+        const waistVal = getUserData(`waist-w${week}`) || '';
+
+        const bbInput = document.getElementById('input-bb');
+        const waistInput = document.getElementById('input-waist');
+
+        if (bbInput) bbInput.value = bbVal;
+        if (waistInput) waistInput.value = waistVal;
+
+        // Tampilkan skeleton loading
+        showSkeletonInTracker();
+
+        // Load data untuk minggu yang dipilih
+        await loadWeekData(week);
+
+        hideSkeletonInTracker();
+
+        // Update chart
+        buildChart();
+
+        console.log(`✅ Selesai ganti ke minggu ${week}`);
       }
-    }
 
     function updateHomeStats() {
       ['Sinung', 'Awal', 'Rudi'].forEach(name => {
@@ -1562,12 +1680,9 @@
           if (hasData) { sessions += 4; maxWeek = w; }
         }
         const bb = localStorage.getItem(`${name}-bb-w${maxWeek}`) || '—';
-        const weeksEl = document.getElementById(`stat-${name}-weeks`);
-        const sessionsEl = document.getElementById(`stat-${name}-sessions`);
-        const wbEl = document.getElementById(`stat-${name}-wb`);
-        if (weeksEl) weeksEl.textContent = maxWeek;
-        if (sessionsEl) sessionsEl.textContent = sessions;
-        if (wbEl) wbEl.textContent = bb !== '—' ? parseFloat(bb).toFixed(1) : '—';
+        document.getElementById(`stat-${name}-weeks`).textContent = maxWeek;
+        document.getElementById(`stat-${name}-sessions`).textContent = sessions;
+        document.getElementById(`stat-${name}-wb`).textContent = bb !== '—' ? parseFloat(bb).toFixed(1) : '—';
       });
     }
 
@@ -1578,12 +1693,11 @@
       const accentHex = { 'var(--red)': '#ff2d55', 'var(--blue)': '#4fc3f7', 'var(--green)': '#00e676' }[currentAccent] || '#ff2d55';
 
       function getVal(type, week, di, ei) {
-        const cacheKey = `${currentUser}-w${week}`;
-        const cached = weekDataCache[cacheKey];
+        const cached = weekCache[`${currentUser}_${week}`];
         if (cached) {
-          if (type === 'bb') return parseFloat(cached.bb) || null;
-          if (type === 'waist') return parseFloat(cached.waist) || null;
-          if (type === 'kg' && cached.lifts) return parseFloat(cached.lifts[di * 7 + ei]?.kg) || null;
+          if (type === 'bb') return cached.bb ? parseFloat(cached.bb) : null;
+          if (type === 'waist') return cached.waist ? parseFloat(cached.waist) : null;
+          if (type === 'kg' && cached.lifts) return cached.lifts[di * 7 + ei]?.kg ? parseFloat(cached.lifts[di * 7 + ei].kg) : null;
         }
         if (type === 'bb') return parseFloat(localStorage.getItem(`${currentUser}-bb-w${week}`)) || null;
         if (type === 'waist') return parseFloat(localStorage.getItem(`${currentUser}-waist-w${week}`)) || null;
@@ -1630,193 +1744,405 @@
       buildChart();
     }
 
+    // ============================================================
+      // PREFETCH SEMUA MINGGU DI BACKGROUND (SETELAH USER DIPILIH)
+      // ============================================================
+
+      let prefetchPromise = null;
+      let prefetchDone = false;
+
+      // ============================================================
+        // PREFETCH DENGAN BATCH (PARALEL 3 REQUEST SEKALIGUS)
+        // ============================================================
+
+        async function prefetchAllWeeksBatch(user) {
+          if (prefetchDone) return;
+          if (prefetchPromise) return prefetchPromise;
+
+          prefetchPromise = (async () => {
+            console.log(`🔄 Prefetch batch untuk ${user} dimulai...`);
+            const startTime = performance.now();
+
+            const weeksToFetch = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            const BATCH_SIZE = 3; // Maksimal 3 request paralel
+            let successCount = 0;
+            let failCount = 0;
+
+            for (let i = 0; i < weeksToFetch.length; i += BATCH_SIZE) {
+              const batch = weeksToFetch.slice(i, i + BATCH_SIZE);
+              console.log(`📦 Memproses batch ${Math.floor(i / BATCH_SIZE) + 1}: week ${batch.join(', ')}`);
+
+              const promises = batch.map(async (week) => {
+                const cacheKey = `${user}_${week}`;
+                if (weekCache[cacheKey]) {
+                  console.log(`📦 Week ${week} sudah di cache`);
+                  successCount++;
+                  return true;
+                }
+
+                try {
+                  const controller = new AbortController();
+                  const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                  const response = await fetch(`${APPS_SCRIPT_URL}?user=${user}&week=${week}`, { signal: controller.signal });
+                  clearTimeout(timeoutId);
+
+                  if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                      weekCache[cacheKey] = data;
+                      successCount++;
+                      console.log(`✅ Week ${week} berhasil di-cache`);
+                      return true;
+                    }
+                  }
+                  console.warn(`⚠️ Week ${week} gagal`);
+                  failCount++;
+                  return false;
+                } catch (error) {
+                  console.warn(`❌ Week ${week} error:`, error.message);
+                  failCount++;
+                  return false;
+                }
+              });
+
+              await Promise.all(promises);
+
+              // Delay antar batch
+              if (i + BATCH_SIZE < weeksToFetch.length) {
+                await new Promise(r => setTimeout(r, 300));
+              }
+            }
+
+            const endTime = performance.now();
+            console.log(`🎉 Prefetch selesai! Sukses: ${successCount}, Gagal: ${failCount} dalam ${(endTime - startTime).toFixed(0)} ms`);
+
+            prefetchDone = true;
+            prefetchPromise = null;
+          })();
+
+          return prefetchPromise;
+        }
+
+        // Panggil ini setelah prefetch selesai untuk mencoba ulang minggu yang gagal
+          async function retryFailedPrefetch(user) {
+            const failedWeeks = [];
+            for (let week = 2; week <= 12; week++) {
+              const cacheKey = `${user}_${week}`;
+              if (!weekCache[cacheKey]) {
+                failedWeeks.push(week);
+              }
+            }
+
+            if (failedWeeks.length === 0) return;
+
+            console.log(`🔄 Retry ${failedWeeks.length} minggu yang gagal: week ${failedWeeks.join(', ')}`);
+
+            for (const week of failedWeeks) {
+              try {
+                await new Promise(r => setTimeout(r, 500));
+                const response = await fetch(`${APPS_SCRIPT_URL}?user=${user}&week=${week}`);
+                if (response.ok) {
+                  const data = await response.json();
+                  if (data.success) {
+                    weekCache[`${user}_${week}`] = data;
+                    console.log(`✅ Retry week ${week} berhasil`);
+                  }
+                }
+              } catch (e) {
+                console.warn(`Retry week ${week} masih gagal`);
+              }
+            }
+          }
+
+      // ============================================================
+      // OPEN TRACKER - TAMPILKAN MINGGU 1 DULU, PREFETCH DI BACKGROUND
+      // ============================================================
+      async function openTracker(name, avatar, accent, avatarBg) {
+        currentUser = name;
+        currentAccent = accent;
+        // 🔥 RESET week-select KE MINGGU 1 🔥
+        const weekSelect = document.getElementById('week-select');
+        if (weekSelect) {
+          weekSelect.value = '1';  // ← Paksa ke minggu 1
+          console.log('✅ week-select di-reset ke minggu 1');
+        }
+        // Update UI header
+        document.getElementById('tr-avatar').textContent = avatar;
+        document.getElementById('tr-avatar').style.background = avatarBg;
+        document.getElementById('tr-avatar').style.borderColor = accent.replace('var(', '').replace(')', '');
+        document.getElementById('tr-name').textContent = name.toUpperCase();
+        document.getElementById('tr-name').style.color = accent;
+
+        // Build tracker UI (tanpa data dulu, skeleton loading)
+        buildTrackerDays();
+        showPage('tracker');
+        buildBodyStatInputs();
+
+        // Tampilkan skeleton loading di tabel
+        showSkeletonInTracker();
+
+        // Ambil data week 1 (prioritas utama, user lihat ini dulu)
+        console.log(`📥 Load week 1 priority...`);
+        const startTime = performance.now();
+        const week1Data = await fetchWeekFromSheets(currentUser, 1);
+        const endTime = performance.now();
+        console.log(`✅ Week 1 loaded dalam ${(endTime - startTime).toFixed(0)} ms`);
+
+        // Isi data week 1 ke UI
+        populateWeekData(1, week1Data);
+        hideSkeletonInTracker();
+
+        buildChart();
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+
+          // 🔥 Panggil prefetch (tidak perlu await, biar jalan di background)
+          prefetchAllWeeksBatch(currentUser).then(() => {
+            // Opsional: retry yang gagal
+            retryFailedPrefetch(currentUser);
+          });
+
+          // Opsional: tampilkan status prefetch ke console setelah beberapa detik
+          setTimeout(() => {
+            const status = getPrefetchStatus();
+            console.log(`📊 Status prefetch: ${status.cachedCount}/${status.totalWeeks} (${status.percentage}%)`);
+          }, 10000);
+      }
+
+      // ============================================================
+      // FUNGSI BANTUAN UNTUK SKELETON LOADING
+      // ============================================================
+      function showSkeletonInTracker() {
+        const container = document.getElementById('tracker-days');
+        if (container) {
+          container.style.opacity = '0.5';
+        }
+      }
+
+      function hideSkeletonInTracker() {
+        const container = document.getElementById('tracker-days');
+        if (container) {
+          container.style.opacity = '1';
+        }
+      }
+
+      // ============================================================
+      // FUNGSI UNTUK MENGISI DATA KE UI (DIPISAH AGAR BISA DIPAKAI ULANG)
+      // ============================================================
+      function populateWeekData(week, data) {
+        const lifts = data.lifts || [];
+
+        DAYS.forEach((day, di) => {
+          day.exercises.forEach((_, ei) => {
+            const idx = di * 7 + ei;
+            const lift = lifts[idx] || {};
+
+            const kgEl = document.getElementById(`kg-${di}-${ei}`);
+            const repEl = document.getElementById(`rep-${di}-${ei}`);
+
+            const kgValue = lift.kg !== undefined && lift.kg !== null && lift.kg !== '' ? lift.kg : '';
+            const repValue = lift.rep !== undefined && lift.rep !== null && lift.rep !== '' ? lift.rep : '';
+
+            if (kgEl) {
+              kgEl.value = kgValue;
+              kgEl.classList.toggle('has-val', kgValue !== '');
+            }
+            if (repEl) {
+              repEl.value = repValue;
+              repEl.classList.toggle('has-val', repValue !== '');
+            }
+
+            updateDiff(`${di}-${ei}`);
+
+            if (kgValue) setUserData(`lift-w${week}-${di}-${ei}-kg`, kgValue);
+            if (repValue) setUserData(`lift-w${week}-${di}-${ei}-rep`, repValue);
+          });
+        });
+
+        // Body stats
+        const bb = data.bb ? parseFloat(data.bb) : null;
+        const waist = data.waist ? parseFloat(data.waist) : null;
+
+        if (bb) {
+          setUserData(`bb-w${week}`, bb);
+          const bbInput = document.getElementById('input-bb');
+          if (bbInput) bbInput.value = bb;
+        }
+
+        if (waist) {
+          setUserData(`waist-w${week}`, waist);
+          const waistInput = document.getElementById('input-waist');
+          if (waistInput) waistInput.value = waist;
+        }
+      }
+     // ============================================================
+      // LOAD WEEK DATA - PASTIKAN MENGISI UI
+      // ============================================================
+      async function loadWeekData(week) {
+        console.log(`📥 loadWeekData dipanggil untuk week ${week}`);
+
+        // Cek cache dulu
+        const cacheKey = `${currentUser}_${week}`;
+        if (weekCache[cacheKey]) {
+          console.log(`⚡ Week ${week} dari cache, render instant!`);
+          populateWeekData(week, weekCache[cacheKey]);
+          buildChart();
+          return;
+        }
+
+        // Jika tidak ada di cache, ambil dari network
+        console.log(`🐢 Week ${week} tidak di cache, fetching...`);
+
+        try {
+          const data = await fetchWeekFromSheets(currentUser, week);
+          console.log(`📦 Data week ${week} diterima:`, data);
+
+          if (data && (data.lifts || data.bb || data.waist)) {
+            populateWeekData(week, data);
+            buildChart();
+            console.log(`✅ Week ${week} berhasil di-load`);
+          } else {
+            console.warn(`⚠️ Data week ${week} kosong`);
+            // Kosongkan input jika tidak ada data
+            clearWeekData(week);
+          }
+        } catch (e) {
+          console.error(`❌ Load week ${week} failed:`, e);
+          showToast(`Gagal load minggu ${week}`, 'error');
+          clearWeekData(week);
+        }
+      }
+      // ============================================================
+        // KOSONGKAN DATA (JIKA TIDAK ADA)
+        // ============================================================
+        function clearWeekData(week) {
+          DAYS.forEach((day, di) => {
+            day.exercises.forEach((_, ei) => {
+              const kgEl = document.getElementById(`kg-${di}-${ei}`);
+              const repEl = document.getElementById(`rep-${di}-${ei}`);
+
+              if (kgEl) {
+                kgEl.value = '';
+                kgEl.classList.remove('has-val');
+              }
+              if (repEl) {
+                repEl.value = '';
+                repEl.classList.remove('has-val');
+              }
+
+              const diffEl = document.getElementById(`diff-${di}-${ei}`);
+              if (diffEl) {
+                diffEl.textContent = '—';
+                diffEl.className = 'diff-neu';
+              }
+
+              const prEl = document.getElementById(`pr-${di}-${ei}`);
+              if (prEl) prEl.classList.remove('show');
+            });
+          });
+        }
+
+        // ============================================================
+          // POPULATE WEEK DATA - DENGAN ERROR HANDLING
+          // ============================================================
+          function populateWeekData(week, data) {
+            console.log(`📝 Populating week ${week} ke UI...`);
+
+            if (!data) {
+              console.warn(`⚠️ Data week ${week} kosong`);
+              clearWeekData(week);
+              return;
+            }
+
+            const lifts = data.lifts || [];
+
+            DAYS.forEach((day, di) => {
+              day.exercises.forEach((_, ei) => {
+                const idx = di * 7 + ei;
+                const lift = lifts[idx] || {};
+
+                const kgEl = document.getElementById(`kg-${di}-${ei}`);
+                const repEl = document.getElementById(`rep-${di}-${ei}`);
+
+                const kgValue = (lift.kg !== undefined && lift.kg !== null && lift.kg !== '') ? lift.kg : '';
+                const repValue = (lift.rep !== undefined && lift.rep !== null && lift.rep !== '') ? lift.rep : '';
+
+                if (kgEl) {
+                  kgEl.value = kgValue;
+                  kgEl.classList.toggle('has-val', kgValue !== '');
+                }
+                if (repEl) {
+                  repEl.value = repValue;
+                  repEl.classList.toggle('has-val', repValue !== '');
+                }
+
+                updateDiff(`${di}-${ei}`);
+
+                // Simpan ke localStorage
+                if (kgValue) setUserData(`lift-w${week}-${di}-${ei}-kg`, kgValue);
+                if (repValue) setUserData(`lift-w${week}-${di}-${ei}-rep`, repValue);
+              });
+            });
+
+            // Body stats
+            const bb = data.bb ? parseFloat(data.bb) : null;
+            const waist = data.waist ? parseFloat(data.waist) : null;
+
+            if (bb) {
+              setUserData(`bb-w${week}`, bb);
+              const bbInput = document.getElementById('input-bb');
+              if (bbInput) bbInput.value = bb;
+            }
+
+            if (waist) {
+              setUserData(`waist-w${week}`, waist);
+              const waistInput = document.getElementById('input-waist');
+              if (waistInput) waistInput.value = waist;
+            }
+
+            console.log(`✅ Populate week ${week} selesai`);
+          }
+
+      // ============================================================
+      // ON WEEK CHANGE - PAKAI CACHE
+      // ============================================================
+      async function onWeekChange() {
+        const week = parseInt(document.getElementById('week-select').value);
+        buildBodyStatInputs();
+        await loadWeekData(week);
+      }
+
     function showPage(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + id).classList.add('active');
-      document.querySelectorAll('.nav-tab').forEach(t => {
-        t.classList.toggle('active', t.textContent.toLowerCase().includes(id));
-      });
       if (id === 'home') updateHomeStats();
     }
 
-    function buildProgram() {
-      const container = document.getElementById('day-panels');
-      container.innerHTML = '';
-      DAYS.forEach((day, di) => {
-        const panel = document.createElement('div');
-        panel.className = 'day-panel' + (di === 0 ? ' active' : '');
-        panel.id = 'dpanel-' + di;
-
-        let rows = day.exercises.map((ex, ei) => `
-      <tr class="exercise-row">
-        <td><span class="ex-num">${String(ei + 1).padStart(2, '0')}</span></td>
-        <td><div class="ex-name">${ex.name}</div><div class="ex-desc">${ex.desc}</div></td>
-        <td><div class="ex-sets">${ex.sets}</div></td>
-        <td><div class="ex-reps">${ex.reps}</div></td>
-        <td><span class="ex-muscle ${MUSCLE_COLOR[ex.muscle] || ''}">${ex.muscle}</span></td>
-      </tr>`).join('');
-
-        panel.innerHTML = `
-      <div class="day-header">
-        <div class="day-number">${day.num}</div>
-        <div class="day-info"><h3>${day.title}</h3><p>${day.sub}</p></div>
-        <div style="margin-left:auto;font-size:24px">${['💪', '🦵', '🔋', '⚡'][di]}</div>
-      </div>
-      <table class="exercise-table">
-        <thead><tr>
-          <th style="width:44px">#</th>
-          <th>Gerakan</th>
-          <th style="width:60px;text-align:center">Set</th>
-          <th style="width:90px;text-align:center">Rep</th>
-          <th style="width:140px;text-align:center">Otot</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
-        container.appendChild(panel);
-      });
-    }
-
-    function switchDay(idx, btn) {
-      document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('dpanel-' + idx).classList.add('active');
-    }
-
-    function buildTrackerDays() {
-      const container = document.getElementById('tracker-days');
-      if (!container) return;
-      container.innerHTML = '';
-
-      DAYS.forEach((day, di) => {
-        const section = document.createElement('div');
-        section.className = 'tracker-day-section';
-
-        const headerDiv = document.createElement('div');
-        headerDiv.className = 'tracker-day-head';
-        headerDiv.innerHTML = `
-      <div class="tracker-day-num">${day.num}</div>
-      <div>
-        <div class="tracker-day-title">${day.title}</div>
-        <div class="tracker-day-sub">${day.sub}</div>
-      </div>
-    `;
-        section.appendChild(headerDiv);
-
-        const table = document.createElement('table');
-        table.className = 'tracker-table';
-
-        const thead = document.createElement('thead');
-        thead.innerHTML = `
-      <tr>
-        <th style="width:28px">#</th>
-        <th>Gerakan</th>
-        <th style="width:120px;text-align:center">Berat (KG)</th>
-        <th style="width:110px;text-align:center">Reps</th>
-        <th style="width:100px;text-align:center">vs Minggu Lalu</th>
-      </tr>
-    `;
-        table.appendChild(thead);
-
-        const tbody = document.createElement('tbody');
-        day.exercises.forEach((ex, ei) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-        <td style="width:28px;font-family:var(--font-cond);font-size:15px;font-weight:700;color:var(--border)">${String(ei + 1).padStart(2, '0')}</td>
-        <td>
-          <div style="font-weight:600;font-size:13px">${ex.name}</div>
-          <div style="font-size:11px;color:var(--muted)">${ex.sets} set × ${ex.reps}</div>
-        </td>
-        <td style="text-align:center">
-          <input class="input-num" type="number" min="0" step="0.5"
-            id="kg-${di}-${ei}" placeholder="—"
-            oninput="onInputChange(this,'${di}-${ei}')"/>
-          <span style="font-size:11px;color:var(--muted)">kg</span>
-        </td>
-        <td style="text-align:center">
-          <input class="input-num" type="number" min="0" step="1"
-            id="rep-${di}-${ei}" placeholder="—"
-            oninput="onInputChange(this,'${di}-${ei}')"/>
-          <span style="font-size:11px;color:var(--muted)">rep</span>
-        </td>
-        <td style="text-align:center;min-width:80px">
-          <span id="diff-${di}-${ei}" class="diff-neu">—</span>
-          <span id="pr-${di}-${ei}" class="pr-badge">🏆 PR!</span>
-        </td>
-      `;
-          tbody.appendChild(row);
-        });
-        table.appendChild(tbody);
-        section.appendChild(table);
-        container.appendChild(section);
-      });
-    }
-
-    function buildBodyStatInputs() {
-      const w = parseInt(document.getElementById('week-select').value) || 1;
-      const val = localStorage.getItem(`${currentUser}-bb-w${w}`) || '';
-      const waistVal = localStorage.getItem(`${currentUser}-waist-w${w}`) || '';
-      const container = document.getElementById('bb-inputs');
-      if (container) {
-        container.innerHTML = `
-      <div class="stat-input-row">
-        <span class="stat-week-lbl">Minggu ${w}</span>
-        <input class="input-stat" type="number" step="0.1" min="0"
-          id="input-bb" value="${val}" placeholder="0.0"/>
-        <span class="stat-unit">kg</span>
-      </div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">
-        Ukur setiap hari Senin pagi sebelum makan
-      </div>`;
-      }
-      const waistContainer = document.getElementById('waist-inputs');
-      if (waistContainer) {
-        waistContainer.innerHTML = `
-      <div class="stat-input-row">
-        <span class="stat-week-lbl">Minggu ${w}</span>
-        <input class="input-stat" type="number" step="0.1" min="0"
-          id="input-waist" value="${waistVal}" placeholder="0.0"/>
-        <span class="stat-unit">cm</span>
-      </div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">
-        Ukur setiap hari Senin pagi sebelum makan
-      </div>`;
-      }
-    }
-
-    async function onWeekChange() {
-      const weekSelect = document.getElementById('week-select');
-      if (weekSelect && weekSelect.disabled) return;
-      buildBodyStatInputs();
-      await loadWeekData();
-    }
-
-    async function openTracker(name, avatar, accent, avatarBg) {
-      currentUser = name;
-      currentAccent = accent;
-
-      weekDataCache = {};
-
-      document.getElementById('tr-avatar').textContent = avatar;
-      document.getElementById('tr-avatar').style.background = avatarBg;
-      document.getElementById('tr-avatar').style.borderColor = accent.replace('var(', '').replace(')', '');
-      document.getElementById('tr-name').textContent = name.toUpperCase();
-      document.getElementById('tr-name').style.color = accent;
-      document.querySelectorAll('.save-btn').forEach(b => b.style.background = `linear-gradient(135deg, ${accent}, var(--orange))`);
-      buildTrackerDays();
-      showPage('tracker');
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-
-      await loadWeekData();
-      buildBodyStatInputs();
-      buildChart();
-    }
-
-    // ============================================================
-    // INIT
-    // ============================================================
+    // Inisialisasi
     buildProgram();
     updateHomeStats();
+
+    // Warm-up Apps Script
+    // Ganti warm-up dengan GET request (bukan HEAD)
+      let isWarmedUp = false;
+
+      async function warmUpAppsScript() {
+        if (isWarmedUp) return;
+        try {
+          console.log('🔥 Warming up Apps Script...');
+          // Gunakan GET, bukan HEAD
+          const response = await fetch(`${APPS_SCRIPT_URL}?user=Sinung&week=1`);
+          if (response.ok) {
+            isWarmedUp = true;
+            console.log('✅ Apps Script warmed up!');
+          }
+        } catch (e) {
+          console.log('Warm up failed:', e);
+        }
+      }
+
+      // Panggil warm-up 2 detik setelah halaman home dimuat
+      setTimeout(() => warmUpAppsScript(), 1000);
   </script>
 </body>
 
