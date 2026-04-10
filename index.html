@@ -10,7 +10,6 @@
     rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    /* --- (CSS style sama persis seperti versi sebelumnya, tidak berubah) --- */
     :root {
       --bg: #0a0a0f;
       --bg2: #111118;
@@ -44,7 +43,6 @@
       overflow-x: hidden;
     }
 
-    /* ─── NOISE OVERLAY ─── */
     body::before {
       content: '';
       position: fixed;
@@ -54,7 +52,6 @@
       z-index: 0;
     }
 
-    /* ─── NAV ─── */
     nav {
       position: sticky;
       top: 0;
@@ -110,7 +107,6 @@
       background: var(--red);
     }
 
-    /* ─── PAGES ─── */
     .page {
       display: none;
     }
@@ -132,7 +128,6 @@
       }
     }
 
-    /* ─── HOME ─── */
     .home-hero {
       padding: 80px 24px 48px;
       text-align: center;
@@ -216,7 +211,6 @@
       background: rgba(0, 230, 118, .08);
     }
 
-    /* ─── USER CARDS ─── */
     .user-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -329,7 +323,6 @@
       opacity: .85;
     }
 
-    /* ─── PROGRAM PAGE ─── */
     .program-wrap {
       max-width: 1000px;
       margin: 0 auto;
@@ -524,7 +517,6 @@
       color: var(--blue);
     }
 
-    /* ─── SCHEDULE GRID ─── */
     .schedule-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -569,7 +561,6 @@
       color: var(--muted);
     }
 
-    /* ─── TRACKER PAGE ─── */
     .tracker-wrap {
       max-width: 1200px;
       margin: 0 auto;
@@ -633,7 +624,6 @@
       border-color: var(--muted);
     }
 
-    /* Week selector */
     .week-nav {
       display: flex;
       align-items: center;
@@ -708,7 +698,6 @@
       }
     }
 
-    /* Tracker day section */
     .tracker-day-section {
       margin-bottom: 24px;
     }
@@ -820,7 +809,6 @@
       display: inline;
     }
 
-    /* Progress diff */
     .diff-pos {
       color: var(--green);
       font-size: 12px;
@@ -836,7 +824,6 @@
       font-size: 12px;
     }
 
-    /* ─── BODY STATS ─── */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -897,7 +884,6 @@
       min-width: 24px;
     }
 
-    /* Chart */
     .chart-section {
       background: var(--card);
       border: 1px solid var(--border);
@@ -943,7 +929,6 @@
       background: rgba(255, 45, 85, .1);
     }
 
-    /* ─── NUTRITION REMINDER ─── */
     .nutrition-banner {
       background: linear-gradient(135deg, rgba(255, 107, 0, .12), rgba(255, 45, 85, .08));
       border: 1px solid rgba(255, 107, 0, .25);
@@ -985,41 +970,45 @@
       color: var(--muted);
     }
 
-    /* ─── LOADING OVERLAY (BARU) ─── */
-    .loading-overlay {
+    /* FULL PAGE LOADING OVERLAY */
+    .loading-full {
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 9999;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
+      gap: 20px;
       font-family: var(--font-cond);
       font-size: 18px;
       letter-spacing: 2px;
       color: var(--text);
-      backdrop-filter: blur(4px);
     }
 
-    .loading-content {
-      background: var(--card);
-      padding: 24px 48px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .loading-spinner {
-      width: 40px;
-      height: 40px;
-      margin: 0 auto 16px;
-      border: 3px solid var(--border);
+    .loading-full .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--border);
       border-top-color: var(--red);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
+    }
+
+    .loading-full .loading-text {
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .loading-full .loading-week {
+      color: var(--red);
+      font-size: 28px;
+      font-weight: 800;
     }
 
     @keyframes spin {
@@ -1028,7 +1017,6 @@
       }
     }
 
-    /* ─── RESPONSIVE ─── */
     @media(max-width:640px) {
       nav {
         padding: 0 16px;
@@ -1056,15 +1044,6 @@
 
 <body>
 
-  <!-- LOADING INDICATOR -->
-  <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-    <div class="loading-content">
-      <div class="loading-spinner"></div>
-      <div>LOADING DATA...</div>
-    </div>
-  </div>
-
-  <!-- NAV -->
   <nav>
     <div class="nav-logo" onclick="showPage('home')">GYMBRO</div>
     <div class="nav-tabs">
@@ -1073,7 +1052,6 @@
     </div>
   </nav>
 
-  <!-- ══════ PAGE: HOME ══════ -->
   <div id="page-home" class="page active">
     <div class="home-hero">
       <p class="hero-eyebrow">4 Days · 12 Weeks · Zero Excuses</p>
@@ -1138,7 +1116,6 @@
     </div>
   </div>
 
-  <!-- ══════ PAGE: PROGRAM ══════ -->
   <div id="page-program" class="page">
     <div class="program-wrap">
       <div class="section-title">PROGRAM</div>
@@ -1190,7 +1167,6 @@
     </div>
   </div>
 
-  <!-- ══════ PAGE: TRACKER ══════ -->
   <div id="page-tracker" class="page">
     <div class="tracker-wrap">
       <div class="tracker-header">
@@ -1237,7 +1213,6 @@
         <button class="save-btn" onclick="saveWeekData(this)">💾 SIMPAN</button>
       </div>
 
-      <!-- Chart -->
       <div class="chart-section">
         <h4>📈 Progress Chart</h4>
         <div class="chart-tabs">
@@ -1248,7 +1223,6 @@
         <canvas id="progress-chart" height="90"></canvas>
       </div>
 
-      <!-- Body stats -->
       <div class="stats-grid">
         <div class="stat-card">
           <h4>⚖️ Berat Badan</h4>
@@ -1271,7 +1245,7 @@
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwziz3ZQ3k5P5YiQw48Fcg3RF-TriUIeXIgXZzp8uNaZUG3Hr1iTPmg945VCiI5yREggA/exec";
 
     // ============================================================
-    // DATA PROGRAM (TIDAK BERUBAH)
+    // DATA
     // ============================================================
     const DAYS = [
       {
@@ -1334,25 +1308,45 @@
     };
 
     // ============================================================
-    // STATE & CACHE (OPTIMASI)
+    // STATE & CACHE
     // ============================================================
     let currentUser = null;
     let currentAccent = 'var(--red)';
     let progressChart = null;
     let currentChartType = 'bb';
-    let allWeeksCache = {};      // CACHE SEMUA DATA USER
-    let dataLoaded = false;       // APAKAH DATA SUDAH DILOAD
+    let weekDataCache = {};
 
     // ============================================================
-    // FUNGSI LOADING INDICATOR
+    // FULL PAGE LOADING
     // ============================================================
-    function showLoading(show) {
-      const overlay = document.getElementById('loadingOverlay');
-      if (overlay) overlay.style.display = show ? 'flex' : 'none';
+    function showFullLoading(show, week = '') {
+      let overlay = document.getElementById('fullLoadingOverlay');
+
+      if (show) {
+        if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.id = 'fullLoadingOverlay';
+          overlay.className = 'loading-full';
+          overlay.innerHTML = `
+        <div class="spinner"></div>
+        <div class="loading-text">LOADING DATA MINGGU KE-</div>
+        <div class="loading-week" id="loadingWeekNum">${week}</div>
+      `;
+          document.body.appendChild(overlay);
+        } else {
+          const weekEl = document.getElementById('loadingWeekNum');
+          if (weekEl) weekEl.textContent = week;
+          overlay.style.display = 'flex';
+        }
+      } else {
+        if (overlay) {
+          overlay.style.display = 'none';
+        }
+      }
     }
 
     // ============================================================
-    // FUNGSI BANTUAN SYNC
+    // SYNC HELPERS
     // ============================================================
     const useSheets = () => APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
 
@@ -1378,84 +1372,264 @@
     }
 
     // ============================================================
-    // LOAD SEMUA DATA SEKALIGUS (OPTIMASI UTAMA)
+    // FETCH DATA DENGAN CACHE (PER MINGGU)
     // ============================================================
-    async function loadAllUserData(user) {
-      if (!useSheets()) return null;
-
-      // Cek cache dulu
-      if (allWeeksCache[user] && Object.keys(allWeeksCache[user]).length > 0) {
-        console.log("Menggunakan cache untuk user:", user);
-        return allWeeksCache[user];
+    async function fetchWeekFromSheets(user, week) {
+      const cacheKey = `${user}-w${week}`;
+      if (weekDataCache[cacheKey]) {
+        console.log("✅ Menggunakan cache untuk", cacheKey);
+        return weekDataCache[cacheKey];
       }
 
-      showLoading(true);
+      if (!useSheets()) return null;
       try {
-        const url = `${APPS_SCRIPT_URL}?user=${user}&action=readAll`;
-        console.log("Fetching all data from:", url);
+        const url = `${APPS_SCRIPT_URL}?user=${user}&week=${week}`;
         const res = await fetch(url);
         const data = await res.json();
+        if (data.error) throw new Error(data.error);
 
-        if (data.success && data.allWeeks) {
-          allWeeksCache[user] = data.allWeeks;
-          console.log("Data semua minggu berhasil dimuat:", Object.keys(data.allWeeks).length, "minggu");
-          showSyncStatus('✅ Data dimuat!', 'ok');
-          return allWeeksCache[user];
-        } else {
-          throw new Error(data.error || "Gagal load data");
-        }
+        weekDataCache[cacheKey] = data;
+        return data;
       } catch (e) {
-        console.error("Error load data:", e);
-        showSyncStatus('⚠️ Gagal load data, pakai lokal', 'err');
+        console.error("Fetch error:", e);
+        showSyncStatus('⚠️ Gagal load Sheets, pakai lokal', 'err');
         return null;
-      } finally {
-        showLoading(false);
       }
     }
 
-    // ============================================================
-    // BACA DATA UNTUK 1 MINGGU (DARI CACHE)
-    // ============================================================
-    function getWeekDataFromCache(user, week) {
-      if (allWeeksCache[user] && allWeeksCache[user][week]) {
-        return allWeeksCache[user][week];
-      }
-      return { lifts: [], bb: null, waist: null };
+    // TIDAK DIPAKAI - kosongkan
+    async function fetchAllWeeksFromSheets(user) {
+      return null;
     }
 
     // ============================================================
-    // SIMPAN DATA (POST)
+    // FUNGSI UTAMA
     // ============================================================
-    async function saveWeekDataToSheets(user, week, lifts, bb, waist) {
-      if (!useSheets()) return false;
+    function onInputChange(el, key) {
+      el.classList.toggle('has-val', el.value !== '');
+      updateDiff(key);
+    }
 
-      showLoading(true);
+    function updateDiff(key) {
+      const w = parseInt(document.getElementById('week-select').value) || 1;
+      const kgEl = document.getElementById('kg-' + key);
+      const diffEl = document.getElementById('diff-' + key);
+      const prEl = document.getElementById('pr-' + key);
+      if (!kgEl || !diffEl) return;
+
+      const cur = parseFloat(kgEl.value) || 0;
+      if (!cur || w <= 1) { diffEl.textContent = '—'; diffEl.className = 'diff-neu'; prEl.classList.remove('show'); return; }
+
+      const [di, ei] = key.split('-').map(Number);
+      const cacheKey = `${currentUser}-w${w - 1}`;
+      const prevData = weekDataCache[cacheKey];
+      const prev = prevData?.lifts?.[di * 7 + ei]?.kg || 0;
+
+      let maxEver = 0;
+      for (let pw = 1; pw < w; pw++) {
+        const wkData = weekDataCache[`${currentUser}-w${pw}`];
+        const v = wkData?.lifts?.[di * 7 + ei]?.kg || 0;
+        if (v > maxEver) maxEver = v;
+      }
+
+      if (!prev) { diffEl.textContent = '—'; diffEl.className = 'diff-neu'; }
+      else {
+        const d = cur - prev;
+        diffEl.textContent = (d > 0 ? '↑+' : d < 0 ? '↓' : '→') + Math.abs(d).toFixed(1) + 'kg';
+        diffEl.className = d > 0 ? 'diff-pos' : d < 0 ? 'diff-neg' : 'diff-neu';
+      }
+      prEl.classList.toggle('show', cur > 0 && cur > maxEver && maxEver > 0);
+    }
+
+    async function loadWeekData() {
+      const w = parseInt(document.getElementById('week-select').value) || 1;
+
+      const weekSelect = document.getElementById('week-select');
+      const saveBtn = document.querySelector('.save-btn');
+
+      // Tampilkan full page loading
+      showFullLoading(true, w);
+      if (weekSelect) weekSelect.disabled = true;
+      if (saveBtn) saveBtn.disabled = true;
+
       try {
+        const sheetsData = await fetchWeekFromSheets(currentUser, w);
+
+        DAYS.forEach((day, di) => {
+          day.exercises.forEach((_, ei) => {
+            const flatIdx = di * 7 + ei;
+            let kg = '', rep = '';
+            if (sheetsData && sheetsData.lifts && sheetsData.lifts[flatIdx]) {
+              kg = sheetsData.lifts[flatIdx].kg ?? '';
+              rep = sheetsData.lifts[flatIdx].rep ?? '';
+              if (kg) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`, kg);
+              if (rep) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`, rep);
+            } else {
+              kg = localStorage.getItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`) || '';
+              rep = localStorage.getItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`) || '';
+            }
+            const kgEl = document.getElementById('kg-' + di + '-' + ei);
+            const repEl = document.getElementById('rep-' + di + '-' + ei);
+            if (kgEl) { kgEl.value = kg; kgEl.classList.toggle('has-val', kg !== ''); }
+            if (repEl) { repEl.value = rep; repEl.classList.toggle('has-val', rep !== ''); }
+            updateDiff(`${di}-${ei}`);
+          });
+        });
+
+        let bb = '', waist = '';
+        if (sheetsData) {
+          bb = sheetsData.bb ?? '';
+          waist = sheetsData.waist ?? '';
+          if (bb) localStorage.setItem(`${currentUser}-bb-w${w}`, bb);
+          if (waist) localStorage.setItem(`${currentUser}-waist-w${w}`, waist);
+        } else {
+          bb = localStorage.getItem(`${currentUser}-bb-w${w}`) || '';
+          waist = localStorage.getItem(`${currentUser}-waist-w${w}`) || '';
+        }
+        const bbEl = document.getElementById('input-bb');
+        const waistEl = document.getElementById('input-waist');
+        if (bbEl) bbEl.value = bb;
+        if (waistEl) waistEl.value = waist;
+
+        buildChart();
+      } finally {
+        showFullLoading(false);
+        if (weekSelect) weekSelect.disabled = false;
+        if (saveBtn) saveBtn.disabled = false;
+      }
+    }
+
+    async function saveWeekData(btn) {
+      const w = parseInt(document.getElementById('week-select').value) || 1;
+
+      const lifts = [];
+      DAYS.forEach((day, di) => {
+        day.exercises.forEach((_, ei) => {
+          const kg = document.getElementById('kg-' + di + '-' + ei)?.value || '';
+          const rep = document.getElementById('rep-' + di + '-' + ei)?.value || '';
+          lifts.push({ kg, rep });
+          if (kg) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`, kg);
+          if (rep) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`, rep);
+        });
+      });
+
+      const bb = document.getElementById('input-bb')?.value || '';
+      const waist = document.getElementById('input-waist')?.value || '';
+      if (bb) localStorage.setItem(`${currentUser}-bb-w${w}`, bb);
+      if (waist) localStorage.setItem(`${currentUser}-waist-w${w}`, waist);
+
+      btn.disabled = true;
+      await postWeekToSheets(currentUser, w, lifts, bb, waist);
+      btn.disabled = false;
+
+      const cacheKey = `${currentUser}-w${w}`;
+      weekDataCache[cacheKey] = { lifts, bb, waist };
+
+      updateHomeStats();
+      buildChart();
+      btn.classList.add('saved');
+      setTimeout(() => btn.classList.remove('saved'), 2000);
+    }
+
+    async function postWeekToSheets(user, week, lifts, bb, waist) {
+      if (!useSheets()) return false;
+      try {
+        showSyncStatus('⏳ Menyimpan ke Google Sheets...');
         const res = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           body: JSON.stringify({ user, week, lifts, bb, waist })
         });
         const data = await res.json();
-        if (data.success) {
-          // Update cache setelah save
-          if (!allWeeksCache[user]) allWeeksCache[user] = {};
-          allWeeksCache[user][week] = { lifts, bb, waist };
-          showSyncStatus('✅ Tersimpan!', 'ok');
-          return true;
-        } else {
-          throw new Error(data.error);
-        }
+        if (data.error) throw new Error(data.error);
+        showSyncStatus('✅ Tersimpan di Google Sheets!', 'ok');
+        return true;
       } catch (e) {
-        showSyncStatus('⚠️ Gagal simpan', 'err');
+        showSyncStatus('⚠️ Gagal sync Sheets, tersimpan lokal', 'err');
         return false;
-      } finally {
-        showLoading(false);
       }
     }
 
-    // ============================================================
-    // PAGE NAVIGATION
-    // ============================================================
+    function updateHomeStats() {
+      ['Sinung', 'Awal', 'Rudi'].forEach(name => {
+        let sessions = 0, maxWeek = 0;
+        for (let w = 1; w <= 12; w++) {
+          let hasData = false;
+          DAYS.forEach((d, di) => {
+            d.exercises.forEach((_, ei) => {
+              if (localStorage.getItem(`${name}-lift-w${w}-${di}-${ei}-kg`)) hasData = true;
+            });
+          });
+          if (hasData) { sessions += 4; maxWeek = w; }
+        }
+        const bb = localStorage.getItem(`${name}-bb-w${maxWeek}`) || '—';
+        const weeksEl = document.getElementById(`stat-${name}-weeks`);
+        const sessionsEl = document.getElementById(`stat-${name}-sessions`);
+        const wbEl = document.getElementById(`stat-${name}-wb`);
+        if (weeksEl) weeksEl.textContent = maxWeek;
+        if (sessionsEl) sessionsEl.textContent = sessions;
+        if (wbEl) wbEl.textContent = bb !== '—' ? parseFloat(bb).toFixed(1) : '—';
+      });
+    }
+
+    function buildChart() {
+      const ctx = document.getElementById('progress-chart');
+      if (progressChart) progressChart.destroy();
+      const labels = Array.from({ length: 12 }, (_, i) => `W${i + 1}`);
+      const accentHex = { 'var(--red)': '#ff2d55', 'var(--blue)': '#4fc3f7', 'var(--green)': '#00e676' }[currentAccent] || '#ff2d55';
+
+      function getVal(type, week, di, ei) {
+        const cacheKey = `${currentUser}-w${week}`;
+        const cached = weekDataCache[cacheKey];
+        if (cached) {
+          if (type === 'bb') return parseFloat(cached.bb) || null;
+          if (type === 'waist') return parseFloat(cached.waist) || null;
+          if (type === 'kg' && cached.lifts) return parseFloat(cached.lifts[di * 7 + ei]?.kg) || null;
+        }
+        if (type === 'bb') return parseFloat(localStorage.getItem(`${currentUser}-bb-w${week}`)) || null;
+        if (type === 'waist') return parseFloat(localStorage.getItem(`${currentUser}-waist-w${week}`)) || null;
+        if (type === 'kg') return parseFloat(localStorage.getItem(`${currentUser}-lift-w${week}-${di}-${ei}-kg`)) || null;
+        return null;
+      }
+
+      let datasets = [];
+      if (currentChartType === 'bb') {
+        const data = labels.map((_, i) => getVal('bb', i + 1));
+        datasets = [{ label: 'Berat Badan (kg)', data, borderColor: accentHex, backgroundColor: 'transparent', tension: .4, pointRadius: 5, pointBackgroundColor: accentHex, spanGaps: true }];
+      } else if (currentChartType === 'waist') {
+        const data = labels.map((_, i) => getVal('waist', i + 1));
+        datasets = [{ label: 'Lingkar Pinggang (cm)', data, borderColor: '#f5c842', backgroundColor: 'transparent', tension: .4, pointRadius: 5, pointBackgroundColor: '#f5c842', spanGaps: true }];
+      } else {
+        const mainLifts = [{ di: 0, ei: 0, lbl: 'Bench Press' }, { di: 1, ei: 0, lbl: 'Squat' }, { di: 3, ei: 0, lbl: 'RDL' }];
+        const colors = [accentHex, '#f5c842', '#00e676'];
+        datasets = mainLifts.map((lift, li) => ({
+          label: lift.lbl,
+          data: labels.map((_, wi) => getVal('kg', wi + 1, lift.di, lift.ei)),
+          borderColor: colors[li], backgroundColor: 'transparent',
+          tension: .4, pointRadius: 5, pointBackgroundColor: colors[li], spanGaps: true
+        }));
+      }
+
+      progressChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+          responsive: true, interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { labels: { color: '#888', font: { family: 'Barlow', size: 12 } } }, tooltip: { backgroundColor: '#16161f', borderColor: '#2a2a3a', borderWidth: 1, titleColor: '#fff', bodyColor: '#888' } },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: '#666', font: { family: 'Barlow', size: 11 } } },
+            y: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: '#666', font: { family: 'Barlow', size: 11 } } }
+          }
+        }
+      });
+    }
+
+    function switchChart(type, btn) {
+      currentChartType = type;
+      document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      buildChart();
+    }
+
     function showPage(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + id).classList.add('active');
@@ -1465,9 +1639,6 @@
       if (id === 'home') updateHomeStats();
     }
 
-    // ============================================================
-    // PROGRAM PAGE
-    // ============================================================
     function buildProgram() {
       const container = document.getElementById('day-panels');
       container.innerHTML = '';
@@ -1512,17 +1683,45 @@
       document.getElementById('dpanel-' + idx).classList.add('active');
     }
 
-    // ============================================================
-    // TRACKER - BUILD UI (TETAP SAMA)
-    // ============================================================
     function buildTrackerDays() {
       const container = document.getElementById('tracker-days');
+      if (!container) return;
       container.innerHTML = '';
+
       DAYS.forEach((day, di) => {
         const section = document.createElement('div');
         section.className = 'tracker-day-section';
-        let rows = day.exercises.map((ex, ei) => `
+
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'tracker-day-head';
+        headerDiv.innerHTML = `
+      <div class="tracker-day-num">${day.num}</div>
+      <div>
+        <div class="tracker-day-title">${day.title}</div>
+        <div class="tracker-day-sub">${day.sub}</div>
+      </div>
+    `;
+        section.appendChild(headerDiv);
+
+        const table = document.createElement('table');
+        table.className = 'tracker-table';
+
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
       <tr>
+        <th style="width:28px">#</th>
+        <th>Gerakan</th>
+        <th style="width:120px;text-align:center">Berat (KG)</th>
+        <th style="width:110px;text-align:center">Reps</th>
+        <th style="width:100px;text-align:center">vs Minggu Lalu</th>
+      </tr>
+    `;
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        day.exercises.forEach((ex, ei) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
         <td style="width:28px;font-family:var(--font-cond);font-size:15px;font-weight:700;color:var(--border)">${String(ei + 1).padStart(2, '0')}</td>
         <td>
           <div style="font-weight:600;font-size:13px">${ex.name}</div>
@@ -1544,297 +1743,72 @@
           <span id="diff-${di}-${ei}" class="diff-neu">—</span>
           <span id="pr-${di}-${ei}" class="pr-badge">🏆 PR!</span>
         </td>
-      </tr>`).join('');
-
-        section.innerHTML = `
-      <div class="tracker-day-head">
-        <div class="tracker-day-num">${day.num}</div>
-        <div>
-          <div class="tracker-day-title">${day.title}</div>
-          <div class="tracker-day-sub">${day.sub}</div>
-        </div>
-      </div>
-      <table class="tracker-table">
-        <thead><tr>
-          <th style="width:28px">#</th>
-          <th>Gerakan</th>
-          <th style="width:120px;text-align:center">Berat (KG)</th>
-          <th style="width:110px;text-align:center">Reps</th>
-          <th style="width:100px;text-align:center">vs Minggu Lalu</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
+      `;
+          tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+        section.appendChild(table);
         container.appendChild(section);
       });
     }
 
     function buildBodyStatInputs() {
-      const week = parseInt(document.getElementById('week-select').value) || 1;
-      const weekData = getWeekDataFromCache(currentUser, week);
-
-      // BB Input
-      const bbContainer = document.getElementById('bb-inputs');
-      bbContainer.innerHTML = `
-    <div class="stat-input-row">
-      <span class="stat-week-lbl">Minggu ${week}</span>
-      <input class="input-stat" type="number" step="0.1" min="0"
-        id="input-bb" value="${weekData.bb || ''}" placeholder="0.0"/>
-      <span class="stat-unit">kg</span>
-    </div>
-    <div style="font-size:12px;color:var(--muted);margin-top:4px">
-      Ukur setiap Senin pagi sebelum makan
-    </div>`;
-
-      // Waist Input
+      const w = parseInt(document.getElementById('week-select').value) || 1;
+      const val = localStorage.getItem(`${currentUser}-bb-w${w}`) || '';
+      const waistVal = localStorage.getItem(`${currentUser}-waist-w${w}`) || '';
+      const container = document.getElementById('bb-inputs');
+      if (container) {
+        container.innerHTML = `
+      <div class="stat-input-row">
+        <span class="stat-week-lbl">Minggu ${w}</span>
+        <input class="input-stat" type="number" step="0.1" min="0"
+          id="input-bb" value="${val}" placeholder="0.0"/>
+        <span class="stat-unit">kg</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">
+        Ukur setiap hari Senin pagi sebelum makan
+      </div>`;
+      }
       const waistContainer = document.getElementById('waist-inputs');
-      waistContainer.innerHTML = `
-    <div class="stat-input-row">
-      <span class="stat-week-lbl">Minggu ${week}</span>
-      <input class="input-stat" type="number" step="0.1" min="0"
-        id="input-waist" value="${weekData.waist || ''}" placeholder="0.0"/>
-      <span class="stat-unit">cm</span>
-    </div>
-    <div style="font-size:12px;color:var(--muted);margin-top:4px">
-      Ukur setiap Senin pagi sebelum makan
-    </div>`;
-    }
-
-    function loadWeekData() {
-      const week = parseInt(document.getElementById('week-select').value) || 1;
-      const weekData = getWeekDataFromCache(currentUser, week);
-
-      // Isi lifts
-      DAYS.forEach((day, di) => {
-        day.exercises.forEach((_, ei) => {
-          const flatIdx = di * 7 + ei;
-          const lift = weekData.lifts && weekData.lifts[flatIdx] ? weekData.lifts[flatIdx] : { kg: null, rep: null };
-
-          const kgEl = document.getElementById(`kg-${di}-${ei}`);
-          const repEl = document.getElementById(`rep-${di}-${ei}`);
-
-          if (kgEl) {
-            kgEl.value = lift.kg || '';
-            kgEl.classList.toggle('has-val', lift.kg !== null && lift.kg !== '');
-          }
-          if (repEl) {
-            repEl.value = lift.rep || '';
-            repEl.classList.toggle('has-val', lift.rep !== null && lift.rep !== '');
-          }
-          updateDiff(`${di}-${ei}`);
-        });
-      });
-
-      // Isi body stats
-      const bbInput = document.getElementById('input-bb');
-      const waistInput = document.getElementById('input-waist');
-      if (bbInput) bbInput.value = weekData.bb || '';
-      if (waistInput) waistInput.value = weekData.waist || '';
-
-      buildChart();
-    }
-
-    function onInputChange(el, key) {
-      el.classList.toggle('has-val', el.value !== '');
-      updateDiff(key);
-    }
-
-    function updateDiff(key) {
-      const w = parseInt(document.getElementById('week-select').value) || 1;
-      const kgEl = document.getElementById('kg-' + key);
-      const diffEl = document.getElementById('diff-' + key);
-      const prEl = document.getElementById('pr-' + key);
-      if (!kgEl || !diffEl) return;
-
-      const cur = parseFloat(kgEl.value) || 0;
-      if (!cur || w <= 1) {
-        diffEl.textContent = '—';
-        diffEl.className = 'diff-neu';
-        prEl.classList.remove('show');
-        return;
-      }
-
-      const [di, ei] = key.split('-').map(Number);
-      const prevWeekData = getWeekDataFromCache(currentUser, w - 1);
-      const prevLift = prevWeekData.lifts && prevWeekData.lifts[di * 7 + ei] ? prevWeekData.lifts[di * 7 + ei] : { kg: 0 };
-      const prev = prevLift.kg || 0;
-
-      // Cek PR
-      let maxEver = 0;
-      for (let pw = 1; pw < w; pw++) {
-        const weekData = getWeekDataFromCache(currentUser, pw);
-        const lift = weekData.lifts && weekData.lifts[di * 7 + ei] ? weekData.lifts[di * 7 + ei] : { kg: 0 };
-        if (lift.kg > maxEver) maxEver = lift.kg;
-      }
-
-      if (!prev) {
-        diffEl.textContent = '—';
-        diffEl.className = 'diff-neu';
-      } else {
-        const d = cur - prev;
-        diffEl.textContent = (d > 0 ? '↑+' : d < 0 ? '↓' : '→') + Math.abs(d).toFixed(1) + 'kg';
-        diffEl.className = d > 0 ? 'diff-pos' : d < 0 ? 'diff-neg' : 'diff-neu';
-      }
-      prEl.classList.toggle('show', cur > 0 && cur > maxEver && maxEver > 0);
-    }
-
-    async function saveWeekData(btn) {
-      const w = parseInt(document.getElementById('week-select').value) || 1;
-
-      // Kumpulkan lifts
-      const lifts = [];
-      DAYS.forEach((day, di) => {
-        day.exercises.forEach((_, ei) => {
-          const kg = document.getElementById(`kg-${di}-${ei}`)?.value || '';
-          const rep = document.getElementById(`rep-${di}-${ei}`)?.value || '';
-          lifts.push({ kg, rep });
-        });
-      });
-
-      const bb = document.getElementById('input-bb')?.value || '';
-      const waist = document.getElementById('input-waist')?.value || '';
-
-      btn.disabled = true;
-      const success = await saveWeekDataToSheets(currentUser, w, lifts, bb, waist);
-      btn.disabled = false;
-
-      if (success) {
-        btn.classList.add('saved');
-        setTimeout(() => btn.classList.remove('saved'), 2000);
-        updateHomeStats();
-        buildChart();
+      if (waistContainer) {
+        waistContainer.innerHTML = `
+      <div class="stat-input-row">
+        <span class="stat-week-lbl">Minggu ${w}</span>
+        <input class="input-stat" type="number" step="0.1" min="0"
+          id="input-waist" value="${waistVal}" placeholder="0.0"/>
+        <span class="stat-unit">cm</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">
+        Ukur setiap hari Senin pagi sebelum makan
+      </div>`;
       }
     }
 
-    function onWeekChange() {
+    async function onWeekChange() {
+      const weekSelect = document.getElementById('week-select');
+      if (weekSelect && weekSelect.disabled) return;
       buildBodyStatInputs();
-      loadWeekData();
+      await loadWeekData();
     }
 
-    // ============================================================
-    // OPEN TRACKER (LOAD DATA SEKALIGUS)
-    // ============================================================
     async function openTracker(name, avatar, accent, avatarBg) {
       currentUser = name;
       currentAccent = accent;
+
+      weekDataCache = {};
 
       document.getElementById('tr-avatar').textContent = avatar;
       document.getElementById('tr-avatar').style.background = avatarBg;
       document.getElementById('tr-avatar').style.borderColor = accent.replace('var(', '').replace(')', '');
       document.getElementById('tr-name').textContent = name.toUpperCase();
       document.getElementById('tr-name').style.color = accent;
-
+      document.querySelectorAll('.save-btn').forEach(b => b.style.background = `linear-gradient(135deg, ${accent}, var(--orange))`);
       buildTrackerDays();
-
-      // LOAD SEMUA DATA SEKALIGUS (OPTIMASI)
-      await loadAllUserData(name);
-
-      buildBodyStatInputs();
-      loadWeekData();
-      buildChart();
-
       showPage('tracker');
       document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    }
 
-    // ============================================================
-    // HOME STATS
-    // ============================================================
-    function updateHomeStats() {
-      // Hitung dari cache atau localStorage
-      ['Sinung', 'Awal', 'Rudi'].forEach(name => {
-        let sessions = 0, maxWeek = 0;
-        const userCache = allWeeksCache[name];
-        if (userCache) {
-          for (let w = 1; w <= 12; w++) {
-            const weekData = userCache[w];
-            if (weekData && weekData.lifts) {
-              let hasData = false;
-              for (let i = 0; i < weekData.lifts.length; i++) {
-                if (weekData.lifts[i] && weekData.lifts[i].kg) hasData = true;
-              }
-              if (hasData) { sessions += 4; maxWeek = w; }
-            }
-          }
-          const bb = (userCache[maxWeek] && userCache[maxWeek].bb) ? userCache[maxWeek].bb : '—';
-          document.getElementById(`stat-${name}-weeks`).textContent = maxWeek;
-          document.getElementById(`stat-${name}-sessions`).textContent = sessions;
-          document.getElementById(`stat-${name}-wb`).textContent = bb !== '—' ? parseFloat(bb).toFixed(1) : '—';
-        } else {
-          // Fallback ke localStorage
-          let sessions = 0, maxWeek = 0;
-          for (let w = 1; w <= 12; w++) {
-            let hasData = false;
-            DAYS.forEach((d, di) => {
-              d.exercises.forEach((_, ei) => {
-                if (localStorage.getItem(`${name}-lift-w${w}-${di}-${ei}-kg`)) hasData = true;
-              });
-            });
-            if (hasData) { sessions += 4; maxWeek = w; }
-          }
-          const bb = localStorage.getItem(`${name}-bb-w${maxWeek}`) || '—';
-          document.getElementById(`stat-${name}-weeks`).textContent = maxWeek;
-          document.getElementById(`stat-${name}-sessions`).textContent = sessions;
-          document.getElementById(`stat-${name}-wb`).textContent = bb !== '—' ? parseFloat(bb).toFixed(1) : '—';
-        }
-      });
-    }
-
-    // ============================================================
-    // CHARTS
-    // ============================================================
-    function buildChart() {
-      const ctx = document.getElementById('progress-chart');
-      if (progressChart) progressChart.destroy();
-      const labels = Array.from({ length: 12 }, (_, i) => `W${i + 1}`);
-      const accentHex = { 'var(--red)': '#ff2d55', 'var(--blue)': '#4fc3f7', 'var(--green)': '#00e676' }[currentAccent] || '#ff2d55';
-
-      function getVal(type, week, di = 0, ei = 0) {
-        const weekData = getWeekDataFromCache(currentUser, week);
-        if (!weekData) return null;
-        if (type === 'bb') return weekData.bb ? parseFloat(weekData.bb) : null;
-        if (type === 'waist') return weekData.waist ? parseFloat(weekData.waist) : null;
-        if (type === 'kg' && weekData.lifts && weekData.lifts[di * 7 + ei]) {
-          return weekData.lifts[di * 7 + ei].kg ? parseFloat(weekData.lifts[di * 7 + ei].kg) : null;
-        }
-        return null;
-      }
-
-      let datasets = [];
-      if (currentChartType === 'bb') {
-        const data = labels.map((_, i) => getVal('bb', i + 1));
-        datasets = [{ label: 'Berat Badan (kg)', data, borderColor: accentHex, backgroundColor: 'transparent', tension: .4, pointRadius: 5, pointBackgroundColor: accentHex, spanGaps: true }];
-      } else if (currentChartType === 'waist') {
-        const data = labels.map((_, i) => getVal('waist', i + 1));
-        datasets = [{ label: 'Lingkar Pinggang (cm)', data, borderColor: '#f5c842', backgroundColor: 'transparent', tension: .4, pointRadius: 5, pointBackgroundColor: '#f5c842', spanGaps: true }];
-      } else {
-        const mainLifts = [{ di: 0, ei: 0, lbl: 'Bench Press' }, { di: 1, ei: 0, lbl: 'Squat' }, { di: 3, ei: 0, lbl: 'RDL' }];
-        const colors = [accentHex, '#f5c842', '#00e676'];
-        datasets = mainLifts.map((lift, li) => ({
-          label: lift.lbl,
-          data: labels.map((_, wi) => getVal('kg', wi + 1, lift.di, lift.ei)),
-          borderColor: colors[li], backgroundColor: 'transparent',
-          tension: .4, pointRadius: 5, pointBackgroundColor: colors[li], spanGaps: true
-        }));
-      }
-
-      progressChart = new Chart(ctx, {
-        type: 'line',
-        data: { labels, datasets },
-        options: {
-          responsive: true, interaction: { mode: 'index', intersect: false },
-          plugins: { legend: { labels: { color: '#888', font: { family: 'Barlow', size: 12 } } }, tooltip: { backgroundColor: '#16161f', borderColor: '#2a2a3a', borderWidth: 1, titleColor: '#fff', bodyColor: '#888' } },
-          scales: {
-            x: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: '#666', font: { family: 'Barlow', size: 11 } } },
-            y: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: '#666', font: { family: 'Barlow', size: 11 } } }
-          }
-        }
-      });
-    }
-
-    function switchChart(type, btn) {
-      currentChartType = type;
-      document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
+      await loadWeekData();
+      buildBodyStatInputs();
       buildChart();
     }
 
