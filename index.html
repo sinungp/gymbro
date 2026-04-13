@@ -10,6 +10,174 @@
     rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
+    /* ========== CSS ========== */
+    /* QR Code Section */
+    /* Modal QR Code Perbesar */
+.qr-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-modal-content {
+  position: relative;
+  background-color: var(--card);
+  padding: 24px;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  max-width: 90%;
+  max-height: 90%;
+  text-align: center;
+  animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.qr-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.qr-modal-close:hover {
+  color: var(--red);
+}
+
+.qr-modal-image-container {
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 16px;
+}
+
+.qr-modal-image-container img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.qr-modal-value {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--bg3);
+  padding: 12px 16px;
+  border-radius: 12px;
+  word-break: break-all;
+  letter-spacing: 1px;
+}
+    .qr-section {
+      background: linear-gradient(135deg, rgba(79, 195, 247, .1), rgba(179, 136, 255, .08));
+      border: 1px solid var(--blue);
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .qr-icon {
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: white;
+      padding: 5px;
+    }
+
+    .qr-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .qr-content {
+      flex: 1;
+    }
+
+    .qr-content h4 {
+      font-family: var(--font-cond);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .qr-value {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .qr-value small {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: normal;
+    }
+
+    .qr-button {
+      background: var(--blue);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 20px;
+      font-family: var(--font-cond);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #000;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+
+    .qr-button:hover {
+      opacity: .8;
+    }
+
+    @media(max-width:640px) {
+      .qr-section {
+        flex-direction: column;
+        text-align: center;
+      }
+      .qr-button {
+        width: 100%;
+      }
+    }
     :root {
       --bg: #0a0a0f;
       --bg2: #111118;
@@ -128,6 +296,104 @@
       }
     }
 
+    /* Modal Popup Video */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      position: relative;
+      background-color: var(--card);
+      margin: 5% auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 800px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-header h3 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--red), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .close-modal {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .close-modal:hover {
+      color: var(--red);
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .video-error {
+      text-align: center;
+      padding: 40px;
+      color: var(--red);
+      font-family: var(--font-body);
+    }
+
+    .loading-video {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+
+    .exercise-name-clickable {
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--blue);
+      transition: color 0.2s;
+    }
+
+    .exercise-name-clickable:hover {
+      color: var(--red);
+      text-decoration: underline;
+    }
+
     .home-hero {
       padding: 80px 24px 48px;
       text-align: center;
@@ -244,10 +510,6 @@
     .user-card:hover {
       transform: translateY(-4px);
       border-color: var(--accent);
-    }
-
-    .user-card:hover .user-avatar {
-      transform: scale(1.05);
     }
 
     .user-avatar {
@@ -970,50 +1232,51 @@
       color: var(--muted);
     }
 
-    /* FULL PAGE LOADING OVERLAY */
-    .loading-full {
+    .skeleton-loader {
+      background: linear-gradient(90deg, var(--bg3) 25%, var(--bg2) 50%, var(--bg3) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+      border-radius: 12px;
+      min-height: 400px;
+    }
+
+    @keyframes skeleton-loading {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .toast {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(8px);
-      z-index: 10000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      gap: 20px;
+      bottom: 20px;
+      right: 20px;
+      background: var(--green);
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 8px;
       font-family: var(--font-cond);
-      font-size: 18px;
-      letter-spacing: 2px;
-      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+      z-index: 1000;
+      animation: fadeOut 2s forwards;
     }
 
-    .loading-full .spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid var(--border);
-      border-top-color: var(--red);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
 
-    .loading-full .loading-text {
-      text-transform: uppercase;
-      color: var(--muted);
-    }
+      70% {
+        opacity: 1;
+      }
 
-    .loading-full .loading-week {
-      color: var(--red);
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
+      100% {
+        opacity: 0;
+        visibility: hidden;
       }
     }
 
@@ -1120,7 +1383,6 @@
     <div class="program-wrap">
       <div class="section-title">PROGRAM</div>
       <p class="section-sub">Upper-Lower Split · 4x/Minggu · Fat Loss + Muscle Building</p>
-
       <div class="schedule-grid">
         <div class="sched-day active-day">
           <div class="sched-name">SEN</div>
@@ -1155,14 +1417,12 @@
           <div class="sched-rest">REST</div>
         </div>
       </div>
-
       <div class="day-tabs">
         <button class="day-tab active" onclick="switchDay(0,this)">Day 1 — Upper A</button>
         <button class="day-tab" onclick="switchDay(1,this)">Day 2 — Lower A</button>
         <button class="day-tab" onclick="switchDay(2,this)">Day 3 — Upper B</button>
         <button class="day-tab" onclick="switchDay(3,this)">Day 4 — Lower B</button>
       </div>
-
       <div id="day-panels"></div>
     </div>
   </div>
@@ -1177,7 +1437,9 @@
         </div>
         <button class="back-btn" onclick="showPage('home')">← Kembali</button>
       </div>
-
+      <div id="qr-container" class="qr-section-placeholder">
+        <!-- QR code akan muncul di sini -->
+      </div>
       <div class="nutrition-banner">
         <div class="nutrition-icon">🍽️</div>
         <div class="nutrition-content">
@@ -1193,11 +1455,10 @@
           </div>
         </div>
       </div>
-
       <div class="week-nav">
         <label>MINGGU KE:</label>
         <select id="week-select" onchange="onWeekChange()">
-          <option value="1">Minggu 1</option>
+          <option value="1" selected>Minggu 1</option>
           <option value="2">Minggu 2</option>
           <option value="3">Minggu 3</option>
           <option value="4">Minggu 4</option>
@@ -1212,7 +1473,6 @@
         </select>
         <button class="save-btn" onclick="saveWeekData(this)">💾 SIMPAN</button>
       </div>
-
       <div class="chart-section">
         <h4>📈 Progress Chart</h4>
         <div class="chart-tabs">
@@ -1222,7 +1482,6 @@
         </div>
         <canvas id="progress-chart" height="90"></canvas>
       </div>
-
       <div class="stats-grid">
         <div class="stat-card">
           <h4>⚖️ Berat Badan</h4>
@@ -1233,19 +1492,216 @@
           <div id="waist-inputs"></div>
         </div>
       </div>
-
       <div id="tracker-days"></div>
+    </div>
+  </div>
+
+  <!-- Modal Popup Video -->
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalExerciseTitle">Exercise Name</h3>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div id="videoContainer" class="video-container">
+        <div class="loading-video">🎬 Loading video...</div>
+      </div>
     </div>
   </div>
 
   <script>
     // ============================================================
+      // QR CODE - AMBIL VALUE DARI SHEET "BodyStats"
+      // ============================================================
+
+      let bodyStatsCache = {};
+
+      async function fetchBodyStats() {
+        if (Object.keys(bodyStatsCache).length > 0) {
+          return bodyStatsCache;
+        }
+
+        console.log('📊 Fetching body stats from sheet...');
+
+        return new Promise((resolve, reject) => {
+          const callbackName = `stats_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+          const script = document.createElement('script');
+
+          window[callbackName] = (data) => {
+            delete window[callbackName];
+            document.body.removeChild(script);
+
+            if (data && !data.error) {
+              if (data.data) {
+                bodyStatsCache = data.data;
+              } else {
+                bodyStatsCache = data;
+              }
+              console.log('✅ Body stats loaded:', bodyStatsCache);
+              resolve(bodyStatsCache);
+            } else {
+              reject(new Error(data?.error || 'Gagal fetch body stats'));
+            }
+          };
+
+          script.src = `${APPS_SCRIPT_URL}?action=getBodyStats&callback=${callbackName}`;
+          script.onerror = () => {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            reject(new Error('Network error when fetching body stats'));
+          };
+
+          document.body.appendChild(script);
+        });
+      }
+
+      // ============================================================
+        // QR CODE - GENERATE QR CODE DARI VALUE
+        // ============================================================
+
+        // ============================================================
+          // QR CODE - GENERATE QR CODE DARI VALUE (KLIK UNTUK PERBESAR)
+          // ============================================================
+
+          function displayQrCode(user) {
+            const qrContainer = document.getElementById('qr-container');
+            if (!qrContainer) return;
+
+            console.log(`📱 Display QR for user: "${user}"`);
+            console.log(`📦 Available body stats:`, bodyStatsCache);
+
+            // Cari value untuk user (case-insensitive)
+            let userValue = bodyStatsCache[user];
+
+            if (!userValue) {
+              const userLower = user.toLowerCase();
+              for (const [key, value] of Object.entries(bodyStatsCache)) {
+                if (key.toLowerCase() === userLower) {
+                  userValue = value;
+                  console.log(`✅ Found match: "${key}" -> "${user}"`);
+                  break;
+                }
+              }
+            }
+
+            if (userValue && userValue !== '') {
+              // Generate QR Code
+              const qrCodeUrl = generateQRCode(userValue);
+              const qrCodeUrlLarge = generateQRCode(userValue, 400); // Ukuran besar untuk modal
+
+              qrContainer.innerHTML = `
+      <div class="qr-section">
+        <div class="qr-icon" onclick="showQrModal('${qrCodeUrlLarge}', '${userValue}')" style="cursor:pointer;">
+          <img src="${qrCodeUrl}" alt="QR Code" style="width:60px; height:60px; border-radius:12px;">
+        </div>
+        <div class="qr-content">
+          <h4>QR / LINK PERSONAL</h4>
+          <div class="qr-value">
+            <strong>${userValue}</strong>
+            <small>(Klik QR untuk perbesar)</small>
+          </div>
+        </div>
+      </div>
+    `;
+            } else {
+              qrContainer.innerHTML = `
+      <div class="qr-section" style="border-color:var(--muted); opacity:0.7;">
+        <div class="qr-icon">🔗</div>
+        <div class="qr-content">
+          <h4>QR / LINK PERSONAL</h4>
+          <div class="qr-value">Belum ada data untuk user ${user}</div>
+        </div>
+      </div>
+    `;
+            }
+          }
+
+          // ============================================================
+          // GENERATE QR CODE DENGAN UKURAN BISA DIATUR
+          // ============================================================
+          function generateQRCode(text, size = 200) {
+            const encodedText = encodeURIComponent(text);
+            return `https://quickchart.io/qr?text=${encodedText}&size=${size}&margin=2`;
+          }
+
+          // ============================================================
+          // TAMPILKAN MODAL PERBESAR QR CODE
+          // ============================================================
+          function showQrModal(qrImageUrl, value) {
+            // Buat modal element jika belum ada
+            let qrModal = document.getElementById('qrModal');
+            if (!qrModal) {
+              qrModal = document.createElement('div');
+              qrModal.id = 'qrModal';
+              qrModal.className = 'qr-modal';
+              qrModal.innerHTML = `
+      <div class="qr-modal-content">
+        <span class="qr-modal-close">&times;</span>
+        <div class="qr-modal-image-container">
+          <img id="qrModalImage" src="" alt="QR Code">
+        </div>
+        <div class="qr-modal-value" id="qrModalValue"></div>
+      </div>
+    `;
+              document.body.appendChild(qrModal);
+
+              // Event close modal
+              qrModal.querySelector('.qr-modal-close').addEventListener('click', () => {
+                qrModal.style.display = 'none';
+              });
+
+              // Klik di luar modal untuk tutup
+              qrModal.addEventListener('click', (e) => {
+                if (e.target === qrModal) {
+                  qrModal.style.display = 'none';
+                }
+              });
+            }
+
+            // Set gambar dan value
+            const modalImg = document.getElementById('qrModalImage');
+            const modalValue = document.getElementById('qrModalValue');
+
+            if (modalImg) modalImg.src = qrImageUrl;
+            if (modalValue) modalValue.textContent = value;
+
+            // Tampilkan modal
+            qrModal.style.display = 'flex';
+          }
+
+        // ============================================================
+        // GENERATE QR CODE MENGGUNAKAN API eksternal
+        // ============================================================
+        function generateQRCode(text) {
+          // Menggunakan API QR code dari quickchart.io (gratis, tanpa batasan)
+          const encodedText = encodeURIComponent(text);
+          return `https://quickchart.io/qr?text=${encodedText}&size=200&margin=2`;
+
+          // Alternatif API lain (jika quickchart bermasalah):
+          // return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodedText}`;
+        }
+
+        // ============================================================
+        // BUKA VALUE (SALIN KE CLIPBOARD)
+        // ============================================================
+        function openQrValue(value) {
+          if (!value) return;
+
+          // Copy ke clipboard
+          navigator.clipboard.writeText(value).then(() => {
+            showToast(`✅ "${value}" disalin ke clipboard!`, 'success');
+          }).catch(() => {
+            // Fallback jika clipboard gagal
+            prompt("Salin kode ini (Ctrl+C):", value);
+          });
+        }
+    // ============================================================
     // KONFIGURASI - GANTI DENGAN URL APPS SCRIPT ANDA!
     // ============================================================
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwziz3ZQ3k5P5YiQw48Fcg3RF-TriUIeXIgXZzp8uNaZUG3Hr1iTPmg945VCiI5yREggA/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwF-qI7HCenLWUAtvEOED2UdLZj4YiOwauFBR86V37HmXZOFykIOHM-Y5CTVARVskH_jg/exec";
 
     // ============================================================
-    // DATA
+    // DATA PROGRAM
     // ============================================================
     const DAYS = [
       {
@@ -1257,7 +1713,7 @@
           { name: "Overhead Press", sets: "4", reps: "8-10", muscle: "Bahu", desc: "Berdiri/duduk, dorong beban lurus ke atas kepala" },
           { name: "Lateral Raise", sets: "3", reps: "12-15", muscle: "Bahu Samping", desc: "Angkat lengan ke samping sampai sejajar bahu, kontrol turunnya" },
           { name: "Tricep Pushdown", sets: "3", reps: "12-15", muscle: "Tricep", desc: "Siku tetap di sisi tubuh, dorong ke bawah sampai lurus" },
-          { name: "Overhead Tricep Extension", sets: "3", reps: "10-12", muscle: "Tricep", desc: "Angkat DB di belakang kepala, luruskan siku" },
+          { name: "Overhead Tricep Extension", sets: "3", reps: "10-12", muscle: "Tricep", desc: "Angkat DB di belakang kepala, luruskan siku" }
         ]
       },
       {
@@ -1269,7 +1725,7 @@
           { name: "Leg Extension", sets: "3", reps: "15", muscle: "Quad", desc: "Duduk tegak, luruskan kaki ke depan, squeeze quad di atas" },
           { name: "Leg Curl", sets: "3", reps: "12-15", muscle: "Hamstring", desc: "Tekuk lutut ke arah bokong, kontrol saat turun" },
           { name: "Standing Calf Raise", sets: "4", reps: "15-20", muscle: "Betis", desc: "Naik tinggi di ujung jari kaki, tahan 1 detik di atas" },
-          { name: "Plank", sets: "3", reps: "45 dtk", muscle: "Core", desc: "Tubuh lurus seperti papan, jangan angkat bokong" },
+          { name: "Plank", sets: "3", reps: "45 dtk", muscle: "Core", desc: "Tubuh lurus seperti papan, jangan angkat bokong" }
         ]
       },
       {
@@ -1281,7 +1737,7 @@
           { name: "Face Pull", sets: "3", reps: "15", muscle: "Bahu Belakang", desc: "Tarik ke muka, siku tinggi, rotate bahu keluar" },
           { name: "Barbell / DB Curl", sets: "3", reps: "10-12", muscle: "Bicep", desc: "Jangan ayunkan badan, squeeze bicep di atas" },
           { name: "Hammer Curl", sets: "3", reps: "12", muscle: "Bicep", desc: "Grip netral (telapak menghadap dalam), curl ke atas" },
-          { name: "Ab Crunch / Cable Crunch", sets: "3", reps: "15-20", muscle: "Core", desc: "Fokus squeeze abs, jangan tarik leher" },
+          { name: "Ab Crunch / Cable Crunch", sets: "3", reps: "15-20", muscle: "Core", desc: "Fokus squeeze abs, jangan tarik leher" }
         ]
       },
       {
@@ -1293,7 +1749,7 @@
           { name: "Sumo Deadlift", sets: "3", reps: "8-10", muscle: "Hamstring · Back", desc: "Kaki lebar, jari kaki keluar, bar dekat tubuh, punggung lurus" },
           { name: "Seated Leg Curl", sets: "3", reps: "12-15", muscle: "Hamstring", desc: "Tekuk lutut penuh, kontrol saat meluruskan" },
           { name: "Seated Calf Raise", sets: "3", reps: "15-20", muscle: "Betis", desc: "Fokus kontraksi penuh di atas" },
-          { name: "Hanging Leg Raise", sets: "3", reps: "12-15", muscle: "Core Bawah", desc: "Gantung di pull-up bar, angkat kaki lurus ke depan" },
+          { name: "Hanging Leg Raise", sets: "3", reps: "12-15", muscle: "Core Bawah", desc: "Gantung di pull-up bar, angkat kaki lurus ke depan" }
         ]
       }
     ];
@@ -1304,7 +1760,7 @@
       "Hamstring": "pill-orange", "Hamstring · Glute": "pill-orange", "Hamstring · Back": "pill-orange",
       "Betis": "pill-gold", "Core": "pill-red", "Core Bawah": "pill-red", "Glute": "pill-gold",
       "Glute · Quad": "pill-gold", "Bicep": "pill-blue", "Lat": "pill-blue", "Punggung": "pill-blue",
-      "Punggung Tengah": "pill-blue", "Punggung · Bicep": "pill-blue",
+      "Punggung Tengah": "pill-blue"
     };
 
     // ============================================================
@@ -1314,97 +1770,277 @@
     let currentAccent = 'var(--red)';
     let progressChart = null;
     let currentChartType = 'bb';
-    let weekDataCache = {};
+    const weekCache = {};
+    let videoUrlsCache = {};
 
     // ============================================================
-    // FULL PAGE LOADING
+    // FETCH DENGAN JSONP (BYPASS CORS)
     // ============================================================
-    function showFullLoading(show, week = '') {
-      let overlay = document.getElementById('fullLoadingOverlay');
 
-      if (show) {
-        if (!overlay) {
-          overlay = document.createElement('div');
-          overlay.id = 'fullLoadingOverlay';
-          overlay.className = 'loading-full';
-          overlay.innerHTML = `
-        <div class="spinner"></div>
-        <div class="loading-text">LOADING DATA MINGGU KE-</div>
-        <div class="loading-week" id="loadingWeekNum">${week}</div>
-      `;
-          document.body.appendChild(overlay);
-        } else {
-          const weekEl = document.getElementById('loadingWeekNum');
-          if (weekEl) weekEl.textContent = week;
-          overlay.style.display = 'flex';
-        }
-      } else {
-        if (overlay) {
-          overlay.style.display = 'none';
-        }
-      }
-    }
-
-    // ============================================================
-    // SYNC HELPERS
-    // ============================================================
-    const useSheets = () => APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
-
-    function showSyncStatus(msg, type = 'info') {
-      let el = document.getElementById('sync-status');
-      if (!el) {
-        el = document.createElement('div');
-        el.id = 'sync-status';
-        Object.assign(el.style, {
-          position: 'fixed', bottom: '20px', right: '20px', zIndex: '9999',
-          padding: '10px 20px', borderRadius: '8px', fontSize: '13px',
-          fontFamily: 'var(--font-cond)', fontWeight: '700', letterSpacing: '1px',
-          transition: 'opacity .4s', pointerEvents: 'none'
-        });
-        document.body.appendChild(el);
-      }
-      el.textContent = msg;
-      el.style.opacity = '1';
-      el.style.background = type === 'ok' ? '#00e676' : type === 'err' ? '#ff2d55' : '#4fc3f7';
-      el.style.color = '#000';
-      clearTimeout(el._t);
-      el._t = setTimeout(() => el.style.opacity = '0', 3000);
-    }
-
-    // ============================================================
-    // FETCH DATA DENGAN CACHE (PER MINGGU)
-    // ============================================================
     async function fetchWeekFromSheets(user, week) {
-      const cacheKey = `${user}-w${week}`;
-      if (weekDataCache[cacheKey]) {
-        console.log("✅ Menggunakan cache untuk", cacheKey);
-        return weekDataCache[cacheKey];
+      const cacheKey = `${user}_${week}`;
+      if (weekCache[cacheKey]) {
+        console.log(`⚡ Cache hit untuk ${user} week ${week}`);
+        return weekCache[cacheKey];
       }
 
-      if (!useSheets()) return null;
-      try {
-        const url = `${APPS_SCRIPT_URL}?user=${user}&week=${week}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
+      console.log(`🐢 Fetching ${user} week ${week} with JSONP...`);
 
-        weekDataCache[cacheKey] = data;
-        return data;
-      } catch (e) {
-        console.error("Fetch error:", e);
-        showSyncStatus('⚠️ Gagal load Sheets, pakai lokal', 'err');
+      return new Promise((resolve, reject) => {
+        const callbackName = `cb_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+        const script = document.createElement('script');
+
+        window[callbackName] = (data) => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+
+          if (data && !data.error) {
+            const normalizedData = {
+              lifts: data.lifts || [],
+              bb: data.bb || null,
+              waist: data.waist || null
+            };
+            weekCache[cacheKey] = normalizedData;
+            console.log(`✅ Week ${week} loaded via JSONP`);
+            resolve(normalizedData);
+          } else {
+            reject(new Error(data?.error || 'Gagal fetch data'));
+          }
+        };
+
+        script.src = `${APPS_SCRIPT_URL}?user=${user}&week=${week}&callback=${callbackName}`;
+        script.onerror = () => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('Network error when fetching data'));
+        };
+
+        document.body.appendChild(script);
+      });
+    }
+
+    async function fetchVideoUrls() {
+      if (Object.keys(videoUrlsCache).length > 0) {
+        return videoUrlsCache;
+      }
+
+      console.log('🎬 Fetching video URLs with JSONP...');
+
+      return new Promise((resolve, reject) => {
+        const callbackName = `vid_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+        const script = document.createElement('script');
+
+        window[callbackName] = (data) => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+
+          if (data && !data.error) {
+            if (data.data) {
+              videoUrlsCache = data.data;
+            } else {
+              videoUrlsCache = data;
+            }
+            console.log(`✅ ${Object.keys(videoUrlsCache).length} video URLs loaded`);
+            resolve(videoUrlsCache);
+          } else {
+            reject(new Error(data?.error || 'Gagal fetch video URLs'));
+          }
+        };
+
+        script.src = `${APPS_SCRIPT_URL}?action=getVideoUrls&callback=${callbackName}`;
+        script.onerror = () => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('Network error when fetching video URLs'));
+        };
+
+        document.body.appendChild(script);
+      });
+    }
+
+    // ============================================================
+    // MENYIMPAN DATA KE SHEETS (POST - tetap pakai fetch biasa)
+    // ============================================================
+    async function saveWeekToSheets(user, week, lifts, bb, waist) {
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ user, week, lifts, bb, waist })
+      });
+      const result = await response.json();
+      if (result.success) {
+        const cacheKey = `${user}_${week}`;
+        weekCache[cacheKey] = { lifts, bb, waist };
+        return true;
+      } else {
+        throw new Error(result.error || 'Gagal menyimpan data');
+      }
+    }
+
+    // ============================================================
+    // FUNGSI VIDEO MODAL
+    // ============================================================
+    function getYouTubeEmbedUrl(url) {
+        if (!url) return null;
+
+        const urlStr = url.toString().trim();
+        let videoId = null;
+
+        // Pola untuk mengekstrak video ID dari berbagai format URL YouTube
+        const patterns = [
+          /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/,
+          /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+          /youtube\.com\/live\/([a-zA-Z0-9_-]{11})/
+        ];
+
+        for (const pattern of patterns) {
+          const match = urlStr.match(pattern);
+          if (match) {
+            videoId = match[1];
+            break;
+          }
+        }
+
+        if (videoId) {
+          console.log(`✅ Extracted video ID: ${videoId}`);
+          return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`;
+        }
+
+        console.warn(`⚠️ Could not extract video ID from: ${urlStr}`);
         return null;
       }
+
+    function showVideoModal(exerciseName, videoUrl) {
+        // Buka di tab baru, bukan modal
+        window.open(videoUrl, '_blank');
+        showToast(`Membuka video ${exerciseName} di tab baru`, 'info');
+      }
+
+    function closeVideoModal() {
+      const modal = document.getElementById('videoModal');
+      const videoContainer = document.getElementById('videoContainer');
+      if (modal) modal.style.display = 'none';
+      if (videoContainer) {
+        videoContainer.innerHTML = '<div class="loading-video">🎬 Loading video...</div>';
+      }
     }
 
-    // TIDAK DIPAKAI - kosongkan
-    async function fetchAllWeeksFromSheets(user) {
-      return null;
+    // Modal close event
+    document.querySelector('.close-modal')?.addEventListener('click', closeVideoModal);
+    window.addEventListener('click', (event) => {
+      const modal = document.getElementById('videoModal');
+      if (event.target === modal) closeVideoModal();
+    });
+
+    async function handleExerciseClick(event) {
+      const exerciseName = event.currentTarget.getAttribute('data-exercise');
+      await fetchVideoUrls();
+      const videoUrl = videoUrlsCache[exerciseName];
+      if (videoUrl) {
+        showVideoModal(exerciseName, videoUrl);
+      } else {
+        showToast(`Video untuk "${exerciseName}" belum tersedia`, 'error');
+      }
     }
 
     // ============================================================
-    // FUNGSI UTAMA
+    // FUNGSI BANTUAN
     // ============================================================
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      toast.style.background = type === 'success' ? 'var(--green)' : 'var(--red)';
+      toast.style.color = '#000';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2000);
+    }
+
+    // ============================================================
+    // RENDER FUNCTIONS
+    // ============================================================
+    function buildProgram() {
+      const container = document.getElementById('day-panels');
+      container.innerHTML = '';
+      DAYS.forEach((day, di) => {
+        const panel = document.createElement('div');
+        panel.className = 'day-panel' + (di === 0 ? ' active' : '');
+        panel.id = 'dpanel-' + di;
+        let rows = day.exercises.map((ex, ei) => `
+      <tr class="exercise-row">
+        <td><span class="ex-num">${String(ei + 1).padStart(2, '0')}</span></td>
+        <td><div class="ex-name">${ex.name}</div><div class="ex-desc">${ex.desc}</div></td>
+        <td><div class="ex-sets">${ex.sets}</div></td>
+        <td><div class="ex-reps">${ex.reps}</div></td>
+        <td><span class="ex-muscle ${MUSCLE_COLOR[ex.muscle] || ''}">${ex.muscle}</span></td>
+      </tr>`).join('');
+        panel.innerHTML = `
+      <div class="day-header">
+        <div class="day-number">${day.num}</div>
+        <div class="day-info"><h3>${day.title}</h3><p>${day.sub}</p></div>
+        <div style="margin-left:auto;font-size:24px">${['💪', '🦵', '🔋', '⚡'][di]}</div>
+      </div>
+      <table class="exercise-table">
+        <thead><tr><th style="width:44px">#</th><th>Gerakan</th><th style="width:60px;text-align:center">Set</th><th style="width:90px;text-align:center">Rep</th><th style="width:140px;text-align:center">Otot</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+        container.appendChild(panel);
+      });
+    }
+
+    function switchDay(idx, btn) {
+      document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('dpanel-' + idx).classList.add('active');
+    }
+
+    function buildTrackerDays() {
+      const container = document.getElementById('tracker-days');
+      if (!container) return;
+
+      let html = '';
+      DAYS.forEach((day, di) => {
+        let rows = '';
+        day.exercises.forEach((ex, ei) => {
+          rows += `
+      <tr>
+        <td style="width:28px;font-family:var(--font-cond);font-size:15px;font-weight:700;color:var(--border)">${String(ei + 1).padStart(2, '0')}</td>
+        <td><div class="exercise-name-clickable" data-exercise="${ex.name}">📹 ${ex.name}</div><div style="font-size:11px;color:var(--muted)">${ex.sets} set × ${ex.reps}</div></td>
+        <td style="text-align:center"><input class="input-num" type="number" min="0" step="0.5" id="kg-${di}-${ei}" placeholder="—" oninput="onInputChange(this,'${di}-${ei}')"/><span style="font-size:11px;color:var(--muted)">kg</span></td>
+        <td style="text-align:center"><input class="input-num" type="number" min="0" step="1" id="rep-${di}-${ei}" placeholder="—" oninput="onInputChange(this,'${di}-${ei}')"/><span style="font-size:11px;color:var(--muted)">rep</span></td>
+        <td style="text-align:center;min-width:80px"><span id="diff-${di}-${ei}" class="diff-neu">—</span><span id="pr-${di}-${ei}" class="pr-badge">🏆 PR!</span></td>
+      </tr>`;
+        });
+        html += `
+      <div class="tracker-day-section">
+        <div class="tracker-day-head"><div class="tracker-day-num">${day.num}</div><div><div class="tracker-day-title">${day.title}</div><div class="tracker-day-sub">${day.sub}</div></div></div>
+        <table class="tracker-table"><thead><tr><th style="width:28px">#</th><th>Gerakan</th><th style="width:120px;text-align:center">Berat (KG)</th><th style="width:110px;text-align:center">Reps</th><th style="width:100px;text-align:center">vs Minggu Lalu</th></tr></thead><tbody>${rows}</tbody></table>
+      </div>
+    `;
+      });
+      container.innerHTML = html;
+      document.querySelectorAll('.exercise-name-clickable').forEach(el => {
+        el.removeEventListener('click', handleExerciseClick);
+        el.addEventListener('click', handleExerciseClick);
+      });
+    }
+
+    function buildBodyStatInputs() {
+      const week = parseInt(document.getElementById('week-select').value) || 1;
+      const bbVal = getUserData(`bb-w${week}`) || '';
+      const waistVal = getUserData(`waist-w${week}`) || '';
+      document.getElementById('bb-inputs').innerHTML = `<div class="stat-input-row"><span class="stat-week-lbl">Minggu ${week}</span><input class="input-stat" type="number" step="0.1" min="0" id="input-bb" value="${bbVal}" placeholder="0.0"/><span class="stat-unit">kg</span></div><div style="font-size:12px;color:var(--muted);margin-top:4px">Ukur setiap Senin pagi sebelum makan</div>`;
+      document.getElementById('waist-inputs').innerHTML = `<div class="stat-input-row"><span class="stat-week-lbl">Minggu ${week}</span><input class="input-stat" type="number" step="0.1" min="0" id="input-waist" value="${waistVal}" placeholder="0.0"/><span class="stat-unit">cm</span></div><div style="font-size:12px;color:var(--muted);margin-top:4px">Ukur setiap Senin pagi</div>`;
+    }
+
+    function getUserData(key) {
+      return localStorage.getItem(`${currentUser}-${key}`) || '';
+    }
+
+    function setUserData(key, value) {
+      if (value && value !== '') localStorage.setItem(`${currentUser}-${key}`, value);
+    }
+
     function onInputChange(el, key) {
       el.classList.toggle('has-val', el.value !== '');
       updateDiff(key);
@@ -1416,22 +2052,16 @@
       const diffEl = document.getElementById('diff-' + key);
       const prEl = document.getElementById('pr-' + key);
       if (!kgEl || !diffEl) return;
-
       const cur = parseFloat(kgEl.value) || 0;
       if (!cur || w <= 1) { diffEl.textContent = '—'; diffEl.className = 'diff-neu'; prEl.classList.remove('show'); return; }
-
       const [di, ei] = key.split('-').map(Number);
-      const cacheKey = `${currentUser}-w${w - 1}`;
-      const prevData = weekDataCache[cacheKey];
-      const prev = prevData?.lifts?.[di * 7 + ei]?.kg || 0;
-
+      const prevKey = `${currentUser}-lift-w${w - 1}-${di}-${ei}-kg`;
+      const prev = parseFloat(localStorage.getItem(prevKey)) || 0;
       let maxEver = 0;
       for (let pw = 1; pw < w; pw++) {
-        const wkData = weekDataCache[`${currentUser}-w${pw}`];
-        const v = wkData?.lifts?.[di * 7 + ei]?.kg || 0;
+        const v = parseFloat(localStorage.getItem(`${currentUser}-lift-w${pw}-${di}-${ei}-kg`)) || 0;
         if (v > maxEver) maxEver = v;
       }
-
       if (!prev) { diffEl.textContent = '—'; diffEl.className = 'diff-neu'; }
       else {
         const d = cur - prev;
@@ -1441,112 +2071,105 @@
       prEl.classList.toggle('show', cur > 0 && cur > maxEver && maxEver > 0);
     }
 
-    async function loadWeekData() {
-      const w = parseInt(document.getElementById('week-select').value) || 1;
-
-      const weekSelect = document.getElementById('week-select');
-      const saveBtn = document.querySelector('.save-btn');
-
-      // Tampilkan full page loading
-      showFullLoading(true, w);
-      if (weekSelect) weekSelect.disabled = true;
-      if (saveBtn) saveBtn.disabled = true;
-
+    async function loadWeekData(week) {
+      const container = document.getElementById('tracker-days');
+      if (container) {
+        container.innerHTML = '<div class="skeleton-loader"></div>';
+      }
       try {
-        const sheetsData = await fetchWeekFromSheets(currentUser, w);
-
+        const data = await fetchWeekFromSheets(currentUser, week);
+        const lifts = data.lifts || [];
+        buildTrackerDays();
         DAYS.forEach((day, di) => {
           day.exercises.forEach((_, ei) => {
-            const flatIdx = di * 7 + ei;
-            let kg = '', rep = '';
-            if (sheetsData && sheetsData.lifts && sheetsData.lifts[flatIdx]) {
-              kg = sheetsData.lifts[flatIdx].kg ?? '';
-              rep = sheetsData.lifts[flatIdx].rep ?? '';
-              if (kg) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`, kg);
-              if (rep) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`, rep);
-            } else {
-              kg = localStorage.getItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`) || '';
-              rep = localStorage.getItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`) || '';
+            const idx = di * 7 + ei;
+            const lift = lifts[idx] || {};
+            const kgValue = lift.kg !== undefined && lift.kg !== null && lift.kg !== '' ? lift.kg : '';
+            const repValue = lift.rep !== undefined && lift.rep !== null && lift.rep !== '' ? lift.rep : '';
+            const kgEl = document.getElementById(`kg-${di}-${ei}`);
+            const repEl = document.getElementById(`rep-${di}-${ei}`);
+            if (kgEl) {
+              kgEl.value = kgValue;
+              kgEl.classList.toggle('has-val', kgValue !== '');
             }
-            const kgEl = document.getElementById('kg-' + di + '-' + ei);
-            const repEl = document.getElementById('rep-' + di + '-' + ei);
-            if (kgEl) { kgEl.value = kg; kgEl.classList.toggle('has-val', kg !== ''); }
-            if (repEl) { repEl.value = rep; repEl.classList.toggle('has-val', rep !== ''); }
+            if (repEl) {
+              repEl.value = repValue;
+              repEl.classList.toggle('has-val', repValue !== '');
+            }
             updateDiff(`${di}-${ei}`);
+            if (kgValue) setUserData(`lift-w${week}-${di}-${ei}-kg`, kgValue);
+            if (repValue) setUserData(`lift-w${week}-${di}-${ei}-rep`, repValue);
           });
         });
-
-        let bb = '', waist = '';
-        if (sheetsData) {
-          bb = sheetsData.bb ?? '';
-          waist = sheetsData.waist ?? '';
-          if (bb) localStorage.setItem(`${currentUser}-bb-w${w}`, bb);
-          if (waist) localStorage.setItem(`${currentUser}-waist-w${w}`, waist);
-        } else {
-          bb = localStorage.getItem(`${currentUser}-bb-w${w}`) || '';
-          waist = localStorage.getItem(`${currentUser}-waist-w${w}`) || '';
+        const bb = data.bb ? parseFloat(data.bb) : null;
+        const waist = data.waist ? parseFloat(data.waist) : null;
+        if (bb) {
+          setUserData(`bb-w${week}`, bb);
+          const bbInput = document.getElementById('input-bb');
+          if (bbInput) bbInput.value = bb;
         }
-        const bbEl = document.getElementById('input-bb');
-        const waistEl = document.getElementById('input-waist');
-        if (bbEl) bbEl.value = bb;
-        if (waistEl) waistEl.value = waist;
-
+        if (waist) {
+          setUserData(`waist-w${week}`, waist);
+          const waistInput = document.getElementById('input-waist');
+          if (waistInput) waistInput.value = waist;
+        }
         buildChart();
-      } finally {
-        showFullLoading(false);
-        if (weekSelect) weekSelect.disabled = false;
-        if (saveBtn) saveBtn.disabled = false;
+        console.log('✅ Load selesai!');
+      } catch (e) {
+        console.error('❌ Load failed:', e);
+        showToast('Gagal load data: ' + e.message, 'error');
+        buildTrackerDays();
       }
     }
 
     async function saveWeekData(btn) {
       const w = parseInt(document.getElementById('week-select').value) || 1;
-
       const lifts = [];
       DAYS.forEach((day, di) => {
         day.exercises.forEach((_, ei) => {
-          const kg = document.getElementById('kg-' + di + '-' + ei)?.value || '';
-          const rep = document.getElementById('rep-' + di + '-' + ei)?.value || '';
+          const kg = document.getElementById(`kg-${di}-${ei}`)?.value || '';
+          const rep = document.getElementById(`rep-${di}-${ei}`)?.value || '';
           lifts.push({ kg, rep });
-          if (kg) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-kg`, kg);
-          if (rep) localStorage.setItem(`${currentUser}-lift-w${w}-${di}-${ei}-rep`, rep);
+          if (kg) setUserData(`lift-w${w}-${di}-${ei}-kg`, kg);
+          if (rep) setUserData(`lift-w${w}-${di}-${ei}-rep`, rep);
         });
       });
-
       const bb = document.getElementById('input-bb')?.value || '';
       const waist = document.getElementById('input-waist')?.value || '';
-      if (bb) localStorage.setItem(`${currentUser}-bb-w${w}`, bb);
-      if (waist) localStorage.setItem(`${currentUser}-waist-w${w}`, waist);
-
+      if (bb) setUserData(`bb-w${w}`, bb);
+      if (waist) setUserData(`waist-w${w}`, waist);
       btn.disabled = true;
-      await postWeekToSheets(currentUser, w, lifts, bb, waist);
+      try {
+        await saveWeekToSheets(currentUser, w, lifts, bb, waist);
+        showToast('✅ Data tersimpan!');
+        buildChart();
+      } catch (e) {
+        showToast('⚠️ Gagal simpan ke Sheets, tersimpan lokal', 'error');
+      }
       btn.disabled = false;
-
-      const cacheKey = `${currentUser}-w${w}`;
-      weekDataCache[cacheKey] = { lifts, bb, waist };
-
-      updateHomeStats();
-      buildChart();
       btn.classList.add('saved');
       setTimeout(() => btn.classList.remove('saved'), 2000);
     }
 
-    async function postWeekToSheets(user, week, lifts, bb, waist) {
-      if (!useSheets()) return false;
-      try {
-        showSyncStatus('⏳ Menyimpan ke Google Sheets...');
-        const res = await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({ user, week, lifts, bb, waist })
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        showSyncStatus('✅ Tersimpan di Google Sheets!', 'ok');
-        return true;
-      } catch (e) {
-        showSyncStatus('⚠️ Gagal sync Sheets, tersimpan lokal', 'err');
-        return false;
+    async function onWeekChange() {
+      const weekSelect = document.getElementById('week-select');
+      if (!weekSelect) {
+        console.error('Element week-select tidak ditemukan!');
+        return;
       }
+      const week = parseInt(weekSelect.value);
+      console.log(`🔄 Ganti minggu ke: ${week}`);
+      const bbVal = getUserData(`bb-w${week}`) || '';
+      const waistVal = getUserData(`waist-w${week}`) || '';
+      const bbInput = document.getElementById('input-bb');
+      const waistInput = document.getElementById('input-waist');
+      if (bbInput) bbInput.value = bbVal;
+      if (waistInput) waistInput.value = waistVal;
+      showSkeletonInTracker();
+      await loadWeekData(week);
+      hideSkeletonInTracker();
+      buildChart();
+      console.log(`✅ Selesai ganti ke minggu ${week}`);
     }
 
     function updateHomeStats() {
@@ -1562,12 +2185,9 @@
           if (hasData) { sessions += 4; maxWeek = w; }
         }
         const bb = localStorage.getItem(`${name}-bb-w${maxWeek}`) || '—';
-        const weeksEl = document.getElementById(`stat-${name}-weeks`);
-        const sessionsEl = document.getElementById(`stat-${name}-sessions`);
-        const wbEl = document.getElementById(`stat-${name}-wb`);
-        if (weeksEl) weeksEl.textContent = maxWeek;
-        if (sessionsEl) sessionsEl.textContent = sessions;
-        if (wbEl) wbEl.textContent = bb !== '—' ? parseFloat(bb).toFixed(1) : '—';
+        document.getElementById(`stat-${name}-weeks`).textContent = maxWeek;
+        document.getElementById(`stat-${name}-sessions`).textContent = sessions;
+        document.getElementById(`stat-${name}-wb`).textContent = bb !== '—' ? parseFloat(bb).toFixed(1) : '—';
       });
     }
 
@@ -1578,12 +2198,11 @@
       const accentHex = { 'var(--red)': '#ff2d55', 'var(--blue)': '#4fc3f7', 'var(--green)': '#00e676' }[currentAccent] || '#ff2d55';
 
       function getVal(type, week, di, ei) {
-        const cacheKey = `${currentUser}-w${week}`;
-        const cached = weekDataCache[cacheKey];
+        const cached = weekCache[`${currentUser}_${week}`];
         if (cached) {
-          if (type === 'bb') return parseFloat(cached.bb) || null;
-          if (type === 'waist') return parseFloat(cached.waist) || null;
-          if (type === 'kg' && cached.lifts) return parseFloat(cached.lifts[di * 7 + ei]?.kg) || null;
+          if (type === 'bb') return cached.bb ? parseFloat(cached.bb) : null;
+          if (type === 'waist') return cached.waist ? parseFloat(cached.waist) : null;
+          if (type === 'kg' && cached.lifts) return cached.lifts[di * 7 + ei]?.kg ? parseFloat(cached.lifts[di * 7 + ei].kg) : null;
         }
         if (type === 'bb') return parseFloat(localStorage.getItem(`${currentUser}-bb-w${week}`)) || null;
         if (type === 'waist') return parseFloat(localStorage.getItem(`${currentUser}-waist-w${week}`)) || null;
@@ -1608,7 +2227,6 @@
           tension: .4, pointRadius: 5, pointBackgroundColor: colors[li], spanGaps: true
         }));
       }
-
       progressChart = new Chart(ctx, {
         type: 'line',
         data: { labels, datasets },
@@ -1630,193 +2248,166 @@
       buildChart();
     }
 
-    function showPage(id) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + id).classList.add('active');
-      document.querySelectorAll('.nav-tab').forEach(t => {
-        t.classList.toggle('active', t.textContent.toLowerCase().includes(id));
-      });
-      if (id === 'home') updateHomeStats();
+    // ============================================================
+    // PREFETCH
+    // ============================================================
+    let prefetchPromise = null;
+    let prefetchDone = false;
+
+    async function prefetchAllWeeksBatch(user) {
+      if (prefetchDone) return;
+      if (prefetchPromise) return prefetchPromise;
+
+      prefetchPromise = (async () => {
+        console.log(`🔄 Prefetch batch untuk ${user} dimulai...`);
+        const startTime = performance.now();
+        const weeksToFetch = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        const BATCH_SIZE = 3;
+        let successCount = 0;
+        let failCount = 0;
+
+        for (let i = 0; i < weeksToFetch.length; i += BATCH_SIZE) {
+          const batch = weeksToFetch.slice(i, i + BATCH_SIZE);
+          console.log(`📦 Memproses batch ${Math.floor(i / BATCH_SIZE) + 1}: week ${batch.join(', ')}`);
+          const promises = batch.map(async (week) => {
+            const cacheKey = `${user}_${week}`;
+            if (weekCache[cacheKey]) {
+              successCount++;
+              return true;
+            }
+            try {
+              const data = await fetchWeekFromSheets(user, week);
+              if (data) {
+                successCount++;
+                return true;
+              }
+              failCount++;
+              return false;
+            } catch (error) {
+              failCount++;
+              return false;
+            }
+          });
+          await Promise.all(promises);
+          if (i + BATCH_SIZE < weeksToFetch.length) {
+            await new Promise(r => setTimeout(r, 300));
+          }
+        }
+        const endTime = performance.now();
+        console.log(`🎉 Prefetch selesai! Sukses: ${successCount}, Gagal: ${failCount} dalam ${(endTime - startTime).toFixed(0)} ms`);
+        prefetchDone = true;
+        prefetchPromise = null;
+      })();
+      return prefetchPromise;
     }
 
-    function buildProgram() {
-      const container = document.getElementById('day-panels');
-      container.innerHTML = '';
-      DAYS.forEach((day, di) => {
-        const panel = document.createElement('div');
-        panel.className = 'day-panel' + (di === 0 ? ' active' : '');
-        panel.id = 'dpanel-' + di;
-
-        let rows = day.exercises.map((ex, ei) => `
-      <tr class="exercise-row">
-        <td><span class="ex-num">${String(ei + 1).padStart(2, '0')}</span></td>
-        <td><div class="ex-name">${ex.name}</div><div class="ex-desc">${ex.desc}</div></td>
-        <td><div class="ex-sets">${ex.sets}</div></td>
-        <td><div class="ex-reps">${ex.reps}</div></td>
-        <td><span class="ex-muscle ${MUSCLE_COLOR[ex.muscle] || ''}">${ex.muscle}</span></td>
-      </tr>`).join('');
-
-        panel.innerHTML = `
-      <div class="day-header">
-        <div class="day-number">${day.num}</div>
-        <div class="day-info"><h3>${day.title}</h3><p>${day.sub}</p></div>
-        <div style="margin-left:auto;font-size:24px">${['💪', '🦵', '🔋', '⚡'][di]}</div>
-      </div>
-      <table class="exercise-table">
-        <thead><tr>
-          <th style="width:44px">#</th>
-          <th>Gerakan</th>
-          <th style="width:60px;text-align:center">Set</th>
-          <th style="width:90px;text-align:center">Rep</th>
-          <th style="width:140px;text-align:center">Otot</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
-        container.appendChild(panel);
-      });
-    }
-
-    function switchDay(idx, btn) {
-      document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('dpanel-' + idx).classList.add('active');
-    }
-
-    function buildTrackerDays() {
+    function showSkeletonInTracker() {
       const container = document.getElementById('tracker-days');
-      if (!container) return;
-      container.innerHTML = '';
+      if (container) container.style.opacity = '0.5';
+    }
 
+    function hideSkeletonInTracker() {
+      const container = document.getElementById('tracker-days');
+      if (container) container.style.opacity = '1';
+    }
+
+    function populateWeekData(week, data) {
+      const lifts = data.lifts || [];
       DAYS.forEach((day, di) => {
-        const section = document.createElement('div');
-        section.className = 'tracker-day-section';
-
-        const headerDiv = document.createElement('div');
-        headerDiv.className = 'tracker-day-head';
-        headerDiv.innerHTML = `
-      <div class="tracker-day-num">${day.num}</div>
-      <div>
-        <div class="tracker-day-title">${day.title}</div>
-        <div class="tracker-day-sub">${day.sub}</div>
-      </div>
-    `;
-        section.appendChild(headerDiv);
-
-        const table = document.createElement('table');
-        table.className = 'tracker-table';
-
-        const thead = document.createElement('thead');
-        thead.innerHTML = `
-      <tr>
-        <th style="width:28px">#</th>
-        <th>Gerakan</th>
-        <th style="width:120px;text-align:center">Berat (KG)</th>
-        <th style="width:110px;text-align:center">Reps</th>
-        <th style="width:100px;text-align:center">vs Minggu Lalu</th>
-      </tr>
-    `;
-        table.appendChild(thead);
-
-        const tbody = document.createElement('tbody');
-        day.exercises.forEach((ex, ei) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-        <td style="width:28px;font-family:var(--font-cond);font-size:15px;font-weight:700;color:var(--border)">${String(ei + 1).padStart(2, '0')}</td>
-        <td>
-          <div style="font-weight:600;font-size:13px">${ex.name}</div>
-          <div style="font-size:11px;color:var(--muted)">${ex.sets} set × ${ex.reps}</div>
-        </td>
-        <td style="text-align:center">
-          <input class="input-num" type="number" min="0" step="0.5"
-            id="kg-${di}-${ei}" placeholder="—"
-            oninput="onInputChange(this,'${di}-${ei}')"/>
-          <span style="font-size:11px;color:var(--muted)">kg</span>
-        </td>
-        <td style="text-align:center">
-          <input class="input-num" type="number" min="0" step="1"
-            id="rep-${di}-${ei}" placeholder="—"
-            oninput="onInputChange(this,'${di}-${ei}')"/>
-          <span style="font-size:11px;color:var(--muted)">rep</span>
-        </td>
-        <td style="text-align:center;min-width:80px">
-          <span id="diff-${di}-${ei}" class="diff-neu">—</span>
-          <span id="pr-${di}-${ei}" class="pr-badge">🏆 PR!</span>
-        </td>
-      `;
-          tbody.appendChild(row);
+        day.exercises.forEach((_, ei) => {
+          const idx = di * 7 + ei;
+          const lift = lifts[idx] || {};
+          const kgEl = document.getElementById(`kg-${di}-${ei}`);
+          const repEl = document.getElementById(`rep-${di}-${ei}`);
+          const kgValue = lift.kg !== undefined && lift.kg !== null && lift.kg !== '' ? lift.kg : '';
+          const repValue = lift.rep !== undefined && lift.rep !== null && lift.rep !== '' ? lift.rep : '';
+          if (kgEl) {
+            kgEl.value = kgValue;
+            kgEl.classList.toggle('has-val', kgValue !== '');
+          }
+          if (repEl) {
+            repEl.value = repValue;
+            repEl.classList.toggle('has-val', repValue !== '');
+          }
+          updateDiff(`${di}-${ei}`);
+          if (kgValue) setUserData(`lift-w${week}-${di}-${ei}-kg`, kgValue);
+          if (repValue) setUserData(`lift-w${week}-${di}-${ei}-rep`, repValue);
         });
-        table.appendChild(tbody);
-        section.appendChild(table);
-        container.appendChild(section);
       });
-    }
-
-    function buildBodyStatInputs() {
-      const w = parseInt(document.getElementById('week-select').value) || 1;
-      const val = localStorage.getItem(`${currentUser}-bb-w${w}`) || '';
-      const waistVal = localStorage.getItem(`${currentUser}-waist-w${w}`) || '';
-      const container = document.getElementById('bb-inputs');
-      if (container) {
-        container.innerHTML = `
-      <div class="stat-input-row">
-        <span class="stat-week-lbl">Minggu ${w}</span>
-        <input class="input-stat" type="number" step="0.1" min="0"
-          id="input-bb" value="${val}" placeholder="0.0"/>
-        <span class="stat-unit">kg</span>
-      </div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">
-        Ukur setiap hari Senin pagi sebelum makan
-      </div>`;
+      const bb = data.bb ? parseFloat(data.bb) : null;
+      const waist = data.waist ? parseFloat(data.waist) : null;
+      if (bb) {
+        setUserData(`bb-w${week}`, bb);
+        const bbInput = document.getElementById('input-bb');
+        if (bbInput) bbInput.value = bb;
       }
-      const waistContainer = document.getElementById('waist-inputs');
-      if (waistContainer) {
-        waistContainer.innerHTML = `
-      <div class="stat-input-row">
-        <span class="stat-week-lbl">Minggu ${w}</span>
-        <input class="input-stat" type="number" step="0.1" min="0"
-          id="input-waist" value="${waistVal}" placeholder="0.0"/>
-        <span class="stat-unit">cm</span>
-      </div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">
-        Ukur setiap hari Senin pagi sebelum makan
-      </div>`;
+      if (waist) {
+        setUserData(`waist-w${week}`, waist);
+        const waistInput = document.getElementById('input-waist');
+        if (waistInput) waistInput.value = waist;
       }
     }
 
-    async function onWeekChange() {
-      const weekSelect = document.getElementById('week-select');
-      if (weekSelect && weekSelect.disabled) return;
-      buildBodyStatInputs();
-      await loadWeekData();
-    }
-
+    // ============================================================
+    // OPEN TRACKER
+    // ============================================================
     async function openTracker(name, avatar, accent, avatarBg) {
       currentUser = name;
       currentAccent = accent;
-
-      weekDataCache = {};
-
+      const weekSelect = document.getElementById('week-select');
+      if (weekSelect) {
+        weekSelect.value = '1';
+        console.log('✅ week-select di-reset ke minggu 1');
+      }
       document.getElementById('tr-avatar').textContent = avatar;
       document.getElementById('tr-avatar').style.background = avatarBg;
       document.getElementById('tr-avatar').style.borderColor = accent.replace('var(', '').replace(')', '');
       document.getElementById('tr-name').textContent = name.toUpperCase();
       document.getElementById('tr-name').style.color = accent;
-      document.querySelectorAll('.save-btn').forEach(b => b.style.background = `linear-gradient(135deg, ${accent}, var(--orange))`);
       buildTrackerDays();
       showPage('tracker');
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-
-      await loadWeekData();
       buildBodyStatInputs();
+      showSkeletonInTracker();
+      console.log(`📥 Load week 1 priority...`);
+        // 🔥 AMBIL QR CODE VALUE DARI SHEET
+      await fetchBodyStats();
+      displayQrCode(name);
+      const startTime = performance.now();
+      const week1Data = await fetchWeekFromSheets(currentUser, 1);
+      const endTime = performance.now();
+      console.log(`✅ Week 1 loaded dalam ${(endTime - startTime).toFixed(0)} ms`);
+      populateWeekData(1, week1Data);
+      hideSkeletonInTracker();
       buildChart();
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      fetchVideoUrls();
+      prefetchAllWeeksBatch(currentUser);
     }
 
-    // ============================================================
-    // INIT
-    // ============================================================
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + id).classList.add('active');
+      if (id === 'home') updateHomeStats();
+    }
+
+    // Inisialisasi
     buildProgram();
     updateHomeStats();
+
+    // Warm-up Apps Script
+    let isWarmedUp = false;
+    async function warmUpAppsScript() {
+      if (isWarmedUp) return;
+      try {
+        console.log('🔥 Warming up Apps Script...');
+        await fetchWeekFromSheets('Sinung', 1);
+        isWarmedUp = true;
+        console.log('✅ Apps Script warmed up!');
+      } catch (e) {
+        console.log('Warm up failed:', e);
+      }
+    }
+    setTimeout(() => warmUpAppsScript(), 1000);
   </script>
 </body>
 
