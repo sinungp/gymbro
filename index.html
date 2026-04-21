@@ -10,88 +10,90 @@
     rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    /* ========== CSS ===========*/
+    /* ========== CSS ========== */
     /* QR Code Section */
     /* Modal QR Code Perbesar */
-.qr-modal {
-  display: none;
-  position: fixed;
-  z-index: 2000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(8px);
-  align-items: center;
-  justify-content: center;
-}
+    .qr-modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+    }
 
-.qr-modal-content {
-  position: relative;
-  background-color: var(--card);
-  padding: 24px;
-  border-radius: 24px;
-  border: 1px solid var(--border);
-  max-width: 90%;
-  max-height: 90%;
-  text-align: center;
-  animation: zoomIn 0.3s ease;
-}
+    .qr-modal-content {
+      position: relative;
+      background-color: var(--card);
+      padding: 24px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      max-width: 90%;
+      max-height: 90%;
+      text-align: center;
+      animation: zoomIn 0.3s ease;
+    }
 
-@keyframes zoomIn {
-  from {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
 
-.qr-modal-close {
-  position: absolute;
-  top: 12px;
-  right: 20px;
-  font-size: 32px;
-  font-weight: bold;
-  color: var(--muted);
-  cursor: pointer;
-  transition: color 0.2s;
-  z-index: 10;
-}
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
 
-.qr-modal-close:hover {
-  color: var(--red);
-}
+    .qr-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 20px;
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s;
+      z-index: 10;
+    }
 
-.qr-modal-image-container {
-  padding: 20px;
-  background: white;
-  border-radius: 16px;
-  margin-bottom: 16px;
-}
+    .qr-modal-close:hover {
+      color: var(--red);
+    }
 
-.qr-modal-image-container img {
-  width: 100%;
-  max-width: 300px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
+    .qr-modal-image-container {
+      padding: 20px;
+      background: white;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
 
-.qr-modal-value {
-  font-family: var(--font-body);
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text);
-  background: var(--bg3);
-  padding: 12px 16px;
-  border-radius: 12px;
-  word-break: break-all;
-  letter-spacing: 1px;
-}
+    .qr-modal-image-container img {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .qr-modal-value {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--bg3);
+      padding: 12px 16px;
+      border-radius: 12px;
+      word-break: break-all;
+      letter-spacing: 1px;
+    }
+
     .qr-section {
       background: linear-gradient(135deg, rgba(79, 195, 247, .1), rgba(179, 136, 255, .08));
       border: 1px solid var(--blue);
@@ -174,10 +176,12 @@
         flex-direction: column;
         text-align: center;
       }
+
       .qr-button {
         width: 100%;
       }
     }
+
     :root {
       --bg: #0a0a0f;
       --bg2: #111118;
@@ -379,6 +383,73 @@
       text-align: center;
       padding: 40px;
       color: var(--muted);
+    }
+
+    .water-log-link {
+      cursor: pointer;
+      color: var(--blue);
+      text-decoration: none;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .water-log-link:hover {
+      color: var(--red);
+      text-decoration: underline;
+    }
+
+    .water-log-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 16px;
+    }
+
+    .water-log-table th {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-top: none;
+      font-family: var(--font-cond);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    .water-log-table td {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: none;
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+
+    .water-log-table tr:first-child th:first-child {
+      border-radius: 10px 0 0 0;
+    }
+
+    .water-log-table tr:first-child th:last-child {
+      border-radius: 0 10px 0 0;
+    }
+
+    .water-log-table tr:last-child td:first-child {
+      border-radius: 0 0 0 10px;
+    }
+
+    .water-log-table tr:last-child td:last-child {
+      border-radius: 0 0 10px 0;
+    }
+
+    .water-log-empty {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--muted);
+      font-size: 14px;
     }
 
     .exercise-name-clickable {
@@ -1146,6 +1217,41 @@
       min-width: 24px;
     }
 
+    .water-alert {
+      display: none;
+      padding: 10px 12px;
+      margin-top: 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255, 45, 85, .15);
+      border: 1px solid rgba(255, 45, 85, .3);
+      color: var(--red);
+    }
+
+    .water-alert.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    .water-alert.success {
+      background: rgba(0, 230, 118, .15);
+      border-color: rgba(0, 230, 118, .3);
+      color: var(--green);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .chart-section {
       background: var(--card);
       border: 1px solid var(--border);
@@ -1280,6 +1386,71 @@
       }
     }
 
+    /* Filter Water Log Styles */
+    .water-log-filter {
+      margin-bottom: 20px;
+      padding: 16px;
+      background: var(--bg3);
+      border-radius: 12px;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+
+    .filter-field {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .filter-field label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .filter-field input {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font-body);
+    }
+
+    .filter-btn {
+      padding: 8px 20px;
+      background: var(--blue);
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-cond);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .reset-btn {
+      padding: 8px 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-cond);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
     @media(max-width:640px) {
       nav {
         padding: 0 16px;
@@ -1300,6 +1471,14 @@
 
       .schedule-grid {
         grid-template-columns: repeat(4, 1fr);
+      }
+
+      .filter-group {
+        flex-direction: column;
+      }
+
+      .filter-field {
+        width: 100%;
       }
     }
   </style>
@@ -1491,6 +1670,19 @@
           <h4>📏 Lingkar Pinggang</h4>
           <div id="waist-inputs"></div>
         </div>
+        <div class="stat-card">
+          <h4 class="water-log-link" onclick="openWaterLogModal()">💧 Konsumsi Air 📊</h4>
+          <div class="stat-input-row">
+            <span class="stat-week-lbl">Hari ini</span>
+            <input class="input-stat" type="number" step="0.1" min="0" id="input-water" placeholder="0.0"
+              oninput="validateWaterInput(this)" />
+            <span class="stat-unit">liter</span>
+          </div>
+          <button class="save-btn" onclick="saveWaterAndAlert()" style="margin-top:8px;width:100%;">💾 SIMPAN
+            AIR</button>
+          <div class="water-alert" id="water-alert"></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">Target: Minimum 2 liter/hari</div>
+        </div>
       </div>
       <div id="tracker-days"></div>
     </div>
@@ -1509,196 +1701,24 @@
     </div>
   </div>
 
+  <!-- Modal Popup Water Log -->
+  <div id="waterLogModal" class="modal">
+    <div class="modal-content" style="max-width: 900px;">
+      <div class="modal-header">
+        <h3>📊 Log Konsumsi Air</h3>
+        <span class="close-modal" onclick="closeWaterLogModal()">&times;</span>
+      </div>
+      <div id="waterLogContainer">
+        <div class="loading-video">⏳ Loading data...</div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ============================================================
-      // QR CODE - AMBIL VALUE DARI SHEET "BodyStats"
-      // ============================================================
-
-      let bodyStatsCache = {};
-
-      async function fetchBodyStats() {
-        if (Object.keys(bodyStatsCache).length > 0) {
-          return bodyStatsCache;
-        }
-
-        console.log('📊 Fetching body stats from sheet...');
-
-        return new Promise((resolve, reject) => {
-          const callbackName = `stats_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
-          const script = document.createElement('script');
-
-          window[callbackName] = (data) => {
-            delete window[callbackName];
-            document.body.removeChild(script);
-
-            if (data && !data.error) {
-              if (data.data) {
-                bodyStatsCache = data.data;
-              } else {
-                bodyStatsCache = data;
-              }
-              console.log('✅ Body stats loaded:', bodyStatsCache);
-              resolve(bodyStatsCache);
-            } else {
-              reject(new Error(data?.error || 'Gagal fetch body stats'));
-            }
-          };
-
-          script.src = `${APPS_SCRIPT_URL}?action=getBodyStats&callback=${callbackName}`;
-          script.onerror = () => {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            reject(new Error('Network error when fetching body stats'));
-          };
-
-          document.body.appendChild(script);
-        });
-      }
-
-      // ============================================================
-        // QR CODE - GENERATE QR CODE DARI VALUE
-        // ============================================================
-
-        // ============================================================
-          // QR CODE - GENERATE QR CODE DARI VALUE (KLIK UNTUK PERBESAR)
-          // ============================================================
-
-          function displayQrCode(user) {
-            const qrContainer = document.getElementById('qr-container');
-            if (!qrContainer) return;
-
-            console.log(`📱 Display QR for user: "${user}"`);
-            console.log(`📦 Available body stats:`, bodyStatsCache);
-
-            // Cari value untuk user (case-insensitive)
-            let userValue = bodyStatsCache[user];
-
-            if (!userValue) {
-              const userLower = user.toLowerCase();
-              for (const [key, value] of Object.entries(bodyStatsCache)) {
-                if (key.toLowerCase() === userLower) {
-                  userValue = value;
-                  console.log(`✅ Found match: "${key}" -> "${user}"`);
-                  break;
-                }
-              }
-            }
-
-            if (userValue && userValue !== '') {
-              // Generate QR Code
-              const qrCodeUrl = generateQRCode(userValue);
-              const qrCodeUrlLarge = generateQRCode(userValue, 400); // Ukuran besar untuk modal
-
-              qrContainer.innerHTML = `
-      <div class="qr-section">
-        <div class="qr-icon" onclick="showQrModal('${qrCodeUrlLarge}', '${userValue}')" style="cursor:pointer;">
-          <img src="${qrCodeUrl}" alt="QR Code" style="width:60px; height:60px; border-radius:12px;">
-        </div>
-        <div class="qr-content">
-          <h4>QR / LINK PERSONAL</h4>
-          <div class="qr-value">
-            <strong>${userValue}</strong>
-            <small>(Klik QR untuk perbesar)</small>
-          </div>
-        </div>
-      </div>
-    `;
-            } else {
-              qrContainer.innerHTML = `
-      <div class="qr-section" style="border-color:var(--muted); opacity:0.7;">
-        <div class="qr-icon">🔗</div>
-        <div class="qr-content">
-          <h4>QR / LINK PERSONAL</h4>
-          <div class="qr-value">Belum ada data untuk user ${user}</div>
-        </div>
-      </div>
-    `;
-            }
-          }
-
-          // ============================================================
-          // GENERATE QR CODE DENGAN UKURAN BISA DIATUR
-          // ============================================================
-          function generateQRCode(text, size = 200) {
-            const encodedText = encodeURIComponent(text);
-            return `https://quickchart.io/qr?text=${encodedText}&size=${size}&margin=2`;
-          }
-
-          // ============================================================
-          // TAMPILKAN MODAL PERBESAR QR CODE
-          // ============================================================
-          function showQrModal(qrImageUrl, value) {
-            // Buat modal element jika belum ada
-            let qrModal = document.getElementById('qrModal');
-            if (!qrModal) {
-              qrModal = document.createElement('div');
-              qrModal.id = 'qrModal';
-              qrModal.className = 'qr-modal';
-              qrModal.innerHTML = `
-      <div class="qr-modal-content">
-        <span class="qr-modal-close">&times;</span>
-        <div class="qr-modal-image-container">
-          <img id="qrModalImage" src="" alt="QR Code">
-        </div>
-        <div class="qr-modal-value" id="qrModalValue"></div>
-      </div>
-    `;
-              document.body.appendChild(qrModal);
-
-              // Event close modal
-              qrModal.querySelector('.qr-modal-close').addEventListener('click', () => {
-                qrModal.style.display = 'none';
-              });
-
-              // Klik di luar modal untuk tutup
-              qrModal.addEventListener('click', (e) => {
-                if (e.target === qrModal) {
-                  qrModal.style.display = 'none';
-                }
-              });
-            }
-
-            // Set gambar dan value
-            const modalImg = document.getElementById('qrModalImage');
-            const modalValue = document.getElementById('qrModalValue');
-
-            if (modalImg) modalImg.src = qrImageUrl;
-            if (modalValue) modalValue.textContent = value;
-
-            // Tampilkan modal
-            qrModal.style.display = 'flex';
-          }
-
-        // ============================================================
-        // GENERATE QR CODE MENGGUNAKAN API eksternal
-        // ============================================================
-        function generateQRCode(text) {
-          // Menggunakan API QR code dari quickchart.io (gratis, tanpa batasan)
-          const encodedText = encodeURIComponent(text);
-          return `https://quickchart.io/qr?text=${encodedText}&size=200&margin=2`;
-
-          // Alternatif API lain (jika quickchart bermasalah):
-          // return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodedText}`;
-        }
-
-        // ============================================================
-        // BUKA VALUE (SALIN KE CLIPBOARD)
-        // ============================================================
-        function openQrValue(value) {
-          if (!value) return;
-
-          // Copy ke clipboard
-          navigator.clipboard.writeText(value).then(() => {
-            showToast(`✅ "${value}" disalin ke clipboard!`, 'success');
-          }).catch(() => {
-            // Fallback jika clipboard gagal
-            prompt("Salin kode ini (Ctrl+C):", value);
-          });
-        }
     // ============================================================
     // KONFIGURASI - GANTI DENGAN URL APPS SCRIPT ANDA!
     // ============================================================
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwF-qI7HCenLWUAtvEOED2UdLZj4YiOwauFBR86V37HmXZOFykIOHM-Y5CTVARVskH_jg/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVRI4ReL6xEVJg6SQmVUU_CoyLeEEsGbVC0exD1tqAnO2X_sb3oXKKEqaQN0pT1Ll6ow/exec";
 
     // ============================================================
     // DATA PROGRAM
@@ -1772,6 +1792,11 @@
     let currentChartType = 'bb';
     const weekCache = {};
     let videoUrlsCache = {};
+    let bodyStatsCache = {};
+
+    // Water log filter variables
+    let currentWaterLogStartDate = null;
+    let currentWaterLogEndDate = null;
 
     // ============================================================
     // FETCH DENGAN JSONP (BYPASS CORS)
@@ -1858,8 +1883,141 @@
       });
     }
 
+    async function fetchBodyStats() {
+      if (Object.keys(bodyStatsCache).length > 0) {
+        return bodyStatsCache;
+      }
+
+      console.log('📊 Fetching body stats from sheet...');
+
+      return new Promise((resolve, reject) => {
+        const callbackName = `stats_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+        const script = document.createElement('script');
+
+        window[callbackName] = (data) => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+
+          if (data && !data.error) {
+            if (data.data) {
+              bodyStatsCache = data.data;
+            } else {
+              bodyStatsCache = data;
+            }
+            console.log('✅ Body stats loaded:', bodyStatsCache);
+            resolve(bodyStatsCache);
+          } else {
+            reject(new Error(data?.error || 'Gagal fetch body stats'));
+          }
+        };
+
+        script.src = `${APPS_SCRIPT_URL}?action=getBodyStats&callback=${callbackName}`;
+        script.onerror = () => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('Network error when fetching body stats'));
+        };
+
+        document.body.appendChild(script);
+      });
+    }
+
     // ============================================================
-    // MENYIMPAN DATA KE SHEETS (POST - tetap pakai fetch biasa)
+    // QR CODE FUNCTIONS
+    // ============================================================
+    function generateQRCode(text, size = 200) {
+      const encodedText = encodeURIComponent(text);
+      return `https://quickchart.io/qr?text=${encodedText}&size=${size}&margin=2`;
+    }
+
+    function showQrModal(qrImageUrl, value) {
+      let qrModal = document.getElementById('qrModal');
+      if (!qrModal) {
+        qrModal = document.createElement('div');
+        qrModal.id = 'qrModal';
+        qrModal.className = 'qr-modal';
+        qrModal.innerHTML = `
+          <div class="qr-modal-content">
+            <span class="qr-modal-close">&times;</span>
+            <div class="qr-modal-image-container">
+              <img id="qrModalImage" src="" alt="QR Code">
+            </div>
+            <div class="qr-modal-value" id="qrModalValue"></div>
+          </div>
+        `;
+        document.body.appendChild(qrModal);
+
+        qrModal.querySelector('.qr-modal-close').addEventListener('click', () => {
+          qrModal.style.display = 'none';
+        });
+
+        qrModal.addEventListener('click', (e) => {
+          if (e.target === qrModal) {
+            qrModal.style.display = 'none';
+          }
+        });
+      }
+
+      const modalImg = document.getElementById('qrModalImage');
+      const modalValue = document.getElementById('qrModalValue');
+
+      if (modalImg) modalImg.src = qrImageUrl;
+      if (modalValue) modalValue.textContent = value;
+
+      qrModal.style.display = 'flex';
+    }
+
+    function displayQrCode(user) {
+      const qrContainer = document.getElementById('qr-container');
+      if (!qrContainer) return;
+
+      console.log(`📱 Display QR for user: "${user}"`);
+
+      let userValue = bodyStatsCache[user];
+
+      if (!userValue) {
+        const userLower = user.toLowerCase();
+        for (const [key, value] of Object.entries(bodyStatsCache)) {
+          if (key.toLowerCase() === userLower) {
+            userValue = value;
+            break;
+          }
+        }
+      }
+
+      if (userValue && userValue !== '') {
+        const qrCodeUrl = generateQRCode(userValue);
+        const qrCodeUrlLarge = generateQRCode(userValue, 400);
+
+        qrContainer.innerHTML = `
+          <div class="qr-section">
+            <div class="qr-icon" onclick="showQrModal('${qrCodeUrlLarge}', '${userValue}')" style="cursor:pointer;">
+              <img src="${qrCodeUrl}" alt="QR Code" style="width:60px; height:60px; border-radius:12px;">
+            </div>
+            <div class="qr-content">
+              <h4>QR / LINK PERSONAL</h4>
+              <div class="qr-value">
+                <strong>${userValue}</strong>
+                <small>(Klik QR untuk perbesar)</small>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        qrContainer.innerHTML = `
+          <div class="qr-section" style="border-color:var(--muted); opacity:0.7;">
+            <div class="qr-icon">🔗</div>
+            <div class="qr-content">
+              <h4>QR / LINK PERSONAL</h4>
+              <div class="qr-value">Belum ada data untuk user ${user}</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // ============================================================
+    // MENYIMPAN DATA KE SHEETS
     // ============================================================
     async function saveWeekToSheets(user, week, lifts, bb, waist) {
       const response = await fetch(APPS_SCRIPT_URL, {
@@ -1877,43 +2035,459 @@
     }
 
     // ============================================================
-    // FUNGSI VIDEO MODAL
+    // WATER LOG FUNCTIONS - DENGAN FILTER TANGGAL
     // ============================================================
-    function getYouTubeEmbedUrl(url) {
-        if (!url) return null;
 
-        const urlStr = url.toString().trim();
-        let videoId = null;
+    async function openWaterLogModal() {
+      const modal = document.getElementById('waterLogModal');
+      const container = document.getElementById('waterLogContainer');
 
-        // Pola untuk mengekstrak video ID dari berbagai format URL YouTube
-        const patterns = [
-          /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/,
-          /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-          /youtube\.com\/live\/([a-zA-Z0-9_-]{11})/
-        ];
+      if (!modal || !container) return;
 
-        for (const pattern of patterns) {
-          const match = urlStr.match(pattern);
-          if (match) {
-            videoId = match[1];
+      modal.style.display = 'block';
+
+      // Set default date range: 7 hari kebelakang sampai hari ini
+      const today = new Date();
+      const weekAgo = new Date();
+      weekAgo.setDate(today.getDate() - 7);
+
+      currentWaterLogStartDate = weekAgo.toISOString().split('T')[0];
+      currentWaterLogEndDate = today.toISOString().split('T')[0];
+
+      await renderWaterLogFilterUI();
+      await loadWaterLogsData();
+    }
+
+    function closeWaterLogModal() {
+      const modal = document.getElementById('waterLogModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    async function renderWaterLogFilterUI() {
+      const container = document.getElementById('waterLogContainer');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="water-log-filter">
+          <div class="filter-group">
+            <div class="filter-field">
+              <label>📅 DARI TANGGAL</label>
+              <input type="date" id="filter-start-date" value="${currentWaterLogStartDate}">
+            </div>
+            <div class="filter-field">
+              <label>📅 SAMPAI TANGGAL</label>
+              <input type="date" id="filter-end-date" value="${currentWaterLogEndDate}">
+            </div>
+            <button class="filter-btn" onclick="applyWaterLogFilter()">🔍 FILTER</button>
+            <button class="reset-btn" onclick="resetWaterLogFilter()">↺ RESET</button>
+          </div>
+        </div>
+        <div id="water-log-table-container">
+          <div class="loading-video">⏳ Loading data...</div>
+        </div>
+      `;
+    }
+
+    async function applyWaterLogFilter() {
+      const startDateInput = document.getElementById('filter-start-date');
+      const endDateInput = document.getElementById('filter-end-date');
+
+      if (startDateInput) currentWaterLogStartDate = startDateInput.value;
+      if (endDateInput) currentWaterLogEndDate = endDateInput.value;
+
+      await loadWaterLogsData();
+    }
+
+    async function resetWaterLogFilter() {
+      const today = new Date();
+      const weekAgo = new Date();
+      weekAgo.setDate(today.getDate() - 7);
+
+      currentWaterLogStartDate = weekAgo.toISOString().split('T')[0];
+      currentWaterLogEndDate = today.toISOString().split('T')[0];
+
+      const startDateInput = document.getElementById('filter-start-date');
+      const endDateInput = document.getElementById('filter-end-date');
+      if (startDateInput) startDateInput.value = currentWaterLogStartDate;
+      if (endDateInput) endDateInput.value = currentWaterLogEndDate;
+
+      await loadWaterLogsData();
+    }
+
+    async function loadWaterLogsData() {
+      const tableContainer = document.getElementById('water-log-table-container');
+      if (!tableContainer) return;
+
+      tableContainer.innerHTML = '<div class="loading-video">⏳ Memuat data air...</div>';
+
+      try {
+        const response = await fetchWaterLogsFromSheet(currentUser, currentWaterLogStartDate, currentWaterLogEndDate);
+        displayWaterLogsTable(response);
+      } catch (error) {
+        console.error('Error loading water logs:', error);
+        tableContainer.innerHTML = `<div class="water-log-empty">❌ Gagal memuat data: ${error.message}</div>`;
+      }
+    }
+
+    async function fetchWaterLogsFromSheet(userName, startDate, endDate) {
+      return new Promise((resolve, reject) => {
+        const callbackName = `waterlog_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+        const script = document.createElement('script');
+
+        window[callbackName] = (data) => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+
+          if (data && !data.error) {
+            resolve(data);
+          } else {
+            reject(new Error(data?.error || 'Gagal fetch data air'));
+          }
+        };
+
+        const url = `${APPS_SCRIPT_URL}?action=getWaterLog&user=${encodeURIComponent(userName)}&startDate=${startDate}&endDate=${endDate}&callback=${callbackName}`;
+        script.src = url;
+        script.onerror = () => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('Network error when fetching water logs'));
+        };
+
+        document.body.appendChild(script);
+      });
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return '-';
+
+      if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const [year, month, day] = dateString.split('-');
+        return `${day}/${month}/${year}`;
+      }
+
+      try {
+        const date = new Date(dateString);
+        if (!isNaN(date.getTime())) {
+          return date.toLocaleDateString('id-ID');
+        }
+      } catch (e) { }
+
+      return dateString;
+    }
+
+    function displayWaterLogsTable(response) {
+      const tableContainer = document.getElementById('water-log-table-container');
+      if (!tableContainer) return;
+
+      // Safe handling - use optional chaining and default values
+      const history = response?.history || [];
+      const totalKumulatif = response?.total_kumulatif || 0;
+      const startDate = response?.start_date || currentWaterLogStartDate;
+      const endDate = response?.end_date || currentWaterLogEndDate;
+
+      if (!history || history.length === 0) {
+        tableContainer.innerHTML = `
+          <div class="water-log-empty" style="padding: 40px; text-align: center;">
+            📭 Tidak ada data konsumsi air dari tanggal ${formatDate(startDate)} sampai ${formatDate(endDate)}
+            <div style="font-size: 12px; color: var(--muted); margin-top: 8px;">Minumlah air dan catat harianmu!</div>
+          </div>
+        `;
+        return;
+      }
+
+      const totalLiter = (totalKumulatif / 1000).toFixed(2);
+      const rataRataHarian = history.length > 0 ? (totalKumulatif / history.length / 1000).toFixed(2) : '0';
+
+      let tableHtml = `
+        <div style="margin-bottom: 16px; padding: 12px; background: linear-gradient(135deg, rgba(79, 195, 247, 0.1), rgba(179, 136, 255, 0.05)); border-radius: 12px;">
+          <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div style="text-align: center; flex: 1;">
+              <div style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Total Air</div>
+              <div style="font-size: 24px; font-weight: 700; color: var(--blue);">${totalLiter} L</div>
+              <div style="font-size: 11px; color: var(--muted);">${totalKumulatif.toLocaleString()} ml</div>
+            </div>
+            <div style="text-align: center; flex: 1;">
+              <div style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Rata-rata / Hari</div>
+              <div style="font-size: 24px; font-weight: 700; color: var(--green);">${rataRataHarian} L</div>
+            </div>
+            <div style="text-align: center; flex: 1;">
+              <div style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Periode</div>
+              <div style="font-size: 14px; font-weight: 600;">${formatDate(startDate)} - ${formatDate(endDate)}</div>
+              <div style="font-size: 11px; color: var(--muted);">${history.length} hari tercatat</div>
+            </div>
+          </div>
+        </div>
+        
+        <table class="water-log-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">No</th>
+              <th>Tanggal</th>
+              <th style="text-align: right;">Jumlah (ml)</th>
+              <th style="text-align: right;">Liter</th>
+              <th style="text-align: center;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      history.forEach((log, index) => {
+        const tanggal = log.tanggal || log.Tanggal_log || 'N/A';
+        const jumlah = parseInt(log.jumlah || log.Jumlah || 0);
+        const liter = (jumlah / 1000).toFixed(2);
+        const status = jumlah >= 2000 ? '✅ Tercapai' : jumlah >= 1000 ? '⚠️ Kurang' : '❌ Minim';
+        const statusColor = jumlah >= 2000 ? 'var(--green)' : jumlah >= 1000 ? 'var(--orange)' : 'var(--red)';
+
+        tableHtml += `
+          <tr>
+            <td>${index + 1}</td>
+            <td><strong>${formatDate(tanggal)}</strong></td>
+            <td style="text-align: right;">${jumlah.toLocaleString()} ml</td>
+            <td style="text-align: right;">${liter} L</td>
+            <td style="text-align: center; color: ${statusColor};">${status}</td>
+          </tr>
+        `;
+      });
+
+      tableHtml += `
+          </tbody>
+        </table>
+      `;
+
+      tableContainer.innerHTML = tableHtml;
+    }
+
+    async function saveWaterToSheets(user, water) {
+      try {
+        const amountMl = Math.round(parseFloat(water) * 1000);
+
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'logWater', user, amount: amountMl })
+        });
+
+        const result = await response.json();
+
+        if (result && result.success) {
+          console.log(`✅ Data air tersimpan: ${user} - ${amountMl}ml`);
+          return true;
+        } else {
+          throw new Error(result?.error || 'Gagal simpan ke Sheet');
+        }
+      } catch (e) {
+        console.error('Error saving water:', e);
+        return false;
+      }
+    }
+
+    // ============================================================
+      // WATER LOG FUNCTIONS - MENGGUNAKAN GET/JSONP (FIX 405 ERROR)
+      // ============================================================
+
+      async function saveWaterAndAlert() {
+        const waterInput = document.getElementById('input-water');
+        if (!waterInput) return;
+
+        const waterValue = parseFloat(waterInput.value) || 0;
+
+        if (waterValue <= 0) {
+          showToast('❌ Masukkan jumlah air terlebih dahulu!', 'error');
+          return;
+        }
+
+        validateWaterInput(waterInput);
+
+        // Simpan ke localStorage
+        const today = new Date().toISOString().split('T')[0];
+        setUserData(`water-${today}`, waterValue);
+
+        // Cari tombol save
+        const btns = document.querySelectorAll('.save-btn');
+        let btn = null;
+        for (let b of btns) {
+          if (b.textContent.includes('SIMPAN AIR') || b.innerHTML.includes('SIMPAN AIR')) {
+            btn = b;
             break;
           }
         }
 
-        if (videoId) {
-          console.log(`✅ Extracted video ID: ${videoId}`);
-          return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`;
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = '⏳ Menyimpan...';
         }
 
-        console.warn(`⚠️ Could not extract video ID from: ${urlStr}`);
-        return null;
+        try {
+          const amountMl = Math.round(waterValue * 1000);
+
+          // Gunakan JSONP untuk menyimpan data (GET request)
+          const success = await saveWaterToSheetsJSONP(currentUser, amountMl);
+
+          if (success) {
+            if (waterValue < 2) {
+              showToast(`✅ Tercatat ${waterValue}L! Butuh ${(2 - waterValue).toFixed(1)}L lagi`, 'success');
+            } else {
+              showToast(`🎉 Sempurna! Target 2L tercapai!`, 'success');
+            }
+
+            waterInput.value = '';
+            waterInput.classList.remove('has-val');
+
+            const alertEl = document.getElementById('water-alert');
+            if (alertEl) alertEl.classList.remove('show');
+
+            // Jika modal water log terbuka, refresh datanya
+            const modal = document.getElementById('waterLogModal');
+            if (modal && modal.style.display === 'block') {
+              await loadWaterLogsData();
+            }
+          } else {
+            showToast('❌ Gagal menyimpan ke Sheet', 'error');
+          }
+        } catch (error) {
+          console.error('Save error:', error);
+          showToast('❌ Gagal menyimpan: ' + error.message, 'error');
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = '💾 SIMPAN AIR';
+          }
+        }
       }
 
-    function showVideoModal(exerciseName, videoUrl) {
-        // Buka di tab baru, bukan modal
-        window.open(videoUrl, '_blank');
-        showToast(`Membuka video ${exerciseName} di tab baru`, 'info');
+      function saveWaterToSheetsJSONP(user, amountMl) {
+        return new Promise((resolve, reject) => {
+          const callbackName = `saveWater_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+          const script = document.createElement('script');
+
+          // Set timeout untuk request (10 detik)
+          const timeout = setTimeout(() => {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            reject(new Error('Request timeout'));
+          }, 10000);
+
+          window[callbackName] = (data) => {
+            clearTimeout(timeout);
+            delete window[callbackName];
+            document.body.removeChild(script);
+
+            console.log('Save water response:', data);
+
+            if (data && data.success === true) {
+              resolve(true);
+            } else {
+              reject(new Error(data?.error || 'Gagal menyimpan data'));
+            }
+          };
+
+          // Gunakan GET dengan parameter action=logWater
+          const url = `${APPS_SCRIPT_URL}?action=logWater&user=${encodeURIComponent(user)}&amount=${amountMl}&callback=${callbackName}`;
+          script.src = url;
+          script.onerror = () => {
+            clearTimeout(timeout);
+            delete window[callbackName];
+            document.body.removeChild(script);
+            reject(new Error('Network error when saving water data'));
+          };
+
+          document.body.appendChild(script);
+        });
       }
+
+      function validateWaterInput(el) {
+        const waterValue = parseFloat(el.value) || 0;
+        const alertEl = document.getElementById('water-alert');
+
+        if (!alertEl) return;
+
+        el.classList.toggle('has-val', el.value !== '');
+
+        if (waterValue > 0) {
+          if (waterValue < 2) {
+            alertEl.textContent = `⚠️ Kurang dari target! Anda baru ${waterValue}L, butuh ${(2 - waterValue).toFixed(1)}L lagi`;
+            alertEl.classList.remove('success');
+            alertEl.classList.add('show');
+          } else if (waterValue >= 2) {
+            alertEl.textContent = `✅ Sempurna! Anda sudah minum ${waterValue}L (${((waterValue / 2) * 100).toFixed(0)}% dari target)`;
+            alertEl.classList.add('success');
+            alertEl.classList.add('show');
+          }
+        } else {
+          alertEl.classList.remove('show');
+        }
+      }
+
+      // Perbaiki juga fetchWaterLogsFromSheet (sudah benar menggunakan GET/JSONP)
+      async function fetchWaterLogsFromSheet(userName, startDate, endDate) {
+        return new Promise((resolve, reject) => {
+          const callbackName = `waterlog_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+          const script = document.createElement('script');
+
+          const timeout = setTimeout(() => {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            reject(new Error('Request timeout'));
+          }, 15000);
+
+          window[callbackName] = (data) => {
+            clearTimeout(timeout);
+            delete window[callbackName];
+            document.body.removeChild(script);
+
+            if (data && !data.error) {
+              resolve(data);
+            } else {
+              reject(new Error(data?.error || 'Gagal fetch data air'));
+            }
+          };
+
+          const url = `${APPS_SCRIPT_URL}?action=getWaterLog&user=${encodeURIComponent(userName)}&startDate=${startDate}&endDate=${endDate}&callback=${callbackName}`;
+          script.src = url;
+          script.onerror = () => {
+            clearTimeout(timeout);
+            delete window[callbackName];
+            document.body.removeChild(script);
+            reject(new Error('Network error when fetching water logs'));
+          };
+
+          document.body.appendChild(script);
+        });
+      }
+
+    // ============================================================
+    // FUNGSI VIDEO MODAL
+    // ============================================================
+    function getYouTubeEmbedUrl(url) {
+      if (!url) return null;
+      const urlStr = url.toString().trim();
+      let videoId = null;
+
+      const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/,
+        /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+        /youtube\.com\/live\/([a-zA-Z0-9_-]{11})/
+      ];
+
+      for (const pattern of patterns) {
+        const match = urlStr.match(pattern);
+        if (match) {
+          videoId = match[1];
+          break;
+        }
+      }
+
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`;
+      }
+
+      return null;
+    }
+
+    function showVideoModal(exerciseName, videoUrl) {
+      window.open(videoUrl, '_blank');
+      showToast(`Membuka video ${exerciseName} di tab baru`, 'info');
+    }
 
     function closeVideoModal() {
       const modal = document.getElementById('videoModal');
@@ -1924,7 +2498,6 @@
       }
     }
 
-    // Modal close event
     document.querySelector('.close-modal')?.addEventListener('click', closeVideoModal);
     window.addEventListener('click', (event) => {
       const modal = document.getElementById('videoModal');
@@ -1949,10 +2522,18 @@
       const toast = document.createElement('div');
       toast.className = 'toast';
       toast.textContent = message;
-      toast.style.background = type === 'success' ? 'var(--green)' : 'var(--red)';
-      toast.style.color = '#000';
+      if (type === 'success') {
+        toast.style.background = 'var(--green)';
+        toast.style.color = '#000';
+      } else if (type === 'warning') {
+        toast.style.background = 'var(--orange)';
+        toast.style.color = '#000';
+      } else {
+        toast.style.background = 'var(--red)';
+        toast.style.color = '#fff';
+      }
       document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 2000);
+      setTimeout(() => toast.remove(), 3000);
     }
 
     // ============================================================
@@ -1966,23 +2547,23 @@
         panel.className = 'day-panel' + (di === 0 ? ' active' : '');
         panel.id = 'dpanel-' + di;
         let rows = day.exercises.map((ex, ei) => `
-      <tr class="exercise-row">
-        <td><span class="ex-num">${String(ei + 1).padStart(2, '0')}</span></td>
-        <td><div class="ex-name">${ex.name}</div><div class="ex-desc">${ex.desc}</div></td>
-        <td><div class="ex-sets">${ex.sets}</div></td>
-        <td><div class="ex-reps">${ex.reps}</div></td>
-        <td><span class="ex-muscle ${MUSCLE_COLOR[ex.muscle] || ''}">${ex.muscle}</span></td>
-      </tr>`).join('');
+          <tr class="exercise-row">
+            <td><span class="ex-num">${String(ei + 1).padStart(2, '0')}</span></td>
+            <td><div class="ex-name">${ex.name}</div><div class="ex-desc">${ex.desc}</div></td>
+            <td><div class="ex-sets">${ex.sets}</div></td>
+            <td><div class="ex-reps">${ex.reps}</div></td>
+            <td><span class="ex-muscle ${MUSCLE_COLOR[ex.muscle] || ''}">${ex.muscle}</span></td>
+          </tr>`).join('');
         panel.innerHTML = `
-      <div class="day-header">
-        <div class="day-number">${day.num}</div>
-        <div class="day-info"><h3>${day.title}</h3><p>${day.sub}</p></div>
-        <div style="margin-left:auto;font-size:24px">${['💪', '🦵', '🔋', '⚡'][di]}</div>
-      </div>
-      <table class="exercise-table">
-        <thead><tr><th style="width:44px">#</th><th>Gerakan</th><th style="width:60px;text-align:center">Set</th><th style="width:90px;text-align:center">Rep</th><th style="width:140px;text-align:center">Otot</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
+          <div class="day-header">
+            <div class="day-number">${day.num}</div>
+            <div class="day-info"><h3>${day.title}</h3><p>${day.sub}</p></div>
+            <div style="margin-left:auto;font-size:24px">${['💪', '🦵', '🔋', '⚡'][di]}</div>
+          </div>
+          <table class="exercise-table">
+            <thead><tr><th style="width:44px">#</th><th>Gerakan</th><th style="width:60px;text-align:center">Set</th><th style="width:90px;text-align:center">Rep</th><th style="width:140px;text-align:center">Otot</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>`;
         container.appendChild(panel);
       });
     }
@@ -2003,20 +2584,20 @@
         let rows = '';
         day.exercises.forEach((ex, ei) => {
           rows += `
-      <tr>
-        <td style="width:28px;font-family:var(--font-cond);font-size:15px;font-weight:700;color:var(--border)">${String(ei + 1).padStart(2, '0')}</td>
-        <td><div class="exercise-name-clickable" data-exercise="${ex.name}">📹 ${ex.name}</div><div style="font-size:11px;color:var(--muted)">${ex.sets} set × ${ex.reps}</div></td>
-        <td style="text-align:center"><input class="input-num" type="number" min="0" step="0.5" id="kg-${di}-${ei}" placeholder="—" oninput="onInputChange(this,'${di}-${ei}')"/><span style="font-size:11px;color:var(--muted)">kg</span></td>
-        <td style="text-align:center"><input class="input-num" type="number" min="0" step="1" id="rep-${di}-${ei}" placeholder="—" oninput="onInputChange(this,'${di}-${ei}')"/><span style="font-size:11px;color:var(--muted)">rep</span></td>
-        <td style="text-align:center;min-width:80px"><span id="diff-${di}-${ei}" class="diff-neu">—</span><span id="pr-${di}-${ei}" class="pr-badge">🏆 PR!</span></td>
-      </tr>`;
+            <tr>
+              <td style="width:28px;font-family:var(--font-cond);font-size:15px;font-weight:700;color:var(--border)">${String(ei + 1).padStart(2, '0')}</td>
+              <td><div class="exercise-name-clickable" data-exercise="${ex.name}">📹 ${ex.name}</div><div style="font-size:11px;color:var(--muted)">${ex.sets} set × ${ex.reps}</div></td>
+              <td style="text-align:center"><input class="input-num" type="number" min="0" step="0.5" id="kg-${di}-${ei}" placeholder="—" oninput="onInputChange(this,'${di}-${ei}')"/><span style="font-size:11px;color:var(--muted)">kg</span></td>
+              <td style="text-align:center"><input class="input-num" type="number" min="0" step="1" id="rep-${di}-${ei}" placeholder="—" oninput="onInputChange(this,'${di}-${ei}')"/><span style="font-size:11px;color:var(--muted)">rep</span></td>
+              <td style="text-align:center;min-width:80px"><span id="diff-${di}-${ei}" class="diff-neu">—</span><span id="pr-${di}-${ei}" class="pr-badge">🏆 PR!</span></td>
+            </tr>`;
         });
         html += `
-      <div class="tracker-day-section">
-        <div class="tracker-day-head"><div class="tracker-day-num">${day.num}</div><div><div class="tracker-day-title">${day.title}</div><div class="tracker-day-sub">${day.sub}</div></div></div>
-        <table class="tracker-table"><thead><tr><th style="width:28px">#</th><th>Gerakan</th><th style="width:120px;text-align:center">Berat (KG)</th><th style="width:110px;text-align:center">Reps</th><th style="width:100px;text-align:center">vs Minggu Lalu</th></tr></thead><tbody>${rows}</tbody></table>
-      </div>
-    `;
+          <div class="tracker-day-section">
+            <div class="tracker-day-head"><div class="tracker-day-num">${day.num}</div><div><div class="tracker-day-title">${day.title}</div><div class="tracker-day-sub">${day.sub}</div></div></div>
+            <table class="tracker-table"><thead><tr><th style="width:28px">#</th><th>Gerakan</th><th style="width:120px;text-align:center">Berat (KG)</th><th style="width:110px;text-align:center">Reps</th><th style="width:100px;text-align:center">vs Minggu Lalu</th></tr></thead><tbody>${rows}</tbody></table>
+          </div>
+        `;
       });
       container.innerHTML = html;
       document.querySelectorAll('.exercise-name-clickable').forEach(el => {
@@ -2029,6 +2610,7 @@
       const week = parseInt(document.getElementById('week-select').value) || 1;
       const bbVal = getUserData(`bb-w${week}`) || '';
       const waistVal = getUserData(`waist-w${week}`) || '';
+
       document.getElementById('bb-inputs').innerHTML = `<div class="stat-input-row"><span class="stat-week-lbl">Minggu ${week}</span><input class="input-stat" type="number" step="0.1" min="0" id="input-bb" value="${bbVal}" placeholder="0.0"/><span class="stat-unit">kg</span></div><div style="font-size:12px;color:var(--muted);margin-top:4px">Ukur setiap Senin pagi sebelum makan</div>`;
       document.getElementById('waist-inputs').innerHTML = `<div class="stat-input-row"><span class="stat-week-lbl">Minggu ${week}</span><input class="input-stat" type="number" step="0.1" min="0" id="input-waist" value="${waistVal}" placeholder="0.0"/><span class="stat-unit">cm</span></div><div style="font-size:12px;color:var(--muted);margin-top:4px">Ukur setiap Senin pagi</div>`;
     }
@@ -2153,12 +2735,8 @@
 
     async function onWeekChange() {
       const weekSelect = document.getElementById('week-select');
-      if (!weekSelect) {
-        console.error('Element week-select tidak ditemukan!');
-        return;
-      }
+      if (!weekSelect) return;
       const week = parseInt(weekSelect.value);
-      console.log(`🔄 Ganti minggu ke: ${week}`);
       const bbVal = getUserData(`bb-w${week}`) || '';
       const waistVal = getUserData(`waist-w${week}`) || '';
       const bbInput = document.getElementById('input-bb');
@@ -2169,7 +2747,6 @@
       await loadWeekData(week);
       hideSkeletonInTracker();
       buildChart();
-      console.log(`✅ Selesai ganti ke minggu ${week}`);
     }
 
     function updateHomeStats() {
@@ -2357,7 +2934,6 @@
       const weekSelect = document.getElementById('week-select');
       if (weekSelect) {
         weekSelect.value = '1';
-        console.log('✅ week-select di-reset ke minggu 1');
       }
       document.getElementById('tr-avatar').textContent = avatar;
       document.getElementById('tr-avatar').style.background = avatarBg;
@@ -2368,10 +2944,10 @@
       showPage('tracker');
       buildBodyStatInputs();
       showSkeletonInTracker();
-      console.log(`📥 Load week 1 priority...`);
-        // 🔥 AMBIL QR CODE VALUE DARI SHEET
+
       await fetchBodyStats();
       displayQrCode(name);
+
       const startTime = performance.now();
       const week1Data = await fetchWeekFromSheets(currentUser, 1);
       const endTime = performance.now();
@@ -2394,7 +2970,6 @@
     buildProgram();
     updateHomeStats();
 
-    // Warm-up Apps Script
     let isWarmedUp = false;
     async function warmUpAppsScript() {
       if (isWarmedUp) return;
