@@ -1718,7 +1718,7 @@
     // ============================================================
     // KONFIGURASI - GANTI DENGAN URL APPS SCRIPT ANDA!
     // ============================================================
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVRI4ReL6xEVJg6SQmVUU_CoyLeEEsGbVC0exD1tqAnO2X_sb3oXKKEqaQN0pT1Ll6ow/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydvV-bBTxTT2DElHqbfMgEebWA8YOwkPvEHYoxkJ0VS1lPD3PybCJSUZXuLaLGtoMBLw/exec";
 
     // ============================================================
     // DATA PROGRAM
@@ -2020,18 +2020,52 @@
     // MENYIMPAN DATA KE SHEETS
     // ============================================================
     async function saveWeekToSheets(user, week, lifts, bb, waist) {
-      const response = await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ user, week, lifts, bb, waist })
+      return new Promise((resolve, reject) => {
+        const callbackName = `saveWeek_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+        const script = document.createElement('script');
+
+        // Set timeout untuk request (10 detik)
+        const timeout = setTimeout(() => {
+          delete window[callbackName];
+          if (document.body.contains(script)) {
+            document.body.removeChild(script);
+          }
+          reject(new Error('Request timeout'));
+        }, 10000);
+
+        window[callbackName] = (data) => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          if (document.body.contains(script)) {
+            document.body.removeChild(script);
+          }
+
+          console.log('Save week response:', data);
+
+          if (data && data.success === true) {
+            const cacheKey = `${user}_${week}`;
+            weekCache[cacheKey] = { lifts, bb, waist };
+            resolve(true);
+          } else {
+            reject(new Error(data?.error || 'Gagal menyimpan data'));
+          }
+        };
+
+        // Gunakan GET dengan parameter action=saveWeek dan JSON encoded data
+        const liftsJson = encodeURIComponent(JSON.stringify(lifts));
+        const url = `${APPS_SCRIPT_URL}?action=saveWeek&user=${encodeURIComponent(user)}&week=${week}&lifts=${liftsJson}&bb=${encodeURIComponent(bb)}&waist=${encodeURIComponent(waist)}&callback=${callbackName}`;
+        script.src = url;
+        script.onerror = () => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          if (document.body.contains(script)) {
+            document.body.removeChild(script);
+          }
+          reject(new Error('Network error when saving week data'));
+        };
+
+        document.body.appendChild(script);
       });
-      const result = await response.json();
-      if (result.success) {
-        const cacheKey = `${user}_${week}`;
-        weekCache[cacheKey] = { lifts, bb, waist };
-        return true;
-      } else {
-        throw new Error(result.error || 'Gagal menyimpan data');
-      }
     }
 
     // ============================================================
