@@ -2804,25 +2804,24 @@
     }
     
     // ============================================================
-    // Check Makanan
+    // Check Makanan// const API_KEY = ""; // GENERATE BARU & SIMPAN DI BACKEND
     // ============================================================
-    let lastRequestTime = 0;
-      const MIN_REQUEST_INTERVAL = 4000; // 4 detik antar request
+    // Ambil key dari localStorage (jika sudah pernah isi)
+      let API_KEY = localStorage.getItem('GYMBRO_KEY');
 
       async function handleFoodImage(event) {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Rate limiting client-side
-        const now = Date.now();
-        if (now - lastRequestTime < MIN_REQUEST_INTERVAL) {
-          alert(`Tunggu ${Math.ceil((MIN_REQUEST_INTERVAL - (now - lastRequestTime)) / 1000)} detik sebelum upload lagi`);
-          return;
-        }
-
-        if (!file.type.startsWith('image/')) {
-          alert('Hanya file gambar yang diperbolehkan');
-          return;
+        // Jika key belum ada, minta user isi dulu
+        if (!API_KEY) {
+          API_KEY = prompt("Masukkan API Key Gemini Anda (Kunci tidak akan disimpan di server, hanya di browser Anda):");
+          if (API_KEY) {
+            localStorage.setItem('GYMBRO_KEY', API_KEY);
+          } else {
+            alert("API Key diperlukan untuk analisa!");
+            return;
+          }
         }
 
         const resultDiv = document.getElementById('ai-result');
@@ -2835,8 +2834,9 @@
 
         try {
           const base64Image = await toBase64(file);
-          const API_KEY = "AIzaSyB3H1AFzKk_NVte0hZ-BKvv2EryCXcyqYA"; // GENERATE BARU & SIMPAN DI BACKEND
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=AIzaSyB3H1AFzKk_NVte0hZ-BKvv2EryCXcyqYA`;
+
+          // PERBAIKAN: Gunakan model gemini-1.5-flash (Versi 3 belum stabil/tersedia publik luas)
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
 
           const response = await fetch(url, {
             method: 'POST',
@@ -2857,12 +2857,12 @@
           });
 
           const data = await response.json();
-          lastRequestTime = Date.now(); // Update timestamp
 
           if (data.error) {
-            // Handle quota error specifically
-            if (data.error.message.includes('quota')) {
-              throw new Error(`Quota API habis. Coba lagi nanti atau upgrade ke plan berbayar.`);
+            // Jika key salah/expired, hapus dari storage agar bisa input ulang
+            if (data.error.status === "UNAUTHENTICATED" || data.error.message.includes("leaked")) {
+              localStorage.removeItem('GYMBRO_KEY');
+              API_KEY = null;
             }
             throw new Error(`API Error: ${data.error.message}`);
           }
@@ -2872,7 +2872,7 @@
             statusP.innerText = "✅ Hasil Analisis:";
             contentDiv.innerHTML = aiText.replace(/\n/g, "<br>").replace(/\*/g, "");
           } else {
-            throw new Error("Respon AI kosong atau tidak valid.");
+            throw new Error("Respon AI kosong. Pastikan gambar jelas.");
           }
 
         } catch (error) {
