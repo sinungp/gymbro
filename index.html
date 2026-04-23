@@ -1506,7 +1506,27 @@
         <span class="badge badge-green">📈 12 Minggu</span>
       </div>
     </div>
-
+    <div class="user-grid" style="margin-bottom: 20px;">
+      <div class="user-card" style="--accent:var(--orange);--avatar-bg:rgba(255,107,0,.15); grid-column: 1 / -1;">
+        <div class="user-avatar">📸</div>
+        <div class="user-name">AI NUTRITION SCANNER</div>
+        <div class="user-role">Foto makananmu & hitung kalorinya otomatis</div>
+    
+        <input type="file" id="food-input" accept="image/*" capture="camera" style="display: none;"
+          onchange="handleFoodImage(event)">
+    
+        <button class="user-cta" style="background:var(--orange); color: #000;"
+          onclick="document.getElementById('food-input').click()">
+          AMBIL FOTO MAKANAN
+        </button>
+    
+        <div id="ai-result"
+          style="margin-top: 20px; display: none; background: var(--bg); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
+          <p id="ai-status" style="color: var(--muted); font-size: 13px;">Menganalisis...</p>
+          <div id="ai-content" style="font-size: 14px; line-height: 1.6; color: var(--text);"></div>
+        </div>
+      </div>
+    </div>
     <div class="user-grid">
       <div class="user-card" style="--accent:var(--red);--avatar-bg:rgba(255,45,85,.15)"
         onclick="openTracker('Sinung','🦁','var(--red)','rgba(255,45,85,.15)')">
@@ -2782,6 +2802,92 @@
       hideSkeletonInTracker();
       buildChart();
     }
+    
+    // ============================================================
+    // Check Makanan
+    // ============================================================
+    let lastRequestTime = 0;
+      const MIN_REQUEST_INTERVAL = 4000; // 4 detik antar request
+
+      async function handleFoodImage(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Rate limiting client-side
+        const now = Date.now();
+        if (now - lastRequestTime < MIN_REQUEST_INTERVAL) {
+          alert(`Tunggu ${Math.ceil((MIN_REQUEST_INTERVAL - (now - lastRequestTime)) / 1000)} detik sebelum upload lagi`);
+          return;
+        }
+
+        if (!file.type.startsWith('image/')) {
+          alert('Hanya file gambar yang diperbolehkan');
+          return;
+        }
+
+        const resultDiv = document.getElementById('ai-result');
+        const statusP = document.getElementById('ai-status');
+        const contentDiv = document.getElementById('ai-content');
+
+        resultDiv.style.display = 'block';
+        statusP.innerText = "⏳ Sedang memproses gambar...";
+        contentDiv.innerText = "";
+
+        try {
+          const base64Image = await toBase64(file);
+          const API_KEY = "AIzaSyB3H1AFzKk_NVte0hZ-BKvv2EryCXcyqYA"; // GENERATE BARU & SIMPAN DI BACKEND
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=AIzaSyB3H1AFzKk_NVte0hZ-BKvv2EryCXcyqYA`;
+
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [
+                  { text: "Sebutkan nama makanan ini dan estimasi kalori, protein, karbohidrat, dan lemak secara singkat dalam bahasa Indonesia." },
+                  {
+                    inline_data: {
+                      mime_type: file.type,
+                      data: base64Image.split(',')[1]
+                    }
+                  }
+                ]
+              }]
+            })
+          });
+
+          const data = await response.json();
+          lastRequestTime = Date.now(); // Update timestamp
+
+          if (data.error) {
+            // Handle quota error specifically
+            if (data.error.message.includes('quota')) {
+              throw new Error(`Quota API habis. Coba lagi nanti atau upgrade ke plan berbayar.`);
+            }
+            throw new Error(`API Error: ${data.error.message}`);
+          }
+
+          if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+            const aiText = data.candidates[0].content.parts[0].text;
+            statusP.innerText = "✅ Hasil Analisis:";
+            contentDiv.innerHTML = aiText.replace(/\n/g, "<br>").replace(/\*/g, "");
+          } else {
+            throw new Error("Respon AI kosong atau tidak valid.");
+          }
+
+        } catch (error) {
+          console.error("Error detail:", error);
+          statusP.innerText = "❌ Gagal menganalisis.";
+          contentDiv.innerHTML = `<small style="color:#ff4d4d">${error.message}</small>`;
+        }
+      }
+
+      const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
 
     function updateHomeStats() {
       ['Sinung', 'Awal', 'Rudi'].forEach(name => {
