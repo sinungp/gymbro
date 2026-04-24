@@ -1338,6 +1338,33 @@
       color: var(--muted);
     }
 
+    .scan-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: var(--orange);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-cond);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .scan-btn:hover {
+      background: #ff8c00;
+      transform: translateY(-2px);
+    }
+
+    .scan-btn:active {
+      transform: translateY(0);
+    }
+
     .skeleton-loader {
       background: linear-gradient(90deg, var(--bg3) 25%, var(--bg2) 50%, var(--bg3) 75%);
       background-size: 200% 100%;
@@ -1506,27 +1533,6 @@
         <span class="badge badge-green">📈 12 Minggu</span>
       </div>
     </div>
-    <div class="user-grid" style="margin-bottom: 20px;">
-      <div class="user-card" style="--accent:var(--orange);--avatar-bg:rgba(255,107,0,.15); grid-column: 1 / -1;">
-        <div class="user-avatar">📸</div>
-        <div class="user-name">AI NUTRITION SCANNER</div>
-        <div class="user-role">Foto makananmu & hitung kalorinya otomatis</div>
-    
-        <input type="file" id="food-input" accept="image/*" capture="camera" style="display: none;"
-          onchange="handleFoodImage(event)">
-    
-        <button class="user-cta" style="background:var(--orange); color: #000;"
-          onclick="document.getElementById('food-input').click()">
-          AMBIL FOTO MAKANAN
-        </button>
-    
-        <div id="ai-result"
-          style="margin-top: 20px; display: none; background: var(--bg); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
-          <p id="ai-status" style="color: var(--muted); font-size: 13px;">Menganalisis...</p>
-          <div id="ai-content" style="font-size: 14px; line-height: 1.6; color: var(--text);"></div>
-        </div>
-      </div>
-    </div>
     <div class="user-grid">
       <div class="user-card" style="--accent:var(--red);--avatar-bg:rgba(255,45,85,.15)"
         onclick="openTracker('Sinung','🦁','var(--red)','rgba(255,45,85,.15)')">
@@ -1641,16 +1647,36 @@
       </div>
       <div class="nutrition-banner">
         <div class="nutrition-icon">🍽️</div>
-        <div class="nutrition-content">
-          <h4>Reminder Nutrisi Harian</h4>
-          <p style="font-size:13px;color:var(--muted)">Latihan keras percuma tanpa nutrisi yang benar. Protein adalah
-            kunci!</p>
+        <div class="nutrition-content" style="flex: 1;">
+          <h4>Reminder Nutrisi & AI Scanner</h4>
+          <p style="font-size:13px;color:var(--muted)">Latihan keras percuma tanpa nutrisi yang benar. Gunakan AI untuk
+            scan makananmu!</p>
+
           <div class="nutrition-tips">
             <span class="nutrition-tip">🥩 Protein 1.8-2.2g/kg BB</span>
             <span class="nutrition-tip">💧 Air 3L/hari</span>
             <span class="nutrition-tip">😴 Tidur 7-9 jam</span>
-            <span class="nutrition-tip">⚡ Defisit 300-500 kcal</span>
-            <span class="nutrition-tip">🔬 Creatine 5g/hari</span>
+          </div>
+
+          <input type="file" id="food-input" accept="image/*" capture="camera" style="display: none;"
+            onchange="handleFoodImage(event)">
+
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px;">
+            <button class="scan-btn" onclick="document.getElementById('food-input').click()"
+              style="margin-top: 0; padding: 5px 14px; font-size: 12px; border-radius: 20px; height: auto; min-height: unset;">
+              📸 SCAN MAKANAN
+            </button>
+            <button class="scan-btn" onclick="openFoodLogModal()"
+              style="margin-top: 0; padding: 5px 14px; font-size: 12px; border-radius: 20px; height: auto; min-height: unset; background: var(--bg2); color: var(--text); border: 1px solid var(--border);">
+              📜 RIWAYAT
+            </button>
+          </div>
+
+          <div id="ai-result"
+            style="margin-top: 20px; display: none; background: var(--bg); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
+            <p id="ai-status" style="color: var(--muted); font-size: 13px; font-weight: bold; margin-bottom: 8px;">
+              Menganalisis...</p>
+            <div id="ai-content" style="font-size: 14px; line-height: 1.6; color: var(--text);"></div>
           </div>
         </div>
       </div>
@@ -1721,15 +1747,46 @@
     </div>
   </div>
 
-  <!-- Modal Popup Water Log -->
+  <!-- Modal Water Log -->
   <div id="waterLogModal" class="modal">
-    <div class="modal-content" style="max-width: 900px;">
+    <div class="modal-content">
       <div class="modal-header">
-        <h3>📊 Log Konsumsi Air</h3>
-        <span class="close-modal" onclick="closeWaterLogModal()">&times;</span>
+        <h3>Riwayat Minum</h3>
+        <span class="close" onclick="closeModal('waterLogModal')">&times;</span>
       </div>
-      <div id="waterLogContainer">
-        <div class="loading-video">⏳ Loading data...</div>
+      <div class="water-log-summary">
+        <div class="summary-card">
+          <div class="label">Total (7 Hari)</div>
+          <div id="water-total-val" class="value">0L</div>
+        </div>
+      </div>
+      <div id="water-log-list" class="log-list">
+        <p style="text-align: center; color: var(--muted);">Loading history...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Riwayat Makanan -->
+  <div id="foodLogModal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 style="display: flex; align-items: center; gap: 8px;">📜 Riwayat Makan (7 Hari)</h3>
+        <span class="close" onclick="closeModal('foodLogModal')">&times;</span>
+      </div>
+
+      <!-- Tambahkan Ringkasan Mingguan -->
+      <div id="food-weekly-summary" style="margin-top: 15px; display: none;">
+        <div
+          style="background: linear-gradient(135deg, var(--accent), #ff8c00); padding: 20px; border-radius: 24px; color: white; text-align: center; box-shadow: 0 10px 20px rgba(255,107,0,0.2);">
+          <div style="font-size: 13px; opacity: 0.9; font-weight: 500; margin-bottom: 5px;">TOTAL KALORI MINGGU INI
+          </div>
+          <div id="weekly-cal-val" style="font-size: 32px; font-weight: 800; font-family: 'Barlow Condensed';">0 <small
+              style="font-size: 14px;">kCal</small></div>
+        </div>
+      </div>
+
+      <div id="food-log-list" style="margin-top: 20px; max-height: 450px; overflow-y: auto; padding-right: 5px;">
+        <p style="text-align: center; color: var(--muted);">Loading history...</p>
       </div>
     </div>
   </div>
@@ -1738,7 +1795,7 @@
     // ============================================================
     // KONFIGURASI - GANTI DENGAN URL APPS SCRIPT ANDA!
     // ============================================================
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydvV-bBTxTT2DElHqbfMgEebWA8YOwkPvEHYoxkJ0VS1lPD3PybCJSUZXuLaLGtoMBLw/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydELaEGhePnb51PUWsFSXm_Zsxf8G1d55wMpC5mqZRn5BTyRi037l3LDzIdpCJD_bsGw/exec";
 
     // ============================================================
     // DATA PROGRAM
@@ -2117,6 +2174,11 @@
       if (modal) modal.style.display = 'none';
     }
 
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.style.display = 'none';
+    }
+
     async function renderWaterLogFilterUI() {
       const container = document.getElementById('waterLogContainer');
       if (!container) return;
@@ -2336,178 +2398,178 @@
     }
 
     // ============================================================
-      // WATER LOG FUNCTIONS - MENGGUNAKAN GET/JSONP (FIX 405 ERROR)
-      // ============================================================
+    // WATER LOG FUNCTIONS - MENGGUNAKAN GET/JSONP (FIX 405 ERROR)
+    // ============================================================
 
-      async function saveWaterAndAlert() {
-        const waterInput = document.getElementById('input-water');
-        if (!waterInput) return;
+    async function saveWaterAndAlert() {
+      const waterInput = document.getElementById('input-water');
+      if (!waterInput) return;
 
-        const waterValue = parseFloat(waterInput.value) || 0;
+      const waterValue = parseFloat(waterInput.value) || 0;
 
-        if (waterValue <= 0) {
-          showToast('❌ Masukkan jumlah air terlebih dahulu!', 'error');
-          return;
-        }
+      if (waterValue <= 0) {
+        showToast('❌ Masukkan jumlah air terlebih dahulu!', 'error');
+        return;
+      }
 
-        validateWaterInput(waterInput);
+      validateWaterInput(waterInput);
 
-        // Simpan ke localStorage
-        const today = new Date().toISOString().split('T')[0];
-        setUserData(`water-${today}`, waterValue);
+      // Simpan ke localStorage
+      const today = new Date().toISOString().split('T')[0];
+      setUserData(`water-${today}`, waterValue);
 
-        // Cari tombol save
-        const btns = document.querySelectorAll('.save-btn');
-        let btn = null;
-        for (let b of btns) {
-          if (b.textContent.includes('SIMPAN AIR') || b.innerHTML.includes('SIMPAN AIR')) {
-            btn = b;
-            break;
-          }
-        }
-
-        if (btn) {
-          btn.disabled = true;
-          btn.textContent = '⏳ Menyimpan...';
-        }
-
-        try {
-          const amountMl = Math.round(waterValue * 1000);
-
-          // Gunakan JSONP untuk menyimpan data (GET request)
-          const success = await saveWaterToSheetsJSONP(currentUser, amountMl);
-
-          if (success) {
-            if (waterValue < 2) {
-              showToast(`✅ Tercatat ${waterValue}L! Butuh ${(2 - waterValue).toFixed(1)}L lagi`, 'success');
-            } else {
-              showToast(`🎉 Sempurna! Target 2L tercapai!`, 'success');
-            }
-
-            waterInput.value = '';
-            waterInput.classList.remove('has-val');
-
-            const alertEl = document.getElementById('water-alert');
-            if (alertEl) alertEl.classList.remove('show');
-
-            // Jika modal water log terbuka, refresh datanya
-            const modal = document.getElementById('waterLogModal');
-            if (modal && modal.style.display === 'block') {
-              await loadWaterLogsData();
-            }
-          } else {
-            showToast('❌ Gagal menyimpan ke Sheet', 'error');
-          }
-        } catch (error) {
-          console.error('Save error:', error);
-          showToast('❌ Gagal menyimpan: ' + error.message, 'error');
-        } finally {
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = '💾 SIMPAN AIR';
-          }
+      // Cari tombol save
+      const btns = document.querySelectorAll('.save-btn');
+      let btn = null;
+      for (let b of btns) {
+        if (b.textContent.includes('SIMPAN AIR') || b.innerHTML.includes('SIMPAN AIR')) {
+          btn = b;
+          break;
         }
       }
 
-      function saveWaterToSheetsJSONP(user, amountMl) {
-        return new Promise((resolve, reject) => {
-          const callbackName = `saveWater_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
-          const script = document.createElement('script');
-
-          // Set timeout untuk request (10 detik)
-          const timeout = setTimeout(() => {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            reject(new Error('Request timeout'));
-          }, 10000);
-
-          window[callbackName] = (data) => {
-            clearTimeout(timeout);
-            delete window[callbackName];
-            document.body.removeChild(script);
-
-            console.log('Save water response:', data);
-
-            if (data && data.success === true) {
-              resolve(true);
-            } else {
-              reject(new Error(data?.error || 'Gagal menyimpan data'));
-            }
-          };
-
-          // Gunakan GET dengan parameter action=logWater
-          const url = `${APPS_SCRIPT_URL}?action=logWater&user=${encodeURIComponent(user)}&amount=${amountMl}&callback=${callbackName}`;
-          script.src = url;
-          script.onerror = () => {
-            clearTimeout(timeout);
-            delete window[callbackName];
-            document.body.removeChild(script);
-            reject(new Error('Network error when saving water data'));
-          };
-
-          document.body.appendChild(script);
-        });
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⏳ Menyimpan...';
       }
 
-      function validateWaterInput(el) {
-        const waterValue = parseFloat(el.value) || 0;
-        const alertEl = document.getElementById('water-alert');
+      try {
+        const amountMl = Math.round(waterValue * 1000);
 
-        if (!alertEl) return;
+        // Gunakan JSONP untuk menyimpan data (GET request)
+        const success = await saveWaterToSheetsJSONP(currentUser, amountMl);
 
-        el.classList.toggle('has-val', el.value !== '');
-
-        if (waterValue > 0) {
+        if (success) {
           if (waterValue < 2) {
-            alertEl.textContent = `⚠️ Kurang dari target! Anda baru ${waterValue}L, butuh ${(2 - waterValue).toFixed(1)}L lagi`;
-            alertEl.classList.remove('success');
-            alertEl.classList.add('show');
-          } else if (waterValue >= 2) {
-            alertEl.textContent = `✅ Sempurna! Anda sudah minum ${waterValue}L (${((waterValue / 2) * 100).toFixed(0)}% dari target)`;
-            alertEl.classList.add('success');
-            alertEl.classList.add('show');
+            showToast(`✅ Tercatat ${waterValue}L! Butuh ${(2 - waterValue).toFixed(1)}L lagi`, 'success');
+          } else {
+            showToast(`🎉 Sempurna! Target 2L tercapai!`, 'success');
+          }
+
+          waterInput.value = '';
+          waterInput.classList.remove('has-val');
+
+          const alertEl = document.getElementById('water-alert');
+          if (alertEl) alertEl.classList.remove('show');
+
+          // Jika modal water log terbuka, refresh datanya
+          const modal = document.getElementById('waterLogModal');
+          if (modal && modal.style.display === 'block') {
+            await loadWaterLogsData();
           }
         } else {
-          alertEl.classList.remove('show');
+          showToast('❌ Gagal menyimpan ke Sheet', 'error');
+        }
+      } catch (error) {
+        console.error('Save error:', error);
+        showToast('❌ Gagal menyimpan: ' + error.message, 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = '💾 SIMPAN AIR';
         }
       }
+    }
 
-      // Perbaiki juga fetchWaterLogsFromSheet (sudah benar menggunakan GET/JSONP)
-      async function fetchWaterLogsFromSheet(userName, startDate, endDate) {
-        return new Promise((resolve, reject) => {
-          const callbackName = `waterlog_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
-          const script = document.createElement('script');
+    function saveWaterToSheetsJSONP(user, amountMl) {
+      return new Promise((resolve, reject) => {
+        const callbackName = `saveWater_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+        const script = document.createElement('script');
 
-          const timeout = setTimeout(() => {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            reject(new Error('Request timeout'));
-          }, 15000);
+        // Set timeout untuk request (10 detik)
+        const timeout = setTimeout(() => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('Request timeout'));
+        }, 10000);
 
-          window[callbackName] = (data) => {
-            clearTimeout(timeout);
-            delete window[callbackName];
-            document.body.removeChild(script);
+        window[callbackName] = (data) => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          document.body.removeChild(script);
 
-            if (data && !data.error) {
-              resolve(data);
-            } else {
-              reject(new Error(data?.error || 'Gagal fetch data air'));
-            }
-          };
+          console.log('Save water response:', data);
 
-          const url = `${APPS_SCRIPT_URL}?action=getWaterLog&user=${encodeURIComponent(userName)}&startDate=${startDate}&endDate=${endDate}&callback=${callbackName}`;
-          script.src = url;
-          script.onerror = () => {
-            clearTimeout(timeout);
-            delete window[callbackName];
-            document.body.removeChild(script);
-            reject(new Error('Network error when fetching water logs'));
-          };
+          if (data && data.success === true) {
+            resolve(true);
+          } else {
+            reject(new Error(data?.error || 'Gagal menyimpan data'));
+          }
+        };
 
-          document.body.appendChild(script);
-        });
+        // Gunakan GET dengan parameter action=logWater
+        const url = `${APPS_SCRIPT_URL}?action=logWater&user=${encodeURIComponent(user)}&amount=${amountMl}&callback=${callbackName}`;
+        script.src = url;
+        script.onerror = () => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('Network error when saving water data'));
+        };
+
+        document.body.appendChild(script);
+      });
+    }
+
+    function validateWaterInput(el) {
+      const waterValue = parseFloat(el.value) || 0;
+      const alertEl = document.getElementById('water-alert');
+
+      if (!alertEl) return;
+
+      el.classList.toggle('has-val', el.value !== '');
+
+      if (waterValue > 0) {
+        if (waterValue < 2) {
+          alertEl.textContent = `⚠️ Kurang dari target! Anda baru ${waterValue}L, butuh ${(2 - waterValue).toFixed(1)}L lagi`;
+          alertEl.classList.remove('success');
+          alertEl.classList.add('show');
+        } else if (waterValue >= 2) {
+          alertEl.textContent = `✅ Sempurna! Anda sudah minum ${waterValue}L (${((waterValue / 2) * 100).toFixed(0)}% dari target)`;
+          alertEl.classList.add('success');
+          alertEl.classList.add('show');
+        }
+      } else {
+        alertEl.classList.remove('show');
       }
+    }
+
+    // Perbaiki juga fetchWaterLogsFromSheet (sudah benar menggunakan GET/JSONP)
+    async function fetchWaterLogsFromSheet(userName, startDate, endDate) {
+      return new Promise((resolve, reject) => {
+        const callbackName = `waterlog_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+        const script = document.createElement('script');
+
+        const timeout = setTimeout(() => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('Request timeout'));
+        }, 15000);
+
+        window[callbackName] = (data) => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          document.body.removeChild(script);
+
+          if (data && !data.error) {
+            resolve(data);
+          } else {
+            reject(new Error(data?.error || 'Gagal fetch data air'));
+          }
+        };
+
+        const url = `${APPS_SCRIPT_URL}?action=getWaterLog&user=${encodeURIComponent(userName)}&startDate=${startDate}&endDate=${endDate}&callback=${callbackName}`;
+        script.src = url;
+        script.onerror = () => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('Network error when fetching water logs'));
+        };
+
+        document.body.appendChild(script);
+      });
+    }
 
     // ============================================================
     // FUNGSI VIDEO MODAL
@@ -2802,92 +2864,273 @@
       hideSkeletonInTracker();
       buildChart();
     }
-    
+
     // ============================================================
     // Check Makanan// const API_KEY = ""; // GENERATE BARU & SIMPAN DI BACKEND
     // ============================================================
     // Ambil key dari localStorage (jika sudah pernah isi)
-      let API_KEY = localStorage.getItem('GYMBRO_KEY');
+    let API_KEY = localStorage.getItem('GYMBRO_KEY');
 
-      async function handleFoodImage(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+    function saveFoodToSheetsJSONP(user, foodData) {
+      return new Promise((resolve, reject) => {
+        const callbackName = `saveFood_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+        const script = document.createElement('script');
 
-        // Jika key belum ada, minta user isi dulu
-        if (!API_KEY) {
-          API_KEY = prompt("Masukkan API Key Gemini Anda (Kunci tidak akan disimpan di server, hanya di browser Anda):");
-          if (API_KEY) {
-            localStorage.setItem('GYMBRO_KEY', API_KEY);
-          } else {
-            alert("API Key diperlukan untuk analisa!");
-            return;
-          }
-        }
+        const timeout = setTimeout(() => {
+          delete window[callbackName];
+          if (document.body.contains(script)) document.body.removeChild(script);
+          reject(new Error('Request timeout'));
+        }, 15000);
 
-        const resultDiv = document.getElementById('ai-result');
-        const statusP = document.getElementById('ai-status');
-        const contentDiv = document.getElementById('ai-content');
+        window[callbackName] = (data) => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          if (document.body.contains(script)) document.body.removeChild(script);
+          if (data && data.success) resolve(data);
+          else reject(new Error(data?.error || 'Gagal simpan'));
+        };
 
-        resultDiv.style.display = 'block';
-        statusP.innerText = "⏳ Sedang memproses gambar...";
-        contentDiv.innerText = "";
+        const baseUrl = `${APPS_SCRIPT_URL}?action=saveFood`;
+        const params = [
+          `user=${encodeURIComponent(user)}`,
+          `food_name=${encodeURIComponent(foodData.name)}`,
+          `calories=${encodeURIComponent(foodData.calories)}`,
+          `protein=${encodeURIComponent(foodData.protein)}`,
+          `carbs=${encodeURIComponent(foodData.carbs)}`,
+          `fat=${encodeURIComponent(foodData.fat)}`,
+          `detail=${encodeURIComponent(foodData.detail)}`,
+          `callback=${callbackName}`
+        ];
 
-        try {
-          const base64Image = await toBase64(file);
+        script.src = `${baseUrl}&${params.join('&')}`;
+        script.onerror = () => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          if (document.body.contains(script)) document.body.removeChild(script);
+          reject(new Error('Network error'));
+        };
+        document.body.appendChild(script);
+      });
+    }
 
-          // PERBAIKAN: Gunakan model gemini-1.5-flash (Versi 3 belum stabil/tersedia publik luas)
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
+    async function handleFoodImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{
-                parts: [
-                  { text: "Sebutkan nama makanan ini dan estimasi kalori, protein, karbohidrat, dan lemak secara singkat dalam bahasa Indonesia." },
-                  {
-                    inline_data: {
-                      mime_type: file.type,
-                      data: base64Image.split(',')[1]
-                    }
-                  }
-                ]
-              }]
-            })
-          });
-
-          const data = await response.json();
-
-          if (data.error) {
-            // Jika key salah/expired, hapus dari storage agar bisa input ulang
-            if (data.error.status === "UNAUTHENTICATED" || data.error.message.includes("leaked")) {
-              localStorage.removeItem('GYMBRO_KEY');
-              API_KEY = null;
-            }
-            throw new Error(`API Error: ${data.error.message}`);
-          }
-
-          if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-            const aiText = data.candidates[0].content.parts[0].text;
-            statusP.innerText = "✅ Hasil Analisis:";
-            contentDiv.innerHTML = aiText.replace(/\n/g, "<br>").replace(/\*/g, "");
-          } else {
-            throw new Error("Respon AI kosong. Pastikan gambar jelas.");
-          }
-
-        } catch (error) {
-          console.error("Error detail:", error);
-          statusP.innerText = "❌ Gagal menganalisis.";
-          contentDiv.innerHTML = `<small style="color:#ff4d4d">${error.message}</small>`;
+      if (!API_KEY) {
+        API_KEY = prompt("Masukkan API Key Gemini Anda (Kunci tidak akan disimpan di server, hanya di browser Anda):");
+        if (API_KEY) {
+          localStorage.setItem('GYMBRO_KEY', API_KEY);
+        } else {
+          alert("API Key diperlukan untuk analisa!");
+          return;
         }
       }
 
-      const toBase64 = file => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
+      const resultDiv = document.getElementById('ai-result');
+      const statusP = document.getElementById('ai-status');
+      const contentDiv = document.getElementById('ai-content');
+
+      resultDiv.style.display = 'block';
+      statusP.innerText = "⏳ Sedang memproses gambar...";
+      contentDiv.innerText = "";
+
+      try {
+        const base64Image = await toBase64(file);
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                {
+                  text: `Analisis makanan untuk ${currentUser}. Berikan jawaban dalam format baku berikut:
+                  Nama: [Nama Makanan]
+                  Kalori: [Angka Saja]
+                  Protein: [Angka Saja]
+                  Karbo: [Angka Saja]
+                  Lemak: [Angka Saja]
+                  Detail: [Penjelasan singkat]` },
+                {
+                  inline_data: {
+                    mime_type: file.type,
+                    data: base64Image.split(',')[1]
+                  }
+                }
+              ]
+            }]
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+          if (data.error.status === "UNAUTHENTICATED" || data.error.message.includes("leaked")) {
+            localStorage.removeItem('GYMBRO_KEY');
+            API_KEY = null;
+          }
+          throw new Error(`API Error: ${data.error.message}`);
+        }
+
+        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+          const aiText = data.candidates[0].content.parts[0].text;
+          statusP.innerText = "✅ Hasil Analisis:";
+          contentDiv.innerHTML = aiText.replace(/\n/g, "<br>").replace(/\*/g, "");
+
+          // Parsing data
+          const getVal = (regex) => {
+            const match = aiText.match(regex);
+            return match ? match[1].trim() : "0";
+          };
+
+          const foodData = {
+            name: getVal(/Nama:\s*(.*)/i),
+            calories: getVal(/Kalori:\s*(\d+)/i),
+            protein: getVal(/Protein:\s*(\d+)/i),
+            carbs: getVal(/Karbo:\s*(\d+)/i),
+            fat: getVal(/Lemak:\s*(\d+)/i),
+            detail: aiText
+          };
+
+          // Simpan ke Google Sheets via JSONP
+          statusP.innerText = "⏳ Menyimpan ke profil log makanan...";
+          try {
+            await saveFoodToSheetsJSONP(currentUser, foodData);
+            statusP.innerText = "✅ Analisis & Tersimpan!";
+            // Jika modal riwayat terbuka, refresh
+            if (document.getElementById('foodLogModal').style.display === 'block') {
+              loadFoodLogsData();
+            }
+          } catch (saveErr) {
+            statusP.innerText = "✅ Analisis Selesai (Gagal Sinkron ke Sheets)";
+            console.error(saveErr);
+          }
+        } else {
+          throw new Error("Respon AI kosong. Pastikan gambar jelas.");
+        }
+
+      } catch (error) {
+        console.error("Error detail:", error);
+        statusP.innerText = "❌ Gagal menganalisis.";
+        contentDiv.innerHTML = `<small style="color:#ff4d4d">${error.message}</small>`;
+      }
+    }
+
+    // --- FOOD LOG UI FUNCTIONS ---
+    async function openFoodLogModal() {
+      const modal = document.getElementById('foodLogModal');
+      modal.style.display = 'block';
+      loadFoodLogsData();
+    }
+
+    async function loadFoodLogsData() {
+      const listEl = document.getElementById('food-log-list');
+      const summaryEl = document.getElementById('food-weekly-summary');
+      const calValEl = document.getElementById('weekly-cal-val');
+
+      listEl.innerHTML = '<div class="skeleton-text" style="height:80px; margin-bottom:12px; border-radius:16px;"></div>'.repeat(4);
+      summaryEl.style.display = 'none';
+
+      try {
+        // Default 7 hari terakhir
+        const data = await fetchFoodLogsFromSheet(currentUser);
+
+        if (!data.history || data.history.length === 0) {
+          listEl.innerHTML = `
+            <div style="text-align: center; padding: 40px 20px;">
+              <div style="font-size: 40px; margin-bottom: 10px;">🍽️</div>
+              <p style="color: var(--muted);">Tidak ada aktivitas makan dalam 7 hari terakhir untuk <strong>${currentUser}</strong>.</p>
+            </div>`;
+          return;
+        }
+
+        // Update Summary
+        summaryEl.style.display = 'block';
+        calValEl.innerHTML = `${Math.round(data.weekly_calories || 0)} <small style="font-size: 14px;">kCal</small>`;
+
+        listEl.innerHTML = data.history.map(item => {
+          let dateStr = "Waktu tidak diketahui";
+          try {
+            const date = new Date(item.timestamp);
+            dateStr = date.toLocaleDateString('id-ID', {
+              day: '2-digit',
+              month: 'short',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+          } catch (e) { }
+
+          return `
+            <div style="background: var(--card); padding: 16px; border-radius: 20px; margin-bottom: 12px; border: 1px solid var(--border); transition: transform 0.2s ease;">
+              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                <div style="font-weight: 700; color: var(--accent); font-size: 16px; line-height: 1.2;">${item.name}</div>
+                <div style="font-size: 11px; color: var(--muted); background: var(--bg); padding: 4px 8px; border-radius: 8px;">${dateStr}</div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                <div style="background: rgba(255,107,0,0.1); padding: 8px 4px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,107,0,0.1);">
+                  <div style="font-size: 10px; color: #ff6b00; font-weight: 600; margin-bottom: 2px;">🔥 CAL</div>
+                  <div style="font-weight: 800; font-size: 14px;">${item.calories}</div>
+                </div>
+                <div style="background: rgba(74,158,255,0.1); padding: 8px 4px; border-radius: 12px; text-align: center; border: 1px solid rgba(74,158,255,0.1);">
+                  <div style="font-size: 10px; color: #4a9eff; font-weight: 600; margin-bottom: 2px;">🥩 PRO</div>
+                  <div style="font-weight: 800; font-size: 14px;">${item.protein}g</div>
+                </div>
+                <div style="background: rgba(255,193,7,0.1); padding: 8px 4px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,193,7,0.1);">
+                  <div style="font-size: 10px; color: #ffc107; font-weight: 600; margin-bottom: 2px;">🍞 CARB</div>
+                  <div style="font-weight: 800; font-size: 14px;">${item.carbs}g</div>
+                </div>
+                <div style="background: rgba(233,30,99,0.1); padding: 8px 4px; border-radius: 12px; text-align: center; border: 1px solid rgba(233,30,99,0.1);">
+                  <div style="font-size: 10px; color: #e91e63; font-weight: 600; margin-bottom: 2px;">🥑 FAT</div>
+                  <div style="font-weight: 800; font-size: 14px;">${item.fat}g</div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (e) {
+        listEl.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--red);">⚠️ Gagal memuat data: ${e.message}</div>`;
+      }
+    }
+
+    function fetchFoodLogsFromSheet(userName) {
+      return new Promise((resolve, reject) => {
+        const callbackName = `foodlog_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+        const script = document.createElement('script');
+
+        const timeout = setTimeout(() => {
+          delete window[callbackName];
+          if (document.body.contains(script)) document.body.removeChild(script);
+          reject(new Error('Request timeout (Gagal mengambil data dari Google Sheets)'));
+        }, 15000);
+
+        window[callbackName] = (data) => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          if (document.body.contains(script)) document.body.removeChild(script);
+          resolve(data);
+        };
+
+        const url = `${APPS_SCRIPT_URL}?action=getFoodLog&user=${encodeURIComponent(userName)}&callback=${callbackName}`;
+        script.src = url;
+        script.onerror = () => {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          if (document.body.contains(script)) document.body.removeChild(script);
+          reject(new Error('Network error (Pastikan Apps Script sudah di-deploy ulang)'));
+        };
+        document.body.appendChild(script);
       });
+    }
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
 
     function updateHomeStats() {
       ['Sinung', 'Awal', 'Rudi'].forEach(name => {
@@ -3080,6 +3323,11 @@
       document.getElementById('tr-avatar').style.borderColor = accent.replace('var(', '').replace(')', '');
       document.getElementById('tr-name').textContent = name.toUpperCase();
       document.getElementById('tr-name').style.color = accent;
+
+      // Reset AI Scanner result when opening new user
+      document.getElementById('ai-result').style.display = 'none';
+      document.getElementById('ai-content').innerHTML = '';
+
       buildTrackerDays();
       showPage('tracker');
       buildBodyStatInputs();
