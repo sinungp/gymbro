@@ -1776,11 +1776,31 @@
         <span class="close" onclick="closeModal('foodLogModal')">&times;</span>
       </div>
 
+      <!-- Tambahkan Filter Tanggal -->
+      <div
+        style="margin-top: 15px; display: flex; gap: 8px; align-items: end; background: var(--bg2); padding: 12px; border-radius: 16px; border: 1px solid var(--border);">
+        <div style="flex: 1;">
+          <label style="font-size: 10px; color: var(--muted); display: block; margin-bottom: 4px;">DARI:</label>
+          <input type="date" id="food-start-date"
+            style="width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 6px; font-size: 12px;">
+        </div>
+        <div style="flex: 1;">
+          <label style="font-size: 10px; color: var(--muted); display: block; margin-bottom: 4px;">SAMPAI:</label>
+          <input type="date" id="food-end-date"
+            style="width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 6px; font-size: 12px;">
+        </div>
+        <button onclick="loadFoodLogsData()"
+          style="background: var(--accent); color: white; border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer; font-size: 12px; font-weight: bold;">
+          CARI
+        </button>
+      </div>
+
       <!-- Tambahkan Ringkasan Mingguan -->
       <div id="food-weekly-summary" style="margin-top: 15px; display: none;">
         <div
           style="background: linear-gradient(135deg, var(--accent), #ff8c00); padding: 20px; border-radius: 24px; color: white; text-align: center; box-shadow: 0 10px 20px rgba(255,107,0,0.2);">
-          <div style="font-size: 13px; opacity: 0.9; font-weight: 500; margin-bottom: 5px;">TOTAL KALORI MINGGU INI
+          <div id="food-summary-label" style="font-size: 13px; opacity: 0.9; font-weight: 500; margin-bottom: 5px;">
+            TOTAL KALORI PERIODE INI
           </div>
           <div id="weekly-cal-val" style="font-size: 32px; font-weight: 800; font-family: 'Barlow Condensed';">0 <small
               style="font-size: 14px;">kCal</small></div>
@@ -1797,7 +1817,7 @@
     // ============================================================
     // KONFIGURASI - GANTI DENGAN URL APPS SCRIPT ANDA!
     // ============================================================
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydELaEGhePnb51PUWsFSXm_Zsxf8G1d55wMpC5mqZRn5BTyRi037l3LDzIdpCJD_bsGw/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx989Zl-3k_udtPKNO2p6jpzi2vDPOV_fdfROQaCywkHdJ1MMlshHTBm3i1QEjRUT0biQ/exec";
 
     // ============================================================
     // DATA PROGRAM
@@ -2851,12 +2871,10 @@
       const weekSelect = document.getElementById('week-select');
       if (!weekSelect) return;
       const week = parseInt(weekSelect.value);
-      const bbVal = getUserData(`bb-w${week}`) || '';
-      const waistVal = getUserData(`waist-w${week}`) || '';
-      const bbInput = document.getElementById('input-bb');
-      const waistInput = document.getElementById('input-waist');
-      if (bbInput) bbInput.value = bbVal;
-      if (waistInput) waistInput.value = waistVal;
+      
+      // Update labels dan value BB/Pinggang secara dinamis
+      buildBodyStatInputs();
+      
       showSkeletonInTracker();
       await loadWeekData(week);
       hideSkeletonInTracker();
@@ -3017,9 +3035,21 @@
     }
 
     // --- FOOD LOG UI FUNCTIONS ---
+    let currentFoodStartDate = "";
+    let currentFoodEndDate = "";
+
     async function openFoodLogModal() {
       const modal = document.getElementById('foodLogModal');
       modal.style.display = 'block';
+
+      // Inisialisasi default 7 hari
+      const today = new Date();
+      const weekAgo = new Date();
+      weekAgo.setDate(today.getDate() - 7);
+
+      document.getElementById('food-start-date').value = weekAgo.toISOString().split('T')[0];
+      document.getElementById('food-end-date').value = today.toISOString().split('T')[0];
+
       loadFoodLogsData();
     }
 
@@ -3028,18 +3058,20 @@
       const summaryEl = document.getElementById('food-weekly-summary');
       const calValEl = document.getElementById('weekly-cal-val');
 
+      const startDate = document.getElementById('food-start-date').value;
+      const endDate = document.getElementById('food-end-date').value;
+
       listEl.innerHTML = '<div class="skeleton-text" style="height:80px; margin-bottom:12px; border-radius:16px;"></div>'.repeat(4);
       summaryEl.style.display = 'none';
 
       try {
-        // Default 7 hari terakhir
-        const data = await fetchFoodLogsFromSheet(currentUser);
+        const data = await fetchFoodLogsFromSheet(currentUser, startDate, endDate);
 
         if (!data.history || data.history.length === 0) {
           listEl.innerHTML = `
             <div style="text-align: center; padding: 40px 20px;">
               <div style="font-size: 40px; margin-bottom: 10px;">🍽️</div>
-              <p style="color: var(--muted);">Tidak ada aktivitas makan dalam 7 hari terakhir untuk <strong>${currentUser}</strong>.</p>
+              <p style="color: var(--muted);">Tidak ada aktivitas makan dalam periode ini untuk <strong>${currentUser}</strong>.</p>
             </div>`;
           return;
         }
@@ -3093,7 +3125,7 @@
       }
     }
 
-    function fetchFoodLogsFromSheet(userName) {
+    function fetchFoodLogsFromSheet(userName, startDate, endDate) {
       return new Promise((resolve, reject) => {
         const callbackName = `foodlog_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
         const script = document.createElement('script');
@@ -3111,7 +3143,7 @@
           resolve(data);
         };
 
-        const url = `${APPS_SCRIPT_URL}?action=getFoodLog&user=${encodeURIComponent(userName)}&callback=${callbackName}`;
+        const url = `${APPS_SCRIPT_URL}?action=getFoodLog&user=${encodeURIComponent(userName)}&startDate=${startDate}&endDate=${endDate}&callback=${callbackName}`;
         script.src = url;
         script.onerror = () => {
           clearTimeout(timeout);
