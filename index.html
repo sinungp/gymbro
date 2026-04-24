@@ -1749,19 +1749,21 @@
 
   <!-- Modal Water Log -->
   <div id="waterLogModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width: 500px;">
       <div class="modal-header">
         <h3>Riwayat Minum</h3>
         <span class="close" onclick="closeModal('waterLogModal')">&times;</span>
       </div>
-      <div class="water-log-summary">
-        <div class="summary-card">
-          <div class="label">Total (7 Hari)</div>
-          <div id="water-total-val" class="value">0L</div>
+      <div id="waterLogContainer">
+        <div class="water-log-summary">
+          <div class="summary-card">
+            <div class="label">Total (7 Hari)</div>
+            <div id="water-total-val" class="value">0L</div>
+          </div>
         </div>
-      </div>
-      <div id="water-log-list" class="log-list">
-        <p style="text-align: center; color: var(--muted);">Loading history...</p>
+        <div id="water-log-list" class="log-list">
+          <p style="text-align: center; color: var(--muted);">Loading history...</p>
+        </div>
       </div>
     </div>
   </div>
@@ -2337,9 +2339,7 @@
         <table class="water-log-table">
           <thead>
             <tr>
-              <th style="width: 50px;">No</th>
               <th>Tanggal</th>
-              <th style="text-align: right;">Jumlah (ml)</th>
               <th style="text-align: right;">Liter</th>
               <th style="text-align: center;">Status</th>
             </tr>
@@ -2356,11 +2356,9 @@
 
         tableHtml += `
           <tr>
-            <td>${index + 1}</td>
             <td><strong>${formatDate(tanggal)}</strong></td>
-            <td style="text-align: right;">${jumlah.toLocaleString()} ml</td>
             <td style="text-align: right;">${liter} L</td>
-            <td style="text-align: center; color: ${statusColor};">${status}</td>
+            <td style="text-align: center; color: ${statusColor}; font-size: 11px;">${status}</td>
           </tr>
         `;
       });
